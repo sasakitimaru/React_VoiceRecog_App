@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@react-navigation/native": "^6.1.6",
+    "aws-amplify": "^5.1.2",
+    "react": "^18.2.0"
+  }
+}
