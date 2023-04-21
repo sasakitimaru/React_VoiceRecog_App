@@ -3,7 +3,7 @@ import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
 import Navigation from '../Navigation';
 import { useNavigation } from '@react-navigation/native';
 
-const TitleAndComment = () => {
+const TitleAndComment:React.FC = () => {
   const navigation = useNavigation();
   const MoveToLogin = () => {
     try {

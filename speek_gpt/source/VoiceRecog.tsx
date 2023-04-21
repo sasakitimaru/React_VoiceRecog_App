@@ -9,21 +9,40 @@ type TextInputAreaProps = {
 
 const VoiceRecog:React.FC = ({ setMessages }: TextInputAreaProps) => {
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
-  const [textInput, setTextInput] = useState('');
-
+  const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
+  const [recognigedText, setRecognigedText] = useState<string>('');
   useEffect(() => {
-    Voice.onSpeechResults = (e) => {
-      setTextInput(e.value[0]);
+    Voice.onSpeechResults = async (e) => {
+      setRecognigedText(e.value[0]);
+      console.log('e.value[0]: ', e.value[0]);
+      console.log('recognigedText: ', recognigedText);
+      console.log('e.value: ', e.value);
     };
 
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
     };
   }, []);
+  useEffect(() => {
+    console.log('useEffect was called:',sendMessageToggle);
+    const handleSendMessage = async () => {
+      console.log('recognigedText in handlesendmessage: ', recognigedText);
+      if (sendMessageToggle) {
+        setMessages((prevMessages) => [...prevMessages, { text: recognigedText, isUser: true }]);
+        console.log('check')
+        setRecognigedText('');
+        const aiResponse = await GenerateResponse(recognigedText);
+        setMessages((prevMessages) => [...prevMessages, { text: aiResponse, isUser: false }]);
+        setSendMessageToggle(!sendMessageToggle);
+      }
+    };
+    handleSendMessage();
+  }, [voiceRecogToggle]);
 
   const handleVoiceRecognition = async () => {
     if (voiceRecogToggle) {
       Voice.stop();
+      setSendMessageToggle(!sendMessageToggle);
     } else {
       Voice.start('en-US');
     }
@@ -31,22 +50,10 @@ const VoiceRecog:React.FC = ({ setMessages }: TextInputAreaProps) => {
     setVoiceRecogToggle(!voiceRecogToggle);
   };
 
-  const handleSendMessage = async () => {
-    setMessages((prevMessages) => [...prevMessages, { text: textInput, isUser: true }]);
-    setTextInput('');
-
-    const aiResponse = await GenerateResponse(textInput);
-    setMessages((prevMessages) => [...prevMessages, { text: aiResponse, isUser: false }]);
-  };
-
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleVoiceRecognition} style={styles.voiceButton}>
         <Text style={styles.voiceButtonText}>{voiceRecogToggle ? 'Stop' : 'Start'} Voice Recognition</Text>
-      </TouchableOpacity>
-      <TextInput style={styles.textInput} value={textInput} onChangeText={setTextInput} placeholder="Voice input" />
-      <TouchableOpacity onPress={handleSendMessage} style={styles.sendButton}>
-        <Text style={styles.sendButtonText}>Send</Text>
       </TouchableOpacity>
     </View>
   );

@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>マイクを使用することにより、音声認識が可能になります。</string>
+	<string>栗松でやんす</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>栗松でやんす</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
