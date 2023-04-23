@@ -8,7 +8,7 @@ type TextInputAreaProps = {
   setMessages: React.Dispatch<React.SetStateAction<Array<{ text: string; isUser: boolean }>>>;
 };
 
-const VoiceRecog:React.FC = ({ setMessages }: TextInputAreaProps) => {
+const VoiceRecog = ({ setMessages }: TextInputAreaProps) => {
   const navigation = useNavigation();
   navigation.setOptions({ headerShown: true });
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);

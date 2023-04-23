@@ -3,22 +3,30 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignUp from './SignUp';
 import Verify from './Verify';
-import AI_conversation from './AI_conversation';
 import SignIn from './SignIn';
+import Home from './Home';
+
+type NavigationProps = {IsAuthenticated: boolean};
 
 const Stack = createStackNavigator();
-const Navigation = () => {
+const Navigation:React.FC<NavigationProps> = ({IsAuthenticated}) => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Verify" component={Verify} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="AI_conversation" component={AI_conversation} />
+      <Stack.Navigator screenOptions={{headerShown: false, gestureEnabled: false}}>
+      {IsAuthenticated ? (
+        // ログイン済みの場合
+        <>
+          <Stack.Screen name="Home" component={Home} />
+        </>
+      ) : (
+        // ログインしていない場合
+        <>
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Verify" component={Verify} />
+          <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Home" component={Home} />
+        </>
+      )}
       </Stack.Navigator>
     </NavigationContainer>
   );

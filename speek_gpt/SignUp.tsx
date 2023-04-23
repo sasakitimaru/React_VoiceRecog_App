@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, TextInput} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import { TitleAndComment, CreateForm} from './source/index';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';

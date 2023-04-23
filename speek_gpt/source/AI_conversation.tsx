@@ -4,8 +4,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { ChatList, TextInputArea } from './source/index';
-import VoiceRecog from './source/VoiceRecog';
+import { ChatList } from './index';
+import VoiceRecog from './VoiceRecog';
 
 function AI_conversation() {
   // const [textInput, setTextInput] = useState('');
