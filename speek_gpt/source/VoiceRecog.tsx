@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
 import Voice from '@react-native-voice/voice';
 import GenerateResponse from './GenerateResponse';
+import { useNavigation } from '@react-navigation/native';
 
 type TextInputAreaProps = {
   setMessages: React.Dispatch<React.SetStateAction<Array<{ text: string; isUser: boolean }>>>;
 };
 
 const VoiceRecog:React.FC = ({ setMessages }: TextInputAreaProps) => {
+  const navigation = useNavigation();
+  navigation.setOptions({ headerShown: true });
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [recognigedText, setRecognigedText] = useState<string>('');
   useEffect(() => {
     Voice.onSpeechResults = async (e) => {
       setRecognigedText(e.value[0]);
-      console.log('e.value[0]: ', e.value[0]);
-      console.log('recognigedText: ', recognigedText);
-      console.log('e.value: ', e.value);
     };
 
     return () => {
@@ -24,12 +24,9 @@ const VoiceRecog:React.FC = ({ setMessages }: TextInputAreaProps) => {
     };
   }, []);
   useEffect(() => {
-    console.log('useEffect was called:',sendMessageToggle);
     const handleSendMessage = async () => {
-      console.log('recognigedText in handlesendmessage: ', recognigedText);
       if (sendMessageToggle) {
         setMessages((prevMessages) => [...prevMessages, { text: recognigedText, isUser: true }]);
-        console.log('check')
         setRecognigedText('');
         const aiResponse = await GenerateResponse(recognigedText);
         setMessages((prevMessages) => [...prevMessages, { text: aiResponse, isUser: false }]);
@@ -64,6 +61,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   voiceButton: {
     backgroundColor: '#2196f3',

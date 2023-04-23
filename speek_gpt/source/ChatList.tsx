@@ -1,6 +1,7 @@
-import React,{ useRef } from 'react';
+import React,{ useRef,useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import ChatBubble from './ChatBubble';
+import Tts from 'react-native-tts';
 
 type MessageType = {
     isUser: boolean;
@@ -13,6 +14,17 @@ type ChatListProps = {
 
 const ChatList = ({ messages }: ChatListProps) => {
     const flatListRef = useRef(null);
+    useEffect(() => {
+        Tts.setDefaultLanguage('en-US');
+        console.log('messages: ', messages);
+        if (messages.length >0 && !messages[messages.length - 1].isUser){
+            Tts.speak(messages[messages.length - 1].text);
+        }
+        return () => {
+            Tts.stop();
+            Tts.speak('');
+        }
+    }, [messages]);
     return (
         <FlatList
             data={messages}

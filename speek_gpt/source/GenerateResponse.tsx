@@ -10,7 +10,7 @@ async function GenerateResponse(inputPrompt: string): Promise<string> {
   const apiKey = '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';
 
   const messages: Message[] = [
-    { role: 'user', content: 'You are a English teacher. You start conversation with simple short sentences.' },
+    { role: 'user', content: 'You are an AI language assistant designed to help people improve their English skills, especially in speaking. While speaking is the main focus, You can also help with other aspects of English learning. You are here to be your conversation partner and provide guidance on grammar, vocabulary, and pronunciation to make your learning experience more efficient and enjoyable.' },
     { role: 'system', content: inputPrompt },
   ];
 

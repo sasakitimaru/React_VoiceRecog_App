@@ -1,0 +1,50 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-speekgpt-dev-214003-authRole",
+      "UnauthRoleArn": "arn:aws:iam::336395565716:role/amplify-speekgpt-dev-214003-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::336395565716:role/amplify-speekgpt-dev-214003-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-speekgpt-dev-214003-deployment",
+      "UnauthRoleName": "amplify-speekgpt-dev-214003-unauthRole",
+      "StackName": "amplify-speekgpt-dev-214003",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:336395565716:stack/amplify-speekgpt-dev-214003/ce75c2a0-e10a-11ed-8353-0aa6d3d884db",
+      "AmplifyAppId": "d1l1s67oekor09"
+    },
+    "categories": {
+      "auth": {
+        "speekgptc441461a": {}
+      },
+      "function": {
+        "speekgpte76c72d3": {}
+      }
+    }
+  },
+  "reactdev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-speekgpt-reactdev-120216-authRole",
+      "UnauthRoleArn": "arn:aws:iam::336395565716:role/amplify-speekgpt-reactdev-120216-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::336395565716:role/amplify-speekgpt-reactdev-120216-authRole",
+      "Region": "ap-northeast-1",
+      "DeploymentBucketName": "amplify-speekgpt-reactdev-120216-deployment",
+      "UnauthRoleName": "amplify-speekgpt-reactdev-120216-unauthRole",
+      "StackName": "amplify-speekgpt-reactdev-120216",
+      "StackId": "arn:aws:cloudformation:ap-northeast-1:336395565716:stack/amplify-speekgpt-reactdev-120216/417315a0-e183-11ed-9d5b-0e15bebb806f",
+      "AmplifyAppId": "d1l1s67oekor09"
+    },
+    "categories": {
+      "auth": {
+        "speekgptc441461a": {}
+      },
+      "function": {
+        "speekgpte76c72d3": {
+          "deploymentBucketName": "amplify-speekgpt-reactdev-120216-deployment",
+          "s3Key": "amplify-builds/speekgpte76c72d3-4657644a38365654746a-build.zip"
+        }
+      },
+      "api": {
+        "speekgpt": {}
+      }
+    }
+  }
+}
