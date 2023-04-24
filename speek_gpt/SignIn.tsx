@@ -22,7 +22,7 @@ const EnrollForm = () => {
       const user = await Auth.signIn(email, password);
       console.log('email:', user.email, '\npassword:', user.password);
       console.log('user:', user);
-      navigation.navigate('AI_conversation');
+      navigation.navigate('Home');
     } catch (error) {
       console.log('error signing in', error);
       setIsLoggingIn(false);

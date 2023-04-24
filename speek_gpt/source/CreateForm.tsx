@@ -27,7 +27,7 @@ const CreateForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (passwordsMatch) {
+        // if (passwordsMatch) {
             try {
                 const { user } = await Auth.signUp({
                     username: email,
@@ -42,9 +42,10 @@ const CreateForm = () => {
             } catch (error) {
                 console.log('error signing up:', error);
             }
-        } else {
-            console.log("passwords don't match");
-        }
+        // } else {
+            // console.log("passwords don't match");
+        // }　なんかパスワードマッチがうまくいかないからコメントアウト
+        //多分だけどuseStateのレンダリングとパスワード更新のタイミングが違う
     };
 
     return (
