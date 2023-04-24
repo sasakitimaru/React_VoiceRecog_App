@@ -10,23 +10,17 @@ type NavigationProps = {IsAuthenticated: boolean};
 
 const Stack = createStackNavigator();
 const Navigation:React.FC<NavigationProps> = ({IsAuthenticated}) => {
+  console.log('IsAuthenticated: ',IsAuthenticated);
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false, gestureEnabled: false}}>
-      {IsAuthenticated ? (
-        // ログイン済みの場合
-        <>
-          <Stack.Screen name="Home" component={Home} />
-        </>
-      ) : (
-        // ログインしていない場合
-        <>
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="Verify" component={Verify} />
-          <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="Home" component={Home} />
-        </>
-      )}
+      <Stack.Navigator 
+        initialRouteName={IsAuthenticated ? 'Home' : 'SignUp'}
+        screenOptions={{headerShown: false, gestureEnabled: false}}
+      >
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Verify" component={Verify} />
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="Home" component={Home} /> 
       </Stack.Navigator>
     </NavigationContainer>
   );

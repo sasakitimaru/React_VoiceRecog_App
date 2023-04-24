@@ -2,6 +2,7 @@ import React,{ useState, useEffect } from 'react';
 import Navigation from './Navigation';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Auth } from 'aws-amplify';
+import { ActivityIndicator } from 'react-native';
 
 const requestMicrophonePermission = async () => {
   const microphoneStatus = await check(PERMISSIONS.IOS.MICROPHONE);
@@ -14,6 +15,8 @@ const requestMicrophonePermission = async () => {
 };
 const App = () => {
   const [IsAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+
   const checkUserAuthentication = async () => {
     try {
       const user = await Auth.currentAuthenticatedUser();
@@ -22,6 +25,8 @@ const App = () => {
       }
     } catch (e) {
       console.log(e);
+    }finally{
+      setLoading(false);
     }
   };
         
@@ -31,7 +36,7 @@ const App = () => {
   useEffect(() => {
     checkUserAuthentication();
   }, []);
-  return <Navigation IsAuthenticated={IsAuthenticated} />
+  return loading ? <ActivityIndicator size="large" /> : <Navigation IsAuthenticated={IsAuthenticated} />
 };
 
 export default App;

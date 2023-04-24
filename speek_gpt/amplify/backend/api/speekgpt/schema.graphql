@@ -9,8 +9,8 @@ type Conversation {
 }
 
 type ConversationEntry {
-  conversation: Conversation!
   id: ID!
+  conversation: Conversation!
 }
 
 type User @model{

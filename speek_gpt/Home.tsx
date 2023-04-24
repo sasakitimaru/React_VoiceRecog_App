@@ -4,16 +4,26 @@ import { UnderMenuBar } from './source';
 import AI_conversation from './source/AI_conversation';
 import History from './source/History';
 import Setting from './source/Setting';
+import ConversationList from './source/ConversationList';
+import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
   const [PageName, setPageName] = useState<String>('');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<AI_conversation />);
+  const [topic, setTopic] = useState<String>('');
+  const navigate = useNavigation();
+  useEffect(() => {
+    navigate.setOptions({
+      headerShown: true,
+      headerLeft: null,
+    });
+  }, []);
 
   useEffect(() => {
-    console.log('PageName: ',PageName)
+    console.log('current topic: ',topic)
     switch (PageName) {
       case 'Home':
-        setCurrentComponent(<AI_conversation />);
+        setCurrentComponent(<ConversationList setTopic={setTopic}/>);
         break;
       case 'History': 
         setCurrentComponent(<History />);
@@ -22,16 +32,21 @@ const Home = () => {
         setCurrentComponent(<Setting />);
         break;
       default:
-        setCurrentComponent(<AI_conversation />);
+        setCurrentComponent(<ConversationList setTopic={setTopic}/>);
     }
   }, [PageName]);
+  useEffect(() => {
+    if (topic !== '') setCurrentComponent(<AI_conversation />);
+    else setCurrentComponent(<ConversationList setTopic={setTopic}/>);
+  }, [topic]);
+
   return (
     <View style={styles.containerMain}>
       <View style={styles.contentView}>
         {currentComponent}
       </View>
       <View style={styles.bottomView}>
-        <UnderMenuBar setPageName={setPageName}></UnderMenuBar>
+        <UnderMenuBar setTopic={setTopic} setPageName={setPageName}></UnderMenuBar>
       </View>
     </View>
   );
@@ -48,11 +63,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '80%',
-    paddingBottom: '16%',
+    paddingBottom: '20%',
   },
   bottomView: {
     width: '100%',
-    height: '8%',
+    height: '10%',
     backgroundColor: '#DCDCDC',
     borderTopColor: 'black',
     borderTopWidth: 0.5,

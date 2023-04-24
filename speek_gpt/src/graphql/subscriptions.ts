@@ -9,12 +9,12 @@ export const onCreateUser = /* GraphQL */ `
       name
       email
       conversations {
+        id
         conversation {
           isUser
           message
           timestamp
         }
-        id
       }
       createdAt
       updatedAt
@@ -28,12 +28,12 @@ export const onUpdateUser = /* GraphQL */ `
       name
       email
       conversations {
+        id
         conversation {
           isUser
           message
           timestamp
         }
-        id
       }
       createdAt
       updatedAt
@@ -47,12 +47,12 @@ export const onDeleteUser = /* GraphQL */ `
       name
       email
       conversations {
+        id
         conversation {
           isUser
           message
           timestamp
         }
-        id
       }
       createdAt
       updatedAt

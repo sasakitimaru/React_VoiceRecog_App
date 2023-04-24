@@ -9,12 +9,12 @@ export const getUser = /* GraphQL */ `
       name
       email
       conversations {
+        id
         conversation {
           isUser
           message
           timestamp
         }
-        id
       }
       createdAt
       updatedAt

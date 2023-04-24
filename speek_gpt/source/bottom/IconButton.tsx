@@ -5,14 +5,16 @@ import { useNavigation } from '@react-navigation/native';
 //ボトムメニューのアイコンボタン
 
 type IconButtonProps = {
+    setTopic: (topic: String) => void;
     setPageName: (PageName: String) => void;
     Pagetarget: String,
     children: JSX.Element
 };
 
-const IconButton: React.FC<IconButtonProps> = ({setPageName,Pagetarget,children}) => {
+const IconButton: React.FC<IconButtonProps> = ({setTopic,setPageName,Pagetarget,children}) => {
     const navigation = useNavigation();
     const moveTodesignatedPage = () => {
+        setTopic('');
         setPageName(Pagetarget);
     };
     return(

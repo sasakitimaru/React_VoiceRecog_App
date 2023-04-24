@@ -15,6 +15,8 @@ type ChatListProps = {
 const ChatList = ({ messages }: ChatListProps) => {
     const flatListRef = useRef(null);
     useEffect(() => {
+        Tts.addEventListener('tts-start', (event) => {
+        });
         Tts.setDefaultLanguage('en-US');
         console.log('messages: ', messages);
         if (messages.length >0 && !messages[messages.length - 1].isUser){
@@ -22,7 +24,7 @@ const ChatList = ({ messages }: ChatListProps) => {
         }
         return () => {
             Tts.stop();
-            Tts.speak('');
+            Tts.removeAllListeners('tts-finish');
         }
     }, [messages]);
     return (

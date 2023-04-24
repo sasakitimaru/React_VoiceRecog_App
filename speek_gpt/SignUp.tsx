@@ -26,7 +26,7 @@ const SignUp = () => {
         <Picker.Item label="SignUp" value="SignUp" />
         <Picker.Item label="SignIn" value="SignIn" />
         <Picker.Item label="Verify" value="Verify" />
-        <Picker.Item label="AI_conversation" value="AI_conversation" />
+        <Picker.Item label="Home" value="Home" />
       </Picker>
       <TouchableOpacity style={styles.input} onPress={() => moveTodesignatedPage(desiredPageName)}>
         <Text style={styles.submitText}>For debug: Move to designated page</Text>

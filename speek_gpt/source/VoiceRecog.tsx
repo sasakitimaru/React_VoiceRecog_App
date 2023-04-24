@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, TextInput, DeviceEventEmitter } from 'react-native';
 import Voice from '@react-native-voice/voice';
 import GenerateResponse from './GenerateResponse';
 import { useNavigation } from '@react-navigation/native';
@@ -9,8 +9,6 @@ type TextInputAreaProps = {
 };
 
 const VoiceRecog = ({ setMessages }: TextInputAreaProps) => {
-  const navigation = useNavigation();
-  navigation.setOptions({ headerShown: true });
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [recognigedText, setRecognigedText] = useState<string>('');
@@ -18,7 +16,6 @@ const VoiceRecog = ({ setMessages }: TextInputAreaProps) => {
     Voice.onSpeechResults = async (e) => {
       setRecognigedText(e.value[0]);
     };
-
     return () => {
       Voice.destroy().then(Voice.removeAllListeners);
     };

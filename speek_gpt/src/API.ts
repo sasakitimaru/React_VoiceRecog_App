@@ -78,8 +78,8 @@ export type User = {
 
 export type ConversationEntry = {
   __typename: "ConversationEntry",
-  conversation: Conversation,
   id: string,
+  conversation: Conversation,
 };
 
 export type Conversation = {
@@ -180,13 +180,13 @@ export type CreateUserMutation = {
     email: string,
     conversations:  Array< {
       __typename: "ConversationEntry",
+      id: string,
       conversation:  {
         __typename: "Conversation",
         isUser: boolean,
         message: string,
         timestamp: string,
       },
-      id: string,
     } | null >,
     createdAt: string,
     updatedAt: string,
@@ -206,13 +206,13 @@ export type UpdateUserMutation = {
     email: string,
     conversations:  Array< {
       __typename: "ConversationEntry",
+      id: string,
       conversation:  {
         __typename: "Conversation",
         isUser: boolean,
         message: string,
         timestamp: string,
       },
-      id: string,
     } | null >,
     createdAt: string,
     updatedAt: string,
@@ -232,13 +232,13 @@ export type DeleteUserMutation = {
     email: string,
     conversations:  Array< {
       __typename: "ConversationEntry",
+      id: string,
       conversation:  {
         __typename: "Conversation",
         isUser: boolean,
         message: string,
         timestamp: string,
       },
-      id: string,
     } | null >,
     createdAt: string,
     updatedAt: string,
@@ -257,13 +257,13 @@ export type GetUserQuery = {
     email: string,
     conversations:  Array< {
       __typename: "ConversationEntry",
+      id: string,
       conversation:  {
         __typename: "Conversation",
         isUser: boolean,
         message: string,
         timestamp: string,
       },
-      id: string,
     } | null >,
     createdAt: string,
     updatedAt: string,
@@ -307,13 +307,13 @@ export type OnCreateUserSubscription = {
     email: string,
     conversations:  Array< {
       __typename: "ConversationEntry",
+      id: string,
       conversation:  {
         __typename: "Conversation",
         isUser: boolean,
         message: string,
         timestamp: string,
       },
-      id: string,
     } | null >,
     createdAt: string,
     updatedAt: string,
@@ -332,13 +332,13 @@ export type OnUpdateUserSubscription = {
     email: string,
     conversations:  Array< {
       __typename: "ConversationEntry",
+      id: string,
       conversation:  {
         __typename: "Conversation",
         isUser: boolean,
         message: string,
         timestamp: string,
       },
-      id: string,
     } | null >,
     createdAt: string,
     updatedAt: string,
@@ -357,13 +357,13 @@ export type OnDeleteUserSubscription = {
     email: string,
     conversations:  Array< {
       __typename: "ConversationEntry",
+      id: string,
       conversation:  {
         __typename: "Conversation",
         isUser: boolean,
         message: string,
         timestamp: string,
       },
-      id: string,
     } | null >,
     createdAt: string,
     updatedAt: string,
