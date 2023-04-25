@@ -9,8 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 
 const Home = () => {
   const [PageName, setPageName] = useState<String>('');
-  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<AI_conversation />);
   const [topic, setTopic] = useState<String>('');
+  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<AI_conversation setTopic={setTopic}/>);
   const navigate = useNavigation();
   useEffect(() => {
     navigate.setOptions({
@@ -23,7 +23,8 @@ const Home = () => {
     console.log('current topic: ',topic)
     switch (PageName) {
       case 'Home':
-        setCurrentComponent(<ConversationList setTopic={setTopic}/>);
+        if (topic !== '') setCurrentComponent(<AI_conversation setTopic={setTopic}/>);
+        else setCurrentComponent(<ConversationList setTopic={setTopic}/>);
         break;
       case 'History': 
         setCurrentComponent(<History />);
@@ -36,7 +37,7 @@ const Home = () => {
     }
   }, [PageName]);
   useEffect(() => {
-    if (topic !== '') setCurrentComponent(<AI_conversation />);
+    if (topic !== '') setCurrentComponent(<AI_conversation setTopic={setTopic}/>);
     else setCurrentComponent(<ConversationList setTopic={setTopic}/>);
   }, [topic]);
 

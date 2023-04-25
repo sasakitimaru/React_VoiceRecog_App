@@ -14,7 +14,7 @@ type IconButtonProps = {
 const IconButton: React.FC<IconButtonProps> = ({setTopic,setPageName,Pagetarget,children}) => {
     const navigation = useNavigation();
     const moveTodesignatedPage = () => {
-        setTopic('');
+        // setTopic('');
         setPageName(Pagetarget);
     };
     return(

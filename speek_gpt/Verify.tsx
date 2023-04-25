@@ -12,7 +12,7 @@ const Verify = (props) => {
         try {
             await Auth.confirmSignUp(username, code);
             console.log("Code confirmed successfully.");
-            navigation.navigate('Home');
+            navigation.navigate('SignIn');
         } catch (error) {
             console.log("Error confirming the code: ", error);
         }
