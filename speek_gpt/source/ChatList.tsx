@@ -2,6 +2,7 @@ import React,{ useRef,useEffect } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import ChatBubble from './ChatBubble';
 import Tts from 'react-native-tts';
+import sendMessage from './History/index';
 
 type MessageType = {
     isUser: boolean;
@@ -18,7 +19,8 @@ const ChatList = ({ messages }: ChatListProps) => {
         Tts.addEventListener('tts-start', (event) => {
         });
         Tts.setDefaultLanguage('en-US');
-        console.log('messages: ', messages);
+        sendMessage('1', messages[messages.length - 1]);
+        // console.log('messages_debugging: ', messages[messages.length - 1]);
         if (messages.length >0 && !messages[messages.length - 1].isUser){
             Tts.speak(messages[messages.length - 1].text);
         }

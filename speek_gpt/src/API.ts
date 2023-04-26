@@ -4,15 +4,19 @@
 
 export type CreateUserInput = {
   id: string,
+  name: string,
+  email: string,
   conversations?: Array< ConversationEntryInput | null > | null,
 };
 
 export type ConversationEntryInput = {
-  conversation: ConversationInput,
+  sectionID: string,
   timestamp: string,
+  conversation: ConversationInput,
 };
 
 export type ConversationInput = {
+  messageID: string,
   isUser: boolean,
   message: string,
   timestamp: string,
@@ -21,6 +25,8 @@ export type ConversationInput = {
 export type ModelUserConditionInput = {
   name?: ModelStringInput | null,
   email?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -71,26 +77,30 @@ export type User = {
   id: string,
   name: string,
   email: string,
-  conversations:  Array<ConversationEntry | null >,
-  createdAt: string,
-  updatedAt: string,
+  conversations?:  Array<ConversationEntry | null > | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
 };
 
 export type ConversationEntry = {
   __typename: "ConversationEntry",
-  id: string,
+  sectionID: string,
+  timestamp: string,
   conversation: Conversation,
 };
 
 export type Conversation = {
   __typename: "Conversation",
-  isUser: boolean,
-  message: string,
-  timestamp: string,
+  messageID: string,
+  isUser?: boolean | null,
+  message?: string | null,
+  timestamp?: string | null,
 };
 
 export type UpdateUserInput = {
   id: string,
+  name?: string | null,
+  email?: string | null,
   conversations?: Array< ConversationEntryInput | null > | null,
 };
 
@@ -102,6 +112,8 @@ export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   email?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
@@ -133,6 +145,8 @@ export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   email?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
 };
@@ -178,18 +192,20 @@ export type CreateUserMutation = {
     id: string,
     name: string,
     email: string,
-    conversations:  Array< {
+    conversations?:  Array< {
       __typename: "ConversationEntry",
-      id: string,
+      sectionID: string,
+      timestamp: string,
       conversation:  {
         __typename: "Conversation",
-        isUser: boolean,
-        message: string,
-        timestamp: string,
+        messageID: string,
+        isUser?: boolean | null,
+        message?: string | null,
+        timestamp?: string | null,
       },
-    } | null >,
-    createdAt: string,
-    updatedAt: string,
+    } | null > | null,
+    createdAt?: string | null,
+    updatedAt?: string | null,
   } | null,
 };
 
@@ -204,18 +220,20 @@ export type UpdateUserMutation = {
     id: string,
     name: string,
     email: string,
-    conversations:  Array< {
+    conversations?:  Array< {
       __typename: "ConversationEntry",
-      id: string,
+      sectionID: string,
+      timestamp: string,
       conversation:  {
         __typename: "Conversation",
-        isUser: boolean,
-        message: string,
-        timestamp: string,
+        messageID: string,
+        isUser?: boolean | null,
+        message?: string | null,
+        timestamp?: string | null,
       },
-    } | null >,
-    createdAt: string,
-    updatedAt: string,
+    } | null > | null,
+    createdAt?: string | null,
+    updatedAt?: string | null,
   } | null,
 };
 
@@ -230,18 +248,20 @@ export type DeleteUserMutation = {
     id: string,
     name: string,
     email: string,
-    conversations:  Array< {
+    conversations?:  Array< {
       __typename: "ConversationEntry",
-      id: string,
+      sectionID: string,
+      timestamp: string,
       conversation:  {
         __typename: "Conversation",
-        isUser: boolean,
-        message: string,
-        timestamp: string,
+        messageID: string,
+        isUser?: boolean | null,
+        message?: string | null,
+        timestamp?: string | null,
       },
-    } | null >,
-    createdAt: string,
-    updatedAt: string,
+    } | null > | null,
+    createdAt?: string | null,
+    updatedAt?: string | null,
   } | null,
 };
 
@@ -255,18 +275,20 @@ export type GetUserQuery = {
     id: string,
     name: string,
     email: string,
-    conversations:  Array< {
+    conversations?:  Array< {
       __typename: "ConversationEntry",
-      id: string,
+      sectionID: string,
+      timestamp: string,
       conversation:  {
         __typename: "Conversation",
-        isUser: boolean,
-        message: string,
-        timestamp: string,
+        messageID: string,
+        isUser?: boolean | null,
+        message?: string | null,
+        timestamp?: string | null,
       },
-    } | null >,
-    createdAt: string,
-    updatedAt: string,
+    } | null > | null,
+    createdAt?: string | null,
+    updatedAt?: string | null,
   } | null,
 };
 
@@ -284,12 +306,13 @@ export type ListUsersQuery = {
       id: string,
       name: string,
       email: string,
-      conversations:  Array< {
+      conversations?:  Array< {
         __typename: "ConversationEntry",
-        id: string,
-      } | null >,
-      createdAt: string,
-      updatedAt: string,
+        sectionID: string,
+        timestamp: string,
+      } | null > | null,
+      createdAt?: string | null,
+      updatedAt?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -305,18 +328,20 @@ export type OnCreateUserSubscription = {
     id: string,
     name: string,
     email: string,
-    conversations:  Array< {
+    conversations?:  Array< {
       __typename: "ConversationEntry",
-      id: string,
+      sectionID: string,
+      timestamp: string,
       conversation:  {
         __typename: "Conversation",
-        isUser: boolean,
-        message: string,
-        timestamp: string,
+        messageID: string,
+        isUser?: boolean | null,
+        message?: string | null,
+        timestamp?: string | null,
       },
-    } | null >,
-    createdAt: string,
-    updatedAt: string,
+    } | null > | null,
+    createdAt?: string | null,
+    updatedAt?: string | null,
   } | null,
 };
 
@@ -330,18 +355,20 @@ export type OnUpdateUserSubscription = {
     id: string,
     name: string,
     email: string,
-    conversations:  Array< {
+    conversations?:  Array< {
       __typename: "ConversationEntry",
-      id: string,
+      sectionID: string,
+      timestamp: string,
       conversation:  {
         __typename: "Conversation",
-        isUser: boolean,
-        message: string,
-        timestamp: string,
+        messageID: string,
+        isUser?: boolean | null,
+        message?: string | null,
+        timestamp?: string | null,
       },
-    } | null >,
-    createdAt: string,
-    updatedAt: string,
+    } | null > | null,
+    createdAt?: string | null,
+    updatedAt?: string | null,
   } | null,
 };
 
@@ -355,17 +382,19 @@ export type OnDeleteUserSubscription = {
     id: string,
     name: string,
     email: string,
-    conversations:  Array< {
+    conversations?:  Array< {
       __typename: "ConversationEntry",
-      id: string,
+      sectionID: string,
+      timestamp: string,
       conversation:  {
         __typename: "Conversation",
-        isUser: boolean,
-        message: string,
-        timestamp: string,
+        messageID: string,
+        isUser?: boolean | null,
+        message?: string | null,
+        timestamp?: string | null,
       },
-    } | null >,
-    createdAt: string,
-    updatedAt: string,
+    } | null > | null,
+    createdAt?: string | null,
+    updatedAt?: string | null,
   } | null,
 };

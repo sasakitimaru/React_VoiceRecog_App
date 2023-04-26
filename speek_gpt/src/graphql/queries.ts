@@ -9,8 +9,10 @@ export const getUser = /* GraphQL */ `
       name
       email
       conversations {
-        id
+        sectionID
+        timestamp
         conversation {
+          messageID
           isUser
           message
           timestamp
@@ -33,7 +35,8 @@ export const listUsers = /* GraphQL */ `
         name
         email
         conversations {
-          id
+          sectionID
+          timestamp
         }
         createdAt
         updatedAt

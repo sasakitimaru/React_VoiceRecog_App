@@ -4,8 +4,9 @@
 import 'react-native-get-random-values';
 import {AppRegistry} from 'react-native';
 import App from './App';
-import aws_exports from './src/aws-exports';
 import {name as appName} from './app.json';
+import { Amplify } from 'aws-amplify';
+import awsmobile from './src/aws-exports';
 
-aws_exports();
+Amplify.configure(awsmobile);
 AppRegistry.registerComponent(appName, () => App);
