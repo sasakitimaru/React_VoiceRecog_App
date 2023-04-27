@@ -3,23 +3,23 @@
 //  This file was automatically generated and should not be edited.
 
 export type CreateUserInput = {
-  id: string,
-  name: string,
-  email: string,
+  id?: string | null,
+  name?: string | null,
+  email?: string | null,
   conversations?: Array< ConversationEntryInput | null > | null,
 };
 
 export type ConversationEntryInput = {
-  sectionID: string,
-  timestamp: string,
-  conversation: ConversationInput,
+  sectionID?: string | null,
+  timestamp?: string | null,
+  conversation?: Array< ConversationInput | null > | null,
 };
 
 export type ConversationInput = {
-  messageID: string,
-  isUser: boolean,
-  message: string,
-  timestamp: string,
+  messageID?: string | null,
+  isUser?: boolean | null,
+  message?: string | null,
+  timestamp?: string | null,
 };
 
 export type ModelUserConditionInput = {
@@ -74,9 +74,9 @@ export type ModelSizeInput = {
 
 export type User = {
   __typename: "User",
-  id: string,
-  name: string,
-  email: string,
+  id?: string | null,
+  name?: string | null,
+  email?: string | null,
   conversations?:  Array<ConversationEntry | null > | null,
   createdAt?: string | null,
   updatedAt?: string | null,
@@ -84,21 +84,21 @@ export type User = {
 
 export type ConversationEntry = {
   __typename: "ConversationEntry",
-  sectionID: string,
-  timestamp: string,
-  conversation: Conversation,
+  sectionID?: string | null,
+  timestamp?: string | null,
+  conversation?:  Array<Conversation | null > | null,
 };
 
 export type Conversation = {
   __typename: "Conversation",
-  messageID: string,
+  messageID?: string | null,
   isUser?: boolean | null,
   message?: string | null,
   timestamp?: string | null,
 };
 
 export type UpdateUserInput = {
-  id: string,
+  id?: string | null,
   name?: string | null,
   email?: string | null,
   conversations?: Array< ConversationEntryInput | null > | null,
@@ -189,20 +189,20 @@ export type CreateUserMutationVariables = {
 export type CreateUserMutation = {
   createUser?:  {
     __typename: "User",
-    id: string,
-    name: string,
-    email: string,
+    id?: string | null,
+    name?: string | null,
+    email?: string | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
-      sectionID: string,
-      timestamp: string,
-      conversation:  {
+      sectionID?: string | null,
+      timestamp?: string | null,
+      conversation?:  Array< {
         __typename: "Conversation",
-        messageID: string,
+        messageID?: string | null,
         isUser?: boolean | null,
         message?: string | null,
         timestamp?: string | null,
-      },
+      } | null > | null,
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -217,20 +217,20 @@ export type UpdateUserMutationVariables = {
 export type UpdateUserMutation = {
   updateUser?:  {
     __typename: "User",
-    id: string,
-    name: string,
-    email: string,
+    id?: string | null,
+    name?: string | null,
+    email?: string | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
-      sectionID: string,
-      timestamp: string,
-      conversation:  {
+      sectionID?: string | null,
+      timestamp?: string | null,
+      conversation?:  Array< {
         __typename: "Conversation",
-        messageID: string,
+        messageID?: string | null,
         isUser?: boolean | null,
         message?: string | null,
         timestamp?: string | null,
-      },
+      } | null > | null,
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -245,20 +245,20 @@ export type DeleteUserMutationVariables = {
 export type DeleteUserMutation = {
   deleteUser?:  {
     __typename: "User",
-    id: string,
-    name: string,
-    email: string,
+    id?: string | null,
+    name?: string | null,
+    email?: string | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
-      sectionID: string,
-      timestamp: string,
-      conversation:  {
+      sectionID?: string | null,
+      timestamp?: string | null,
+      conversation?:  Array< {
         __typename: "Conversation",
-        messageID: string,
+        messageID?: string | null,
         isUser?: boolean | null,
         message?: string | null,
         timestamp?: string | null,
-      },
+      } | null > | null,
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -272,20 +272,20 @@ export type GetUserQueryVariables = {
 export type GetUserQuery = {
   getUser?:  {
     __typename: "User",
-    id: string,
-    name: string,
-    email: string,
+    id?: string | null,
+    name?: string | null,
+    email?: string | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
-      sectionID: string,
-      timestamp: string,
-      conversation:  {
+      sectionID?: string | null,
+      timestamp?: string | null,
+      conversation?:  Array< {
         __typename: "Conversation",
-        messageID: string,
+        messageID?: string | null,
         isUser?: boolean | null,
         message?: string | null,
         timestamp?: string | null,
-      },
+      } | null > | null,
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -303,13 +303,13 @@ export type ListUsersQuery = {
     __typename: "ModelUserConnection",
     items:  Array< {
       __typename: "User",
-      id: string,
-      name: string,
-      email: string,
+      id?: string | null,
+      name?: string | null,
+      email?: string | null,
       conversations?:  Array< {
         __typename: "ConversationEntry",
-        sectionID: string,
-        timestamp: string,
+        sectionID?: string | null,
+        timestamp?: string | null,
       } | null > | null,
       createdAt?: string | null,
       updatedAt?: string | null,
@@ -325,20 +325,20 @@ export type OnCreateUserSubscriptionVariables = {
 export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
-    id: string,
-    name: string,
-    email: string,
+    id?: string | null,
+    name?: string | null,
+    email?: string | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
-      sectionID: string,
-      timestamp: string,
-      conversation:  {
+      sectionID?: string | null,
+      timestamp?: string | null,
+      conversation?:  Array< {
         __typename: "Conversation",
-        messageID: string,
+        messageID?: string | null,
         isUser?: boolean | null,
         message?: string | null,
         timestamp?: string | null,
-      },
+      } | null > | null,
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -352,20 +352,20 @@ export type OnUpdateUserSubscriptionVariables = {
 export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
-    id: string,
-    name: string,
-    email: string,
+    id?: string | null,
+    name?: string | null,
+    email?: string | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
-      sectionID: string,
-      timestamp: string,
-      conversation:  {
+      sectionID?: string | null,
+      timestamp?: string | null,
+      conversation?:  Array< {
         __typename: "Conversation",
-        messageID: string,
+        messageID?: string | null,
         isUser?: boolean | null,
         message?: string | null,
         timestamp?: string | null,
-      },
+      } | null > | null,
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
@@ -379,20 +379,20 @@ export type OnDeleteUserSubscriptionVariables = {
 export type OnDeleteUserSubscription = {
   onDeleteUser?:  {
     __typename: "User",
-    id: string,
-    name: string,
-    email: string,
+    id?: string | null,
+    name?: string | null,
+    email?: string | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
-      sectionID: string,
-      timestamp: string,
-      conversation:  {
+      sectionID?: string | null,
+      timestamp?: string | null,
+      conversation?:  Array< {
         __typename: "Conversation",
-        messageID: string,
+        messageID?: string | null,
         isUser?: boolean | null,
         message?: string | null,
         timestamp?: string | null,
-      },
+      } | null > | null,
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,

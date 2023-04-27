@@ -3,49 +3,49 @@
 input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 type Conversation {
-  messageID: ID!
+  messageID: ID
   isUser: Boolean
   message: String
   timestamp: String
 }
 
 type ConversationEntry {
-  sectionID: ID!
-  timestamp: String!
-  conversation: Conversation!
+  sectionID: ID
+  timestamp: String
+  conversation: [Conversation]
 }
 
 type User @model{
-  id: ID!
-  name: String!
-  email: String!
+  id: ID
+  name: String
+  email: String
   conversations: [ConversationEntry]
   createdAt: String
   updatedAt: String
 }
 
 input ConversationInput {
-  messageID: ID!
-  isUser: Boolean!
-  message: String!
-  timestamp: String!
+  messageID: ID
+  isUser: Boolean
+  message: String
+  timestamp: String
 }
 
 input ConversationEntryInput {
-  sectionID: ID!
-  timestamp: String!
-  conversation: ConversationInput!
+  sectionID: ID
+  timestamp: String
+  conversation: [ConversationInput]
 }
 
 input CreateUserInput {
-  id: ID!
-  name: String!
-  email: String!
+  id: ID
+  name: String
+  email: String
   conversations: [ConversationEntryInput]
 }
 
 input UpdateUserInput {
-  id: ID!
+  id: ID
   name: String
   email: String
   conversations: [ConversationEntryInput]

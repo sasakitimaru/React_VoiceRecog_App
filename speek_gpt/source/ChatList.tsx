@@ -19,8 +19,8 @@ const ChatList = ({ messages }: ChatListProps) => {
         Tts.addEventListener('tts-start', (event) => {
         });
         Tts.setDefaultLanguage('en-US');
-        sendMessage('1', messages[messages.length - 1]);
-        // console.log('messages_debugging: ', messages[messages.length - 1]);
+        if (messages[messages.length - 1]) sendMessage(3, messages[messages.length - 1])
+        // console.log('messages_debugging: ', messages);
         if (messages.length >0 && !messages[messages.length - 1].isUser){
             Tts.speak(messages[messages.length - 1].text);
         }

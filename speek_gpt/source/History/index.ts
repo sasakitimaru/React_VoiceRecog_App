@@ -1,54 +1,86 @@
 import {API, graphqlOperation, Auth} from 'aws-amplify';
 import {updateUser} from '../../src/graphql/mutations';
-import {getUser} from '../../src/graphql/queries';
 import UUID from 'react-native-uuid';
+import fetchUser from './FetchUser';
 
 type Message = {
     isUser: boolean;
     text: string;
 }
-const fetchUser = async (userId) => {
-    try {
-      const response = await API.graphql(graphqlOperation(getUser, {id: userId}));
-      return response.data.getUser;
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-};
 
-const sendMessage = async (id: string, message: Message) => {
-    const user = await Auth.currentAuthenticatedUser();
-    const userId = user.attributes.sub;
+const sendMessage = async (_id: number, message: Message) => {
     const newuuid = UUID.v4();
-    const currentUser = await fetchUser(userId);
+    const currentUser = await fetchUser();
+    const userId = currentUser.id;
+    const currentUserChecked = (currentUser.conversations || [])
+  
     if (!currentUser) {
-        console.error(`Could not find user with id: ${userId}`);
-        return;
+      console.error(`Could not find user with id: ${userId}`);
+      return;
     }
-    console.log('currentUser:',currentUser)
+  
+    const existingConversationEntryIndex = currentUserChecked.findIndex(
+      (entry) =>{ 
+        console.log('entry.sectionID:', entry.sectionID);
+        console.log('_id:', _id)
+        return entry.sectionID == _id 
+    }
+    );
+  
+    let updatedConversations;
+    console.log('currentUser:', currentUser);
+    console.log('existingConversationEntryIndex:', existingConversationEntryIndex);
+    console.log('updatedConversations:', updatedConversations);
+    
+    if (existingConversationEntryIndex !== -1) {
+      // Update existing ConversationEntry
+      updatedConversations = [...currentUserChecked];
+      updatedConversations[existingConversationEntryIndex] = {
+        ...updatedConversations[existingConversationEntryIndex],
+        timestamp: new Date().toISOString(),
+        conversation: [
+          ...updatedConversations[existingConversationEntryIndex].conversation,
+          {
+            messageID: newuuid,
+            isUser: message.isUser,
+            message: message.text,
+            timestamp: new Date().toISOString(),
+          },
+        ],
+      };
+    } else {
+      // Add new ConversationEntry
+      updatedConversations = [
+        ...currentUserChecked,
+        {
+          sectionID: _id,
+          timestamp: new Date().toISOString(),
+          conversation: [
+            {
+              messageID: newuuid,
+              isUser: message.isUser,
+              message: message.text,
+              timestamp: new Date().toISOString(),
+            },
+          ],
+        },
+      ];
+    }
+  
     try {
-        const messageData = {
-            id: userId,
-            conversations: [
-                ...(currentUser.conversations || []),
-                {
-                    sectionID: id,
-                    timestamp: new Date().toISOString(),
-                    conversation: {
-                        messageID: newuuid,
-                        isUser: message.isUser,
-                        message: message.text,
-                        timestamp: new Date().toISOString(),
-                    },
-                },
-            ],
-        };
-        // console.log('messageData:',messageData)
-        console.log('debugging:', message.text)
-        console.log('messageobject:',messageData.conversations[0].conversation)
-        await API.graphql(graphqlOperation(updateUser, { input: messageData }));
+      const messageData = {
+        id: userId,
+        conversations: updatedConversations,
+      };
+  
+      await API.graphql(
+        graphqlOperation(updateUser, {
+          input: messageData,
+        })
+      );
     } catch (error) {
-        console.error('Error saving message:', error);
+      console.error('Error saving message:', error);
     }
-};
-export default sendMessage;
+  };
+  export default sendMessage;
+  
