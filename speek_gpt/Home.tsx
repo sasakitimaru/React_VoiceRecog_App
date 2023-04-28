@@ -7,7 +7,7 @@ import Setting from './source/Setting';
 import ConversationList from './source/ConversationList';
 import { useNavigation } from '@react-navigation/native';
 
-const Home = () => {
+const Home:React.FC = () => {
   const [PageName, setPageName] = useState<String>('');
   const [topic, setTopic] = useState<String>('');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<AI_conversation setTopic={setTopic}/>);

@@ -3,6 +3,8 @@ import { FlatList, StyleSheet } from 'react-native';
 import ChatBubble from './ChatBubble';
 import Tts from 'react-native-tts';
 import sendMessage from './History/index';
+import fetchLastSectionID from './History/GetLastSectionID';
+import { Auth } from 'aws-amplify';
 
 type MessageType = {
     isUser: boolean;
@@ -13,13 +15,28 @@ type ChatListProps = {
     messages: MessageType[];
 };
 
-const ChatList = ({ messages }: ChatListProps) => {
+const ChatList:React.FC<ChatListProps> = ({ messages }) => {
     const flatListRef = useRef(null);
+    var LastSectionID:string = '';
+    useEffect(() => {
+        const getlastsectionID = async () => {
+            const currentUser = await Auth.currentAuthenticatedUser();
+            if(!currentUser){
+                console.error("User not found:", currentUser.id);
+            }
+            LastSectionID = await fetchLastSectionID(currentUser.attributes.sub);
+            if(!LastSectionID){
+                console.error("LastSectionID not found:", LastSectionID);
+            }
+        }
+        getlastsectionID();
+    }, []);
     useEffect(() => {
         Tts.addEventListener('tts-start', (event) => {
         });
         Tts.setDefaultLanguage('en-US');
-        if (messages[messages.length - 1]) sendMessage(3, messages[messages.length - 1])
+        console.log('lastsection:', LastSectionID)
+        if (messages[messages.length - 1]) sendMessage(LastSectionID, messages[messages.length - 1])
         // console.log('messages_debugging: ', messages);
         if (messages.length >0 && !messages[messages.length - 1].isUser){
             Tts.speak(messages[messages.length - 1].text);

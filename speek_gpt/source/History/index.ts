@@ -1,4 +1,4 @@
-import {API, graphqlOperation, Auth} from 'aws-amplify';
+import {API, graphqlOperation} from 'aws-amplify';
 import {updateUser} from '../../src/graphql/mutations';
 import UUID from 'react-native-uuid';
 import fetchUser from './FetchUser';
@@ -8,7 +8,7 @@ type Message = {
     text: string;
 }
 
-const sendMessage = async (_id: number, message: Message) => {
+const sendMessage = async (_id: string, message: Message) => {
     const newuuid = UUID.v4();
     const currentUser = await fetchUser();
     const userId = currentUser.id;
@@ -28,9 +28,9 @@ const sendMessage = async (_id: number, message: Message) => {
     );
   
     let updatedConversations;
-    console.log('currentUser:', currentUser);
-    console.log('existingConversationEntryIndex:', existingConversationEntryIndex);
-    console.log('updatedConversations:', updatedConversations);
+    // console.log('currentUser:', currentUser);
+    // console.log('existingConversationEntryIndex:', existingConversationEntryIndex);
+    // console.log('updatedConversations:', updatedConversations);
     
     if (existingConversationEntryIndex !== -1) {
       // Update existing ConversationEntry

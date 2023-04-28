@@ -40,7 +40,7 @@ const AI_conversation:React.FC<AI_conversationProps> = ({setTopic}) => {
       ),
     });
   }, [headerLeftToggle]);
-
+  console.log('messages: ',messages)
   return (
     <SafeAreaView style={styles.container}>
       <ChatList messages={messages} />

@@ -23,6 +23,16 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
+export const getUserSectionID = /* GraphQL */ `
+query GetUser($id: ID!) {
+  getUser(id: $id) {
+    conversations {
+      sectionID
+    }
+  }
+}
+`;
+
 export const listUsers = /* GraphQL */ `
   query ListUsers(
     $filter: ModelUserFilterInput

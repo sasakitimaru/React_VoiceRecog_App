@@ -5,6 +5,9 @@ import SignUp from './SignUp';
 import Verify from './Verify';
 import SignIn from './SignIn';
 import Home from './Home';
+import ChatHistory from './source/History/ChatHistory';
+
+
 
 type NavigationProps = {IsAuthenticated: boolean};
 
@@ -21,6 +24,7 @@ const Navigation:React.FC<NavigationProps> = ({IsAuthenticated}) => {
         <Stack.Screen name="Verify" component={Verify} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Home" component={Home} /> 
+        <Stack.Screen name="ChatHistory" component={ChatHistory} />
       </Stack.Navigator>
     </NavigationContainer>
   );
