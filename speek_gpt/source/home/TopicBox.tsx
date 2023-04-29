@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { useNavigation } from '@react-navigation/native';
+
 
 type TopicBoxProps = {
     tmpTopic: String;
     setTopic: (topic: String) => void;
 };
 const TopicBox:React.FC<TopicBoxProps> = ({tmpTopic,setTopic}) => {
+    const navigate = useNavigation();
     const handlePress = () => {
-        setTopic(tmpTopic);
-        console.log('tmpTopic: ',tmpTopic);
+      navigate.navigate('AI_conversation')
+      console.log('tmpTopic: ',tmpTopic);
     };
     const colors = [
         '#8EF1FF',

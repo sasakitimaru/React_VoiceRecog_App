@@ -21,9 +21,9 @@ const ChatHistory:React.FC<ChatHistoryProps> = (props) => {
             headerLeft: () => (
                 <Button
                     onPress={() => navigate.navigate('Home')}
-                    title="戻る"
+                    title="Back"
                     color="#000"
-              />
+                />
             ),      
         });
     }, []);

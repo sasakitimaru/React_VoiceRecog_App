@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 const Home:React.FC = () => {
   const [PageName, setPageName] = useState<String>('');
   const [topic, setTopic] = useState<String>('');
-  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<AI_conversation setTopic={setTopic}/>);
+  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList setTopic={setTopic}/>);
   const navigate = useNavigation();
   useEffect(() => {
     navigate.setOptions({
@@ -23,8 +23,7 @@ const Home:React.FC = () => {
     console.log('current topic: ',topic)
     switch (PageName) {
       case 'Home':
-        if (topic !== '') setCurrentComponent(<AI_conversation setTopic={setTopic}/>);
-        else setCurrentComponent(<ConversationList setTopic={setTopic}/>);
+        setCurrentComponent(<ConversationList setTopic={setTopic}/>);
         break;
       case 'History': 
         setCurrentComponent(<History />);
@@ -36,10 +35,6 @@ const Home:React.FC = () => {
         setCurrentComponent(<ConversationList setTopic={setTopic}/>);
     }
   }, [PageName]);
-  useEffect(() => {
-    if (topic !== '') setCurrentComponent(<AI_conversation setTopic={setTopic}/>);
-    else setCurrentComponent(<ConversationList setTopic={setTopic}/>);
-  }, [topic]);
 
   return (
     <View style={styles.containerMain}>
@@ -64,14 +59,14 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '80%',
-    paddingBottom: '20%',
+    paddingBottom: '18%',
   },
   bottomView: {
     width: '100%',
     height: '10%',
     backgroundColor: '#DCDCDC',
     borderTopColor: 'black',
-    borderTopWidth: 0.5,
+    borderTopWidth: 1.0,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute', 

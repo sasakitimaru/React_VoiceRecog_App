@@ -6,6 +6,7 @@ import Verify from './Verify';
 import SignIn from './SignIn';
 import Home from './Home';
 import ChatHistory from './source/History/ChatHistory';
+import AI_conversation from './source/AI_conversation';
 
 
 
@@ -24,6 +25,7 @@ const Navigation:React.FC<NavigationProps> = ({IsAuthenticated}) => {
         <Stack.Screen name="Verify" component={Verify} />
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Home" component={Home} /> 
+        <Stack.Screen name="AI_conversation" component={AI_conversation} />
         <Stack.Screen name="ChatHistory" component={ChatHistory} />
       </Stack.Navigator>
     </NavigationContainer>

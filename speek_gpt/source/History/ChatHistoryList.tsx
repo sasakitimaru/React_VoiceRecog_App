@@ -14,7 +14,7 @@ type ChatListProps = {
 const ChatHistoryList:React.FC<ChatListProps> = ({ messages }) => {
     // const chatListProps: ChatListProps = messages
     // const chatlistProps: ChatListProps = {messages}
-    // console.log('messages_at_history_list: ', chatlistProps)
+    // console.log('messages_at_history_list: ', messages)
     return (
         <FlatList
             data={messages}

@@ -44,12 +44,18 @@ const History = () => {
         asyncfetchuser();
     }, []);
 
-    // console.log('conversationsHistory: ', conversationsHistory[0]);
+    const sortedArray = conversationsHistory;
+    if (sortedArray !== null){
+        sortedArray.sort((a, b) => {
+            return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+        });
+    }
+    console.log('conversationsHistory: ', conversationsHistory);
 
     return(
         <View style={styles.container}>
             <FlatList
-                data={conversationsHistory}
+                data={sortedArray}
                 renderItem={({ item }) => (
                 <TouchableOpacity 
                     onPress={() => exportFetchedUser({item})}
