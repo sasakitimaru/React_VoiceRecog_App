@@ -18,7 +18,7 @@ const SignUp = () => {
       <CreateForm />
       {/* for debug from here*/}
       {/* <TextInput onChangeText={setDesiredPageName} style={styles.input} placeholder="Page Name" /> */}
-      <Picker selectedValue={desiredPageName}
+      {/* <Picker selectedValue={desiredPageName}
         onValueChange={(itemValue) => setDesiredPageName(itemValue)}
         style={styles.picker}
       >
@@ -27,7 +27,7 @@ const SignUp = () => {
         <Picker.Item label="SignIn" value="SignIn" />
         <Picker.Item label="Verify" value="Verify" />
         <Picker.Item label="Home" value="Home" />
-      </Picker>
+      </Picker> */}
       <TouchableOpacity style={styles.input} onPress={() => moveTodesignatedPage(desiredPageName)}>
         <Text style={styles.submitText}>For debug: Move to designated page</Text>
       </TouchableOpacity>

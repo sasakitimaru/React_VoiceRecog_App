@@ -50,7 +50,7 @@ const History = () => {
             return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
         });
     }
-    console.log('conversationsHistory: ', conversationsHistory);
+    // console.log('conversationsHistory: ', conversationsHistory);
 
     return(
         <View style={styles.container}>

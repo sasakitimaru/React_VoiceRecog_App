@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const Home:React.FC = () => {
   const [PageName, setPageName] = useState<String>('');
-  const [topic, setTopic] = useState<String>('');
+  const [topic, setTopic] = useState<String>('Home');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList setTopic={setTopic}/>);
   const navigate = useNavigation();
   useEffect(() => {
