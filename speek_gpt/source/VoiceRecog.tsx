@@ -13,6 +13,11 @@ const VoiceRecog = ({ setMessages }: TextInputAreaProps) => {
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [recognigedText, setRecognigedText] = useState<string>('');
   useEffect(() => {
+    const testfunc = async () => {
+      const aiResponse = await GenerateResponse("You start conversation");
+      setMessages((prevMessages) => [...prevMessages, { text: aiResponse, isUser: false }]);
+    }
+    testfunc();
     Voice.onSpeechResults = async (e) => {
       setRecognigedText(e.value[0]);
     };
