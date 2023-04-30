@@ -21,8 +21,8 @@ const sendMessage = async (_id: string, message: Message) => {
   
     const existingConversationEntryIndex = currentUserChecked.findIndex(
       (entry) =>{ 
-        console.log('entry.sectionID:', entry.sectionID);
-        console.log('_id:', _id)
+        // console.log('entry.sectionID:', entry.sectionID);
+        // console.log('_id:', _id)
         return entry.sectionID == _id 
     }
     );

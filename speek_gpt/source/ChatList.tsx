@@ -10,13 +10,12 @@ type MessageType = {
     isUser: boolean;
     text: string;
 };
-let tmp: MessageType[] = [];
 
 type ChatListProps = {
     messages: MessageType[];
 };
 
-const ChatList:React.FC<ChatListProps> = ({ messages }) => {
+const ChatList:React.FC<ChatListProps> = ({ messages}) => {
     const flatListRef = useRef(null);
     const [LastSectionID, setLastSectionID] = useState<number | null>(0);
     useEffect(() => {
@@ -39,7 +38,7 @@ const ChatList:React.FC<ChatListProps> = ({ messages }) => {
         Tts.addEventListener('tts-start', (event) => {
         });
         Tts.setDefaultLanguage('en-US');
-        console.log('lastsection:', LastSectionID)
+        // console.log('lastsection:', LastSectionID)
         sendMessage((LastSectionID+1).toString(), messages[messages.length - 1])
         // console.log('messages_debugging: ', messages);
         if (messages.length >0 && !messages[messages.length - 1].isUser){

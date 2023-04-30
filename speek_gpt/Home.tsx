@@ -1,7 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { UnderMenuBar } from './source';
-import AI_conversation from './source/AI_conversation';
 import History from './source/History';
 import Setting from './source/Setting';
 import ConversationList from './source/ConversationList';
@@ -20,7 +19,7 @@ const Home:React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('current topic: ',topic)
+    // console.log('current topic: ',topic)
     switch (PageName) {
       case 'Home':
         setCurrentComponent(<ConversationList setTopic={setTopic}/>);

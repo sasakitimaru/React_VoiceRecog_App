@@ -22,7 +22,6 @@ type VoiceRecogProps = {
 const VoiceRecog:React.FC<VoiceRecogProps> = ({ setMessages }) => {
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
-  const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
   const [recognigedText, setRecognigedText] = useState<string>('');
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
@@ -57,33 +56,18 @@ const VoiceRecog:React.FC<VoiceRecogProps> = ({ setMessages }) => {
       setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
     };
     ToGetGenerateResponce();
-    console.log("testestsets")
   }, [FirstPrompt]);
-
-  useEffect(() => {
-    console.log('toggle__:', sendMessageToggle)
-    if (sendMessageToggle) {
-      const ToGetGenerateResponce_ = async () => {
-      const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
-      setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
-      setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
-      };
-      ToGetGenerateResponce_();
-      setSendMessageToggle(!sendMessageToggle);
-    }
-  }, [firstRenderingToggle]);
 
   useEffect(() => {
     const handleSendMessage = async () => {
       if (sendMessageToggle) {
         setMessages((prevMessages) => [...prevMessages, { text: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
-        setFirstRenderingToggle(!firstRenderingToggle)
-        console.log('toggle:', firstRenderingToggle)
-        // const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
-        // setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
-        // setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
+        const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
+        setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
+        setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
         setRecognigedText('');
+        setSendMessageToggle(!sendMessageToggle);
       }
     };
     handleSendMessage();

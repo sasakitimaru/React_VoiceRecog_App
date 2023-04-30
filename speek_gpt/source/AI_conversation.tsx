@@ -33,10 +33,10 @@ const AI_conversation:React.FC = () => {
       ),
     });
   }, []);
-  console.log('messages: ',messages)
+  // console.log('messages: ',messages)
   return (
     <SafeAreaView style={styles.container}>
-      <ChatList messages={messages} />
+      <ChatList messages={messages}/>
       {/* <TextInputArea setMessages={setMessages} /> */}
       <VoiceRecog setMessages={setMessages} />
     </SafeAreaView>
