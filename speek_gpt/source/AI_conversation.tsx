@@ -74,7 +74,7 @@ const AI_conversation:React.FC = () => {
     <SafeAreaView style={styles.container}>
       <ChatList messages={messages}/>
       {/* <TextInputArea setMessages={setMessages} /> */}
-      <VoiceRecog setMessages={setMessages} />
+      <VoiceRecog messages={messages} setMessages={setMessages} />
     </SafeAreaView>
   );
 }

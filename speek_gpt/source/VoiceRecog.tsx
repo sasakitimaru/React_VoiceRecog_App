@@ -5,6 +5,8 @@ import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
 import UUID from 'react-native-uuid';
+import Tts from 'react-native-tts';
+
 type Message = {
   messageID: string | number[];
   isUser: boolean;
@@ -19,16 +21,30 @@ interface MessageForAI {
 type SetMessages = (updater: (prevMessages: Message[]) => Message[]) => void;
 
 type VoiceRecogProps = {
+  messages: Message[];
   setMessages: SetMessages;
 };
 
-const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
+const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
   const [recognigedText, setRecognigedText] = useState<string>('');
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
+
+  useEffect(() => {
+    Tts.addEventListener('tts-start', (event) => {
+    });
+    Tts.setDefaultLanguage('en-US');
+    if (messages.length >0 && !messages[messages.length - 1].isUser){
+        Tts.speak(messages[messages.length - 1].message);
+    }
+    return () => {
+        Tts.stop();
+        Tts.removeAllListeners('tts-finish');
+    }
+}, [messages]);
 
   useEffect(() => {
     const testfunc = async () => {
@@ -76,6 +92,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
 
   useEffect(() => {
     const handleSendMessage = async () => {
+      if (voiceRecogToggle) Tts.stop();
       if (sendMessageToggle) {
         setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),message: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
