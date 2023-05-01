@@ -17,6 +17,9 @@ const UnderMenuBar:React.FC<UnderMenuBarProps> = ({setTopic,setPageName}) => {
             <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='Setting'>
                 <Text>Setting</Text>
             </IconButton>
+            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='test'>
+                <Text>Test</Text>
+            </IconButton>
         </View>
     )
 };

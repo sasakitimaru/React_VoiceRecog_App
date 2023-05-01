@@ -5,6 +5,7 @@ import History from './source/History';
 import Setting from './source/Setting';
 import ConversationList from './source/ConversationList';
 import { useNavigation } from '@react-navigation/native';
+import Test from './Test/voicetest';
 
 const Home:React.FC = () => {
   const [PageName, setPageName] = useState<String>('');
@@ -19,7 +20,7 @@ const Home:React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // console.log('current topic: ',topic)
+    console.log('current PageName: ',PageName)
     switch (PageName) {
       case 'Home':
         setCurrentComponent(<ConversationList setTopic={setTopic}/>);
@@ -30,8 +31,10 @@ const Home:React.FC = () => {
       case 'Setting':
         setCurrentComponent(<Setting />);
         break;
-      default:
-        setCurrentComponent(<ConversationList setTopic={setTopic}/>);
+      case 'test':
+        setCurrentComponent(<Test />);
+      // default:
+      //   setCurrentComponent(<ConversationList setTopic={setTopic}/>);
     }
   }, [PageName]);
 

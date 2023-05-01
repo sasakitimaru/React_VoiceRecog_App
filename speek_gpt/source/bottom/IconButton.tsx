@@ -29,9 +29,10 @@ export default IconButton;
 
 const styles = StyleSheet.create({
     container: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '33.33%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        //   width: '33.33%',
+        width: '25%', //temporary for test
     },
     button: {
       padding: 8,

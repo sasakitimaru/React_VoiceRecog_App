@@ -12,7 +12,7 @@ interface SetMessageForAI {
 
 async function GenerateResponse(inputPrompt: string, messageForAI: MessageForAI[], setMessageForAI: SetMessageForAI): Promise<string> {
   const apiKey = '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';
-  console.log('messageForAI: ', messageForAI);
+  // console.log('messageForAI: ', messageForAI);
   // console.log('messages', messages)
 
   const data = {

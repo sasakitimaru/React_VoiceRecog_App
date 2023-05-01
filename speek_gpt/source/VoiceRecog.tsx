@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, TextInput, DeviceEventEmitter } from 'react-native';
-import Voice from '@react-native-voice/voice';
+// import Voice from '@react-native-voice/voice';
 import GenerateResponse from './GenerateResponse';
+import whisper from './voiceRecog/Whisper';
+import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
 
 type Message = {
   isUser: boolean;
@@ -13,13 +15,13 @@ interface MessageForAI {
   content: string;
 }
 
-type SetMessages = (updater:(prevMessages: Message[]) => Message[]) => void;
+type SetMessages = (updater: (prevMessages: Message[]) => Message[]) => void;
 
 type VoiceRecogProps = {
   setMessages: SetMessages;
 };
 
-const VoiceRecog:React.FC<VoiceRecogProps> = ({ setMessages }) => {
+const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
@@ -29,25 +31,25 @@ const VoiceRecog:React.FC<VoiceRecogProps> = ({ setMessages }) => {
 
   useEffect(() => {
     const testfunc = async () => {
-      let firstprompt_tmp = 'Hello, I am an AI language assistant designed to help people improve their English skills, especially in speaking. While speaking is the main focus, I can also help with other aspects of English learning. I am here to be your conversation partner and provide guidance on grammar, vocabulary, and pronunciation to make your learning experience more efficient and enjoyable.' 
+      let firstprompt_tmp = 'Hello, I am an AI language assistant designed to help people improve their English skills, especially in speaking. While speaking is the main focus, I can also help with other aspects of English learning. I am here to be your conversation partner and provide guidance on grammar, vocabulary, and pronunciation to make your learning experience more efficient and enjoyable.'
       let firststate_tmp = 'You can start conversation first.'
       setMessageForAI([
-        {role: 'system', content: firstprompt_tmp},
-        {role: 'user', content: firststate_tmp}
+        { role: 'system', content: firstprompt_tmp },
+        { role: 'user', content: firststate_tmp }
       ])
       setFirstPrompt([
-        {role: 'system', content: firstprompt_tmp},
-        {role: 'user', content: firststate_tmp}
+        { role: 'system', content: firstprompt_tmp },
+        { role: 'user', content: firststate_tmp }
       ])
       // console.log('messageforai_on_voiceRecog: ', messageForAI)
     }
     testfunc();
-    Voice.onSpeechResults = async (e) => {
-      setRecognigedText(e.value[0]);
-    };
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
+    // Voice.onSpeechResults = async (e) => {
+    //   setRecognigedText(e.value[0]);
+    // };
+    // return () => {
+    //   Voice.destroy().then(Voice.removeAllListeners);
+    // };
   }, []);
 
   useEffect(() => {
@@ -57,16 +59,14 @@ const VoiceRecog:React.FC<VoiceRecogProps> = ({ setMessages }) => {
       setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
     };
     ToGetGenerateResponce();
-    console.log("testestsets")
   }, [FirstPrompt]);
 
   useEffect(() => {
-    console.log('toggle__:', sendMessageToggle)
     if (sendMessageToggle) {
       const ToGetGenerateResponce_ = async () => {
-      const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
-      setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
-      setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
+        const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
+        setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
+        setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
       };
       ToGetGenerateResponce_();
       setSendMessageToggle(!sendMessageToggle);
@@ -79,10 +79,6 @@ const VoiceRecog:React.FC<VoiceRecogProps> = ({ setMessages }) => {
         setMessages((prevMessages) => [...prevMessages, { text: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
         setFirstRenderingToggle(!firstRenderingToggle)
-        console.log('toggle:', firstRenderingToggle)
-        // const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
-        // setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
-        // setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
         setRecognigedText('');
       }
     };
@@ -91,10 +87,15 @@ const VoiceRecog:React.FC<VoiceRecogProps> = ({ setMessages }) => {
 
   const handleVoiceRecognition = async () => {
     if (voiceRecogToggle) {
-      Voice.stop();
+      // Voice.stop();
+      const audioFile = await stopRecording();
+      const transcription:string | void = await whisper(audioFile);
+      // console.log('transcription', transcription)
+      setRecognigedText(transcription);
       setSendMessageToggle(!sendMessageToggle);
     } else {
-      Voice.start('en-US');
+      // Voice.start('en-US');
+      startRecording();
     }
 
     setVoiceRecogToggle(!voiceRecogToggle);
