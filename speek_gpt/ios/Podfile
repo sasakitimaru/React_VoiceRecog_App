@@ -26,6 +26,7 @@ target 'speek_gpt' do
 
   #pod 'react-native-screens', '~> 3.20.0'
   permissions_path = '../node_modules/react-native-permissions/ios'
+  #pod 'AudioSessionManager', :path => './native-modules/AudioSessionManager'
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
   # Flags change depending on the env values.
   flags = get_default_flags()

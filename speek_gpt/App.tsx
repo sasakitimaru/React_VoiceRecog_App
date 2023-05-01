@@ -3,6 +3,7 @@ import Navigation from './Navigation';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Auth } from 'aws-amplify';
 import { ActivityIndicator } from 'react-native';
+// import TrackPlayer, { IOSCategory, IOSCategoryOptions } from 'react-native-track-player';
 
 const requestMicrophonePermission = async () => {
   const microphoneStatus = await check(PERMISSIONS.IOS.MICROPHONE);
@@ -29,6 +30,21 @@ const App = () => {
       setLoading(false);
     }
   };
+  // useEffect(() => {
+  //   async function setupAudioSession() {
+  //     try {
+  //       await TrackPlayer.setupPlayer({
+  //         iosCategory: IOSCategory.Playback,
+  //         // iosCategoryMode: IOSCategoryMode.SpokenAudio,
+  //         iosCategoryOptions: [IOSCategoryOptions.MixWithOthers],
+  //       });
+  //     } catch (error) {
+  //       console.error("Error setting audio session:", error);
+  //     }
+  //   }
+
+  //   setupAudioSession();
+  // }, []);
         
   useEffect(() => {
     requestMicrophonePermission();

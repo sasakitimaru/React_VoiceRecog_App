@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, TextInput, DeviceEventEmitter } from 'react-native';
-// import Voice from '@react-native-voice/voice';
+import Voice from '@react-native-voice/voice';
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
 import UUID from 'react-native-uuid';
 import Tts from 'react-native-tts';
+import TrackPlayer from 'react-native-track-player';
+
 
 type Message = {
   messageID: string | number[];
@@ -37,12 +39,13 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
     Tts.addEventListener('tts-start', (event) => {
     });
     Tts.setDefaultLanguage('en-US');
+
     if (messages.length >0 && !messages[messages.length - 1].isUser){
         Tts.speak(messages[messages.length - 1].message);
     }
     return () => {
         Tts.stop();
-        Tts.removeAllListeners('tts-finish');
+        Tts.removeAllListeners('tts-start');
     }
 }, [messages]);
 
@@ -92,7 +95,6 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
 
   useEffect(() => {
     const handleSendMessage = async () => {
-      if (voiceRecogToggle) Tts.stop();
       if (sendMessageToggle) {
         setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),message: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
@@ -108,12 +110,19 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
       // Voice.stop();
       const audioFile = await stopRecording();
       const transcription:string | void = await whisper(audioFile);
-      // console.log('transcription', transcription)
+      console.log('transcription', transcription)
       setRecognigedText(transcription);
       setSendMessageToggle(!sendMessageToggle);
     } else {
       // Voice.start('en-US');
-      startRecording();
+      Tts.stop();
+      setTimeout(() => {
+      }, 1000);
+      try{
+        startRecording();
+      }catch(e){
+        console.log('error: ', e)
+      }
     }
 
     setVoiceRecogToggle(!voiceRecogToggle);

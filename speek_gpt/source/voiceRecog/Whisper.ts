@@ -4,7 +4,7 @@ type WhisperProps = (filePath: string) => Promise<void>;
 
 const whisper: WhisperProps = async (filePath) => {
     const apiKey = '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';
-    let file = "tmp.wav";
+    let file = "tmp.mp4";
     const headers = {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'multipart/form-data',
@@ -13,8 +13,8 @@ const whisper: WhisperProps = async (filePath) => {
     const formData = new FormData();
     formData.append('file', {
         uri: filePath,
-        type: 'audio/wav',
-        name: 'tmp.wav',
+        type: 'audio/m4a',
+        name: 'tmp.m4a',
       });
     formData.append('model', 'whisper-1');
     formData.append('response_format', 'json');
