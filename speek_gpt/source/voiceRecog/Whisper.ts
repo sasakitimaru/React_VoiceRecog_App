@@ -18,10 +18,10 @@ const whisper: WhisperProps = async (filePath) => {
       });
     formData.append('model', 'whisper-1');
     formData.append('response_format', 'json');
+    formData.append('language', 'en');
 
     try {
         const response = await axios.post('https://api.openai.com/v1/audio/transcriptions', formData, { headers });
-        console.log('responcedata:',response.data.text);
         return response.data.text;
     } catch (error) {
         console.error(error);

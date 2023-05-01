@@ -4,10 +4,11 @@ import { StyleSheet, View, TouchableOpacity, Text, TextInput, DeviceEventEmitter
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
-
+import UUID from 'react-native-uuid';
 type Message = {
+  messageID: string | number[];
   isUser: boolean;
-  text: string;
+  message: string;
 };
 
 interface MessageForAI {
@@ -55,7 +56,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
   useEffect(() => {
     const ToGetGenerateResponce = async () => {
       const aiResponse = await GenerateResponse(FirstPrompt[1].content, messageForAI, setMessageForAI);
-      setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
+      setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
       setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
     };
     ToGetGenerateResponce();
@@ -65,7 +66,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
     if (sendMessageToggle) {
       const ToGetGenerateResponce_ = async () => {
         const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
-        setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
       };
       ToGetGenerateResponce_();
@@ -76,7 +77,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
   useEffect(() => {
     const handleSendMessage = async () => {
       if (sendMessageToggle) {
-        setMessages((prevMessages) => [...prevMessages, { text: recognigedText, isUser: true }]);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),message: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
         setFirstRenderingToggle(!firstRenderingToggle)
         setRecognigedText('');

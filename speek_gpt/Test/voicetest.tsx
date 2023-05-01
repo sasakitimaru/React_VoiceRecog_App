@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Button, View } from 'react-native';
+import { Button, View, Text } from 'react-native';
 import whisper from '../source/voiceRecog/Whisper';
 import { startRecording, stopRecording } from '../source/voiceRecog/audioRecorder';
 
@@ -29,7 +29,7 @@ const Test = () => {
 
     return (
         <View>
-            <Button onPress={handleRecordPress} title={isRecording ? 'Stop Recording' : 'Start Recording'} />
+            <Text>Field for debug</Text>
         </View>
     );
 };
