@@ -17,8 +17,9 @@ type Message = {
   isUser: boolean;
   message: string;
 }
+type topic = string;
 
-const AI_conversation:React.FC = () => {
+const AI_conversation:React.FC = (topic) => {
   // const [textInput, setTextInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const navigation = useNavigation();
@@ -74,7 +75,7 @@ const AI_conversation:React.FC = () => {
     <SafeAreaView style={styles.container}>
       <ChatList messages={messages}/>
       {/* <TextInputArea setMessages={setMessages} /> */}
-      <VoiceRecog messages={messages} setMessages={setMessages} />
+      <VoiceRecog messages={messages} setMessages={setMessages} topic={topic}/>
     </SafeAreaView>
   );
 }

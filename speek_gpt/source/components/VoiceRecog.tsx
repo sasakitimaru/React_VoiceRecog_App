@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 // import Voice from '@react-native-voice/voice';
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
@@ -23,11 +23,12 @@ interface MessageForAI {
 type SetMessages = (updater: (prevMessages: Message[]) => Message[]) => void;
 
 type VoiceRecogProps = {
+  topic: any;
   messages: Message[];
   setMessages: SetMessages;
 };
 
-const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
+const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic }) => {
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
@@ -40,19 +41,22 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
     });
     Tts.setDefaultLanguage('en-US');
 
-    if (messages.length >0 && !messages[messages.length - 1].isUser){
-        Tts.speak(messages[messages.length - 1].message);
+    if (messages.length > 0 && !messages[messages.length - 1].isUser) {
+      Tts.speak(messages[messages.length - 1].message);
     }
     return () => {
-        Tts.stop();
-        Tts.removeAllListeners('tts-start');
+      Tts.stop();
+      Tts.removeAllListeners('tts-start');
     }
-}, [messages]);
+  }, [messages]);
 
   useEffect(() => {
     const testfunc = async () => {
-      let firstprompt_tmp = 'Hello, I am an AI language assistant designed to help people improve their English skills, especially in speaking. While speaking is the main focus, I can also help with other aspects of English learning. I am here to be your conversation partner and provide guidance on grammar, vocabulary, and pronunciation to make your learning experience more efficient and enjoyable.'
-      let firststate_tmp = 'You can start conversation first.'
+      setTimeout(() => {
+      }, 1000);
+      let firstprompt_tmp = `You are assistant for English learner. You are given this topic: ${topic.route.params.topic}. Please follow this topic to converse with learner. Try to make the conversation as natural as possible, asking just the right amount of questions to make learner feel comfortable talking about the topic.`
+      console.log('topic: ', topic.route.params.topic)
+      let firststate_tmp = 'The conversation begins with your next statement. You start the conversation natural as if you had spoken to learner.'
       setMessageForAI([
         { role: 'system', content: firstprompt_tmp },
         { role: 'user', content: firststate_tmp }
@@ -73,10 +77,10 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
   }, []);
 
   useEffect(() => {
-    if(FirstPrompt.length > 0){
+    if (FirstPrompt.length > 0) {
       const ToGetGenerateResponce = async () => {
         const aiResponse = await GenerateResponse(messageForAI);
-        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(), isUser: false, message: aiResponse }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
       };
       ToGetGenerateResponce();
@@ -87,7 +91,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
     if (sendMessageToggle) {
       const ToGetGenerateResponce_ = async () => {
         const aiResponse = await GenerateResponse(messageForAI);
-        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(), isUser: false, message: aiResponse }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
       };
       ToGetGenerateResponce_();
@@ -98,7 +102,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
   useEffect(() => {
     const handleSendMessage = async () => {
       if (sendMessageToggle) {
-        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),message: recognigedText, isUser: true }]);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(), message: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
         setFirstRenderingToggle(!firstRenderingToggle)
         setRecognigedText('');
@@ -111,7 +115,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
     if (voiceRecogToggle) {
       // Voice.stop();
       const audioFile = await stopRecording();
-      const transcription:string | void = await whisper(audioFile);
+      const transcription: string | void = await whisper(audioFile);
       console.log('transcription', transcription)
       setRecognigedText(transcription);
       setSendMessageToggle(!sendMessageToggle);
@@ -120,9 +124,9 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
       Tts.stop();
       setTimeout(() => {
       }, 1000);
-      try{
+      try {
         startRecording();
-      }catch(e){
+      } catch (e) {
         console.log('error: ', e)
       }
     }

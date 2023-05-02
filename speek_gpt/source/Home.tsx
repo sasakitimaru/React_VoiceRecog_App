@@ -5,12 +5,11 @@ import History from './components/History';
 import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
-import Test from './Test/voicetest';
+import Test from './Test/testfield';
 
 const Home:React.FC = () => {
-  const [PageName, setPageName] = useState<String>('');
-  const [topic, setTopic] = useState<String>('Home');
-  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList setTopic={setTopic}/>);
+  const [PageName, setPageName] = useState<String>('Home');
+  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList/>);
   const navigate = useNavigation();
   useEffect(() => {
     navigate.setOptions({
@@ -23,7 +22,7 @@ const Home:React.FC = () => {
     console.log('current PageName: ',PageName)
     switch (PageName) {
       case 'Home':
-        setCurrentComponent(<ConversationList setTopic={setTopic}/>);
+        setCurrentComponent(<ConversationList />);
         break;
       case 'History': 
         setCurrentComponent(<History />);
@@ -44,7 +43,7 @@ const Home:React.FC = () => {
         {currentComponent}
       </View>
       <View style={styles.bottomView}>
-        <UnderMenuBar setTopic={setTopic} setPageName={setPageName}></UnderMenuBar>
+        <UnderMenuBar setPageName={setPageName}></UnderMenuBar>
       </View>
     </View>
   );

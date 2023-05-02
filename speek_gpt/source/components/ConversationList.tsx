@@ -1,19 +1,33 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
 import TopicBox from './home/TopicBox';
+import data from '../prompt.json';
 
-type ConversationListProps = {
-    setTopic: (topic: String) => void;
-};
-const ConversationList:React.FC<ConversationListProps> = ({setTopic}) => {
-    return (
-        <View style={styles.container}>
-        <TopicBox tmpTopic='How was your day?' setTopic={setTopic}/>
-        <TopicBox tmpTopic='Did something interesting happen?' setTopic={setTopic}/>
-        <TopicBox tmpTopic='Let me know what the best thing happened.' setTopic={setTopic}/>
-        {/* More TopicBox components */}
-        </View>
-    );
+const ConversationList: React.FC = () => {
+  const [topic, setTopic] = useState<string[]>([]);
+  const [cnt, setCnt] = useState<number>(0);
+  const setTopicRandom = () => {
+    setTopic([]);
+    for (let i = 0; i < 8; i++) {
+      // let tmp = Math.floor(Math.random() * data.length);
+      setTopic((prev) => [...prev, data[(cnt + i) % 100].topic_EN]);
+    }
+    setCnt((prev) => prev + 8);
+  };
+  useEffect(() => {
+    setTopicRandom();
+  }, []);
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={topic}
+        renderItem={({ item }) => (<TopicBox topic={item}/>)}
+      />
+      <TouchableOpacity onPress={() => setTopicRandom()}>
+        <Text>Flush</Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

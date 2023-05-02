@@ -3,18 +3,16 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 
-type topic = string;
-
-// type setTopic = React.Dispatch<React.SetStateAction<topic>>;
 
 type TopicBoxProps = {
-  topic: topic;
-  // setTopic: setTopic;
+    tmpTopic: String;
+    setTopic: (topic: String) => void;
 };
-const TopicBox:React.FC<TopicBoxProps> = ({topic}) => {
+const TopicBox:React.FC<TopicBoxProps> = ({tmpTopic,setTopic}) => {
     const navigate = useNavigation();
     const handlePress = () => {
-      navigate.navigate('AI_conversation', {topic: topic})
+      navigate.navigate('AI_conversation')
+      console.log('tmpTopic: ',tmpTopic);
     };
     const colors = [
         '#8EF1FF',
@@ -32,7 +30,7 @@ const TopicBox:React.FC<TopicBoxProps> = ({topic}) => {
             useNativeDriver
         >
         <TouchableOpacity onPress={handlePress} style={styles.cardContent}>
-            <Text style={styles.cardText}>{topic}</Text>
+            <Text style={styles.cardText}>{tmpTopic}</Text>
         </TouchableOpacity>
         </Animatable.View>
     );

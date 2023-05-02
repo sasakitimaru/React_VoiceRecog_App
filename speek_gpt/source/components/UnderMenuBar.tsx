@@ -2,22 +2,21 @@ import React from 'react';
 import { StyleSheet, View, Text} from 'react-native';
 import  IconButton from './bottom/IconButton';
 type UnderMenuBarProps = {
-    setTopic: (topic: String) => void;
     setPageName: (PageName: String) => void;
 };
-const UnderMenuBar:React.FC<UnderMenuBarProps> = ({setTopic,setPageName}) => {
+const UnderMenuBar:React.FC<UnderMenuBarProps> = ({setPageName}) => {
     return(
         <View style={styles.container}>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='Home'>
+            <IconButton setPageName={setPageName} Pagetarget='Home'>
                 <Text>Home</Text>
             </IconButton>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='History'>
+            <IconButton setPageName={setPageName} Pagetarget='History'>
                 <Text>History</Text>
             </IconButton>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='Setting'>
+            <IconButton setPageName={setPageName} Pagetarget='Setting'>
                 <Text>Setting</Text>
             </IconButton>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='test'>
+            <IconButton setPageName={setPageName} Pagetarget='test'>
                 <Text>Test</Text>
             </IconButton>
         </View>
