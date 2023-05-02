@@ -14,6 +14,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/whisper": {
+      "name": "/whisper",
+      "lambdaFunction": "whisper",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

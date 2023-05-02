@@ -50,7 +50,12 @@
           "yourApiKey": "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",
           "secretsPathAmplifyAppId": "d1l1s67oekor09",
           "deploymentBucketName": "amplify-speekgpt-reactdev-120216-deployment",
-          "s3Key": "amplify-builds/correctGrammer-31696c5a42367572714e-build.zip"
+          "s3Key": "amplify-builds/correctGrammer-4f2b506b645556357239-build.zip"
+        },
+        "whisper": {
+          "yourApiKey": "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",
+          "deploymentBucketName": "amplify-speekgpt-reactdev-120216-deployment",
+          "s3Key": "amplify-builds/whisper-337a706f7171776d3879-build.zip"
         }
       },
       "api": {

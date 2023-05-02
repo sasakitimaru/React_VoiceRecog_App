@@ -17,6 +17,14 @@
           ],
           "category": "function",
           "resourceName": "correctGrammer"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "whisper"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -81,6 +89,12 @@
       "service": "Lambda"
     },
     "speekgpte76c72d3": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "whisper": {
       "build": true,
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
@@ -157,6 +171,30 @@
         {
           "category": "function",
           "resourceName": "speekgpte76c72d3"
+        }
+      ]
+    },
+    "AMPLIFY_function_whisper_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "whisper"
+        }
+      ]
+    },
+    "AMPLIFY_function_whisper_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "whisper"
+        }
+      ]
+    },
+    "AMPLIFY_function_whisper_yourApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "whisper"
         }
       ]
     }

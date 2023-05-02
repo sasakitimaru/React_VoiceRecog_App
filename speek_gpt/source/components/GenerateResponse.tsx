@@ -18,7 +18,7 @@ async function GenerateResponse(messageForAI: MessageForAI[]): Promise<string> {
 
   try {
     const response = await API.post( apiName, path, data);
-    console.log('response', response)
+    // console.log('response', response)
     return response;
   } catch (error) {
     console.error(error);
