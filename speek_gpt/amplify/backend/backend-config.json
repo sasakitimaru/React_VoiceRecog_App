@@ -9,6 +9,14 @@
           ],
           "category": "function",
           "resourceName": "GPTAPI"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "correctGrammer"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -66,6 +74,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "correctGrammer": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "speekgpte76c72d3": {
       "build": true,
       "dependsOn": [],
@@ -95,6 +109,38 @@
         {
           "category": "function",
           "resourceName": "GPTAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_correctGrammer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "correctGrammer"
+        }
+      ]
+    },
+    "AMPLIFY_function_correctGrammer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "correctGrammer"
+        }
+      ]
+    },
+    "AMPLIFY_function_correctGrammer_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "correctGrammer"
+        }
+      ]
+    },
+    "AMPLIFY_function_correctGrammer_yourApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "correctGrammer"
         }
       ]
     },

@@ -28,8 +28,9 @@ exports.handler = async (event) => {
       statusCode: 200,
       body: JSON.stringify(response.data.choices[0].message.content),
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
+        "Access-Control-Allow-Headers" : "Content-Type",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
       },
     };
   } catch (error) {
