@@ -7,7 +7,6 @@ import {
     StyleSheet,
     KeyboardAvoidingView,
     Keyboard,
-    FlatList,
 } from 'react-native';
 
 import GenerateResponse from './GenerateResponse';

@@ -1,5 +1,5 @@
 import { API, Auth, graphqlOperation } from 'aws-amplify';
-import {getUser} from '../../src/graphql/queries';
+import {getUser} from '../../../src/graphql/queries';
 
 const fetchUser = async () => {
     const user = await Auth.currentAuthenticatedUser();

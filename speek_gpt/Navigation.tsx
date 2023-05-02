@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SignUp from './SignUp';
-import Verify from './Verify';
-import SignIn from './SignIn';
-import Home from './Home';
-import ChatHistory from './source/History/ChatHistory';
-import AI_conversation from './source/AI_conversation';
+import SignUp from './source/SignUp';
+import Verify from './source/Verify';
+import SignIn from './source/SignIn';
+import Home from './source/Home';
+import ChatHistory from './source/components/History/ChatHistory';
+import AI_conversation from './source/components/AI_conversation';
 
 
 

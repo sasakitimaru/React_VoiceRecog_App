@@ -1,5 +1,5 @@
 import {API, graphqlOperation} from 'aws-amplify';
-import {updateUser} from '../../src/graphql/mutations';
+import {updateUser} from '../../../src/graphql/mutations';
 import UUID from 'react-native-uuid';
 import fetchUser from './FetchUser';
 

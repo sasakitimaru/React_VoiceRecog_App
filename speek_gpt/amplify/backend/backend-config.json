@@ -1,5 +1,19 @@
 {
   "api": {
+    "GPTGateWay": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "GPTAPI"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "speekgpt": {
       "dependsOn": [],
       "output": {
@@ -46,6 +60,12 @@
     }
   },
   "function": {
+    "GPTAPI": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "speekgpte76c72d3": {
       "build": true,
       "dependsOn": [],
@@ -54,6 +74,30 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_GPTAPI_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "GPTAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_GPTAPI_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "GPTAPI"
+        }
+      ]
+    },
+    "AMPLIFY_function_GPTAPI_yourApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "GPTAPI"
+        }
+      ]
+    },
     "AMPLIFY_function_speekgpte76c72d3_deploymentBucketName": {
       "usedBy": [
         {

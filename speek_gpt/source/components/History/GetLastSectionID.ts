@@ -1,5 +1,5 @@
 import { API, graphqlOperation } from "aws-amplify";
-import { getUserSectionID } from "../../src/graphql/queries";
+import { getUserSectionID } from "../../../src/graphql/queries";
 
 
 function getMaxSectionID(conversations) {

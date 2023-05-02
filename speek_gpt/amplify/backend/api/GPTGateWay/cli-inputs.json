@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/GPTGateWay": {
+      "name": "/GPTGateWay",
+      "lambdaFunction": "GPTAPI",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

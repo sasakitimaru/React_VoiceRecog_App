@@ -11,7 +11,7 @@ const audioSet: AudioSet = {
 };
 
 const audioFile = 'tmp.m4a';
-console.log('audioSet', audioSet);
+// console.log('audioSet', audioSet);
 // const audioFile = `${RNFS.DocumentDirectoryPath}/tmp.m4a`;
 
 // 録音の開始
