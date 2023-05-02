@@ -4,10 +4,15 @@ import { StyleSheet, View, TouchableOpacity, Text, TextInput, DeviceEventEmitter
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
+import UUID from 'react-native-uuid';
+import Tts from 'react-native-tts';
+// import TrackPlayer from 'react-native-track-player';
+
 
 type Message = {
+  messageID: string | number[];
   isUser: boolean;
-  text: string;
+  message: string;
 };
 
 interface MessageForAI {
@@ -18,16 +23,31 @@ interface MessageForAI {
 type SetMessages = (updater: (prevMessages: Message[]) => Message[]) => void;
 
 type VoiceRecogProps = {
+  messages: Message[];
   setMessages: SetMessages;
 };
 
-const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
+const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
   const [recognigedText, setRecognigedText] = useState<string>('');
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
+
+  useEffect(() => {
+    Tts.addEventListener('tts-start', (event) => {
+    });
+    Tts.setDefaultLanguage('en-US');
+
+    if (messages.length >0 && !messages[messages.length - 1].isUser){
+        Tts.speak(messages[messages.length - 1].message);
+    }
+    return () => {
+        Tts.stop();
+        Tts.removeAllListeners('tts-start');
+    }
+}, [messages]);
 
   useEffect(() => {
     const testfunc = async () => {
@@ -53,19 +73,21 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
   }, []);
 
   useEffect(() => {
-    const ToGetGenerateResponce = async () => {
-      const aiResponse = await GenerateResponse(FirstPrompt[1].content, messageForAI, setMessageForAI);
-      setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
-      setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
-    };
-    ToGetGenerateResponce();
+    if(FirstPrompt.length > 0){
+      const ToGetGenerateResponce = async () => {
+        const aiResponse = await GenerateResponse(FirstPrompt[1].content, messageForAI, setMessageForAI);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
+        setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
+      };
+      ToGetGenerateResponce();
+    }
   }, [FirstPrompt]);
 
   useEffect(() => {
     if (sendMessageToggle) {
       const ToGetGenerateResponce_ = async () => {
         const aiResponse = await GenerateResponse(recognigedText, messageForAI, setMessageForAI);
-        setMessages((prevMessages) => [...prevMessages, { isUser: false, text: aiResponse }]);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
       };
       ToGetGenerateResponce_();
@@ -76,7 +98,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
   useEffect(() => {
     const handleSendMessage = async () => {
       if (sendMessageToggle) {
-        setMessages((prevMessages) => [...prevMessages, { text: recognigedText, isUser: true }]);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),message: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
         setFirstRenderingToggle(!firstRenderingToggle)
         setRecognigedText('');
@@ -90,12 +112,19 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ setMessages }) => {
       // Voice.stop();
       const audioFile = await stopRecording();
       const transcription:string | void = await whisper(audioFile);
-      // console.log('transcription', transcription)
+      console.log('transcription', transcription)
       setRecognigedText(transcription);
       setSendMessageToggle(!sendMessageToggle);
     } else {
       // Voice.start('en-US');
-      startRecording();
+      Tts.stop();
+      setTimeout(() => {
+      }, 1000);
+      try{
+        startRecording();
+      }catch(e){
+        console.log('error: ', e)
+      }
     }
 
     setVoiceRecogToggle(!voiceRecogToggle);

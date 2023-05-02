@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import CorrectGrammer from './Conversation/CorrectGrammer';
+import CorrectGrammer from './CorrectGrammer';
 
 type ChatBubbleProps = {
     isUser: boolean;
@@ -28,12 +28,9 @@ const ChatBubble = ({ isUser, text }: ChatBubbleProps) => {
                 isUser ? styles.userChatBubble : styles.aiChatBubble,
             ]}>
             <Text style={styles.chatText}>{text}</Text>
-            { isUser ? 
-                <TouchableOpacity style={styles.reviewButton} onPress={() => addCorrectedText()} >
-                <Text style={styles.reviewText}>review</Text>
-                </TouchableOpacity>
-                : null
-            }   
+            <TouchableOpacity style={styles.reviewButton} onPress={() => addCorrectedText()} >
+            <Text style={styles.reviewText}>review</Text>
+            </TouchableOpacity>
             {isReviewPushed ? <Text>{`corrected:\n${correctedText}`}</Text> : null}
         </View>
     );

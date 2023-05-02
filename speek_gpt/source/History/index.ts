@@ -5,15 +5,16 @@ import fetchUser from './FetchUser';
 
 type Message = {
     isUser: boolean;
-    text: string;
+    message: string;
 }
 
-const sendMessage = async (_id: string, message: Message) => {
+type MessageList = Message[];
+
+const sendMessage = async (_id: string, messageList: MessageList) => {
     const newuuid = UUID.v4();
     const currentUser = await fetchUser();
     const userId = currentUser.id;
     const currentUserChecked = (currentUser.conversations || [])
-  
     if (!currentUser) {
       console.error(`Could not find user with id: ${userId}`);
       return;
@@ -21,33 +22,23 @@ const sendMessage = async (_id: string, message: Message) => {
   
     const existingConversationEntryIndex = currentUserChecked.findIndex(
       (entry) =>{ 
-        // console.log('entry.sectionID:', entry.sectionID);
-        // console.log('_id:', _id)
         return entry.sectionID == _id 
     }
     );
   
     let updatedConversations;
-    // console.log('currentUser:', currentUser);
-    // console.log('existingConversationEntryIndex:', existingConversationEntryIndex);
-    // console.log('updatedConversations:', updatedConversations);
     
     if (existingConversationEntryIndex !== -1) {
       // Update existing ConversationEntry
       updatedConversations = [...currentUserChecked];
+      console.log('existingConversationEntryIndex:', existingConversationEntryIndex)
       updatedConversations[existingConversationEntryIndex] = {
-        ...updatedConversations[existingConversationEntryIndex],
+        sectionID: _id,
         timestamp: new Date().toISOString(),
-        conversation: [
-          ...updatedConversations[existingConversationEntryIndex].conversation,
-          {
-            messageID: newuuid,
-            isUser: message.isUser,
-            message: message.text,
-            timestamp: new Date().toISOString(),
-          },
-        ],
+        conversation: messageList
       };
+      console.log ('多分この中には入らないと思う:', messageList)
+      console.log('id:' , _id)
     } else {
       // Add new ConversationEntry
       updatedConversations = [
@@ -55,14 +46,7 @@ const sendMessage = async (_id: string, message: Message) => {
         {
           sectionID: _id,
           timestamp: new Date().toISOString(),
-          conversation: [
-            {
-              messageID: newuuid,
-              isUser: message.isUser,
-              message: message.text,
-              timestamp: new Date().toISOString(),
-            },
-          ],
+          conversation: messageList
         },
       ];
     }
