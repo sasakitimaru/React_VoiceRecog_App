@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, TextInput, DeviceEventEmitter } from 'react-native';
-import Voice from '@react-native-voice/voice';
+// import Voice from '@react-native-voice/voice';
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
 import UUID from 'react-native-uuid';
 import Tts from 'react-native-tts';
-import TrackPlayer from 'react-native-track-player';
+// import TrackPlayer from 'react-native-track-player';
 
 
 type Message = {
@@ -73,12 +73,14 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages,setMessages }) => {
   }, []);
 
   useEffect(() => {
-    const ToGetGenerateResponce = async () => {
-      const aiResponse = await GenerateResponse(FirstPrompt[1].content, messageForAI, setMessageForAI);
-      setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
-      setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
-    };
-    ToGetGenerateResponce();
+    if(FirstPrompt.length > 0){
+      const ToGetGenerateResponce = async () => {
+        const aiResponse = await GenerateResponse(FirstPrompt[1].content, messageForAI, setMessageForAI);
+        setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(),isUser: false, message: aiResponse }]);
+        setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'assistant', content: aiResponse }]);
+      };
+      ToGetGenerateResponce();
+    }
   }, [FirstPrompt]);
 
   useEffect(() => {
