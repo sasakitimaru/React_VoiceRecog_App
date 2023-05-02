@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 

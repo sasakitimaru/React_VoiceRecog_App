@@ -24,6 +24,15 @@ type User @model{
   updatedAt: String
 }
 
+type Query {
+  generateResponse(messageForAI: [MessageForAIInput]): String
+}
+
+input MessageForAIInput {
+  role: String
+  content: String
+}
+
 input ConversationInput {
   messageID: ID
   isUser: Boolean

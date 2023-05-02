@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "paths": {
+    "/GPTGateWay": {
+      "name": "/GPTGateWay",
+      "lambdaFunction": "GPTAPI",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/correctgrammer": {
+      "name": "/correctgrammer",
+      "lambdaFunction": "correctGrammer",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/whisper": {
+      "name": "/whisper",
+      "lambdaFunction": "whisper",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

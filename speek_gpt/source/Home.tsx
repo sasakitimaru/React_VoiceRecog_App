@@ -1,9 +1,9 @@
 import React, { useState,useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { UnderMenuBar } from './source';
-import History from './source/History';
-import Setting from './source/Setting';
-import ConversationList from './source/ConversationList';
+import { UnderMenuBar } from './components';
+import History from './components/History';
+import Setting from './components/Setting';
+import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
 import Test from './Test/voicetest';
 
