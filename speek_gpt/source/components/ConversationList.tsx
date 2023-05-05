@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
 import TopicBox from './home/TopicBox';
 import data from '../prompt.json';
+// import  LinearGradient  from 'react-native-linear-gradient';
 
 const ConversationList: React.FC = () => {
   const [topic, setTopic] = useState<string[]>([]);
@@ -23,8 +24,8 @@ const ConversationList: React.FC = () => {
         data={topic}
         renderItem={({ item }) => (<TopicBox topic={item}/>)}
       />
-      <TouchableOpacity onPress={() => setTopicRandom()}>
-        <Text>Flush</Text>
+      <TouchableOpacity style={styles.button} onPress={() => setTopicRandom()}>
+        <Text style={styles.buttonText}>Flush</Text>
       </TouchableOpacity>
     </View>
   );
@@ -34,10 +35,21 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: 16,
+  },
+  button: {
+    width: '50%',
+    padding: 10,
+    backgroundColor: '#8EB8FF',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginBottom: '20%',
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 14,
   },
 });
 

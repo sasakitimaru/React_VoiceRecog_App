@@ -6,7 +6,8 @@ import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
 import UUID from 'react-native-uuid';
 import Tts from 'react-native-tts';
-// import TrackPlayer from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
+import Elevenlabs from './Conversation/ElevenLabAPI';
 
 
 type Message = {
@@ -37,16 +38,37 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
 
   useEffect(() => {
-    Tts.addEventListener('tts-start', (event) => {
-    });
-    Tts.setDefaultLanguage('en-US');
 
-    if (messages.length > 0 && !messages[messages.length - 1].isUser) {
-      Tts.speak(messages[messages.length - 1].message);
-    }
     return () => {
-      Tts.stop();
-      Tts.removeAllListeners('tts-start');
+      const cleanup = async () => {
+        TrackPlayer.pause();
+        TrackPlayer.reset();
+      }
+      cleanup();
+      // Tts.stop();
+      // Tts.removeAllListeners('tts-start');
+    }
+  }, []);
+
+  useEffect(() => {
+    // Tts.addEventListener('tts-start', (event) => {
+    // });
+    // Tts.setDefaultLanguage('en-US');
+    const elevenlabsfunc = async () => {
+      if (messages.length > 0 && !messages[messages.length - 1].isUser) {
+        // Tts.speak(messages[messages.length - 1].message);
+        await Elevenlabs(messages[messages.length - 1].message);
+      }
+    }
+    elevenlabsfunc();
+    return () => {
+      const cleanup = async () => {
+        TrackPlayer.pause;
+        TrackPlayer.reset;
+      }
+      cleanup();
+      // Tts.stop();
+      // Tts.removeAllListeners('tts-start');
     }
   }, [messages]);
 
@@ -121,7 +143,9 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
       setSendMessageToggle(!sendMessageToggle);
     } else {
       // Voice.start('en-US');
-      Tts.stop();
+      // Tts.stop();
+      await TrackPlayer.pause();
+      await TrackPlayer.reset();
       setTimeout(() => {
       }, 1000);
       try {

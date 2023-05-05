@@ -22,5 +22,6 @@ export const startRecording = async () => {
 // 録音の停止
 export const stopRecording = async () => {
   const recordedFilePath = await audioRecorderPlayer.stopRecorder();
+  console.log('recordedFilePath', recordedFilePath)
   return recordedFilePath;
 };
