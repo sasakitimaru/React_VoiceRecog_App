@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-// import Voice from '@react-native-voice/voice';
+import { StyleSheet, View, TouchableOpacity, Text, Button } from 'react-native';
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
 import UUID from 'react-native-uuid';
-import Tts from 'react-native-tts';
+import Tts from 'react-native-tts'; //Use this when Elevenlabs is uneffective
 import TrackPlayer from 'react-native-track-player';
 import Elevenlabs from './Conversation/ElevenLabAPI';
 
@@ -33,42 +32,53 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
+  const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
   const [recognigedText, setRecognigedText] = useState<string>('');
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
 
   useEffect(() => {
-
     return () => {
       const cleanup = async () => {
         TrackPlayer.pause();
         TrackPlayer.reset();
       }
       cleanup();
-      // Tts.stop();
-      // Tts.removeAllListeners('tts-start');
+      if (!isElevenlabsEffective) {
+        Tts.stop();
+        Tts.removeAllListeners('tts-start');
+      }
     }
   }, []);
 
   useEffect(() => {
-    // Tts.addEventListener('tts-start', (event) => {
-    // });
-    // Tts.setDefaultLanguage('en-US');
-    const elevenlabsfunc = async () => {
+    if (isElevenlabsEffective) {
+      TrackPlayer.addEventListener('remote-seek', (event) => {
+        TrackPlayer.seekTo(1);
+      });
+    } else {
+      Tts.addEventListener('tts-start', (event) => {
+      });
+      Tts.setDefaultLanguage('en-US');
+    }
+    const startTranscribeMessage = async () => {
       if (messages.length > 0 && !messages[messages.length - 1].isUser) {
-        // Tts.speak(messages[messages.length - 1].message);
-        await Elevenlabs(messages[messages.length - 1].message);
+        if (isElevenlabsEffective) await Elevenlabs(messages[messages.length - 1].message);
+        else Tts.speak(messages[messages.length - 1].message);
       }
     }
-    elevenlabsfunc();
+    startTranscribeMessage();
     return () => {
-      const cleanup = async () => {
-        TrackPlayer.pause;
-        TrackPlayer.reset;
+      if (isElevenlabsEffective) {
+        const cleanup = async () => {
+          TrackPlayer.pause;
+          TrackPlayer.reset;
+        }
+        cleanup();
+      } else {
+        Tts.stop();
+        Tts.removeAllListeners('tts-start');
       }
-      cleanup();
-      // Tts.stop();
-      // Tts.removeAllListeners('tts-start');
     }
   }, [messages]);
 
@@ -87,15 +97,8 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
         { role: 'system', content: firstprompt_tmp },
         { role: 'user', content: firststate_tmp }
       ])
-      // console.log('messageforai_on_voiceRecog: ', messageForAI)
     }
     testfunc();
-    // Voice.onSpeechResults = async (e) => {
-    //   setRecognigedText(e.value[0]);
-    // };
-    // return () => {
-    //   Voice.destroy().then(Voice.removeAllListeners);
-    // };
   }, []);
 
   useEffect(() => {
@@ -135,17 +138,18 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
 
   const handleVoiceRecognition = async () => {
     if (voiceRecogToggle) {
-      // Voice.stop();
       const audioFile = await stopRecording();
       const transcription: string | void = await whisper(audioFile);
       console.log('transcription', transcription)
       setRecognigedText(transcription);
       setSendMessageToggle(!sendMessageToggle);
     } else {
-      // Voice.start('en-US');
-      // Tts.stop();
-      await TrackPlayer.pause();
-      await TrackPlayer.reset();
+      if (isElevenlabsEffective) {
+        await TrackPlayer.pause();
+        await TrackPlayer.reset();
+      } else {
+        Tts.stop();
+      }
       setTimeout(() => {
       }, 1000);
       try {
@@ -163,6 +167,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
       <TouchableOpacity onPress={handleVoiceRecognition} style={styles.voiceButton}>
         <Text style={styles.voiceButtonText}>{voiceRecogToggle ? 'Stop' : 'Start'} Voice Recognition</Text>
       </TouchableOpacity>
+      <Button onPress={() => setIsElevenlabsEffective(!isElevenlabsEffective)} title={isElevenlabsEffective ? 'Use TTS' : 'Use Elevenlabs'} />
     </View>
   );
 };

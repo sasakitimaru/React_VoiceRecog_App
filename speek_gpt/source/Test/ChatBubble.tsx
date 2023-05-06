@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import CorrectGrammer from './Conversation/CorrectGrammer';
-import TranslateText from './Conversation/TranslateText';
+import CorrectGrammer from '../components/Conversation/CorrectGrammer';
+import TranslateText from './TranslateText.js';
 
 type ChatBubbleProps = {
     isUser: boolean;

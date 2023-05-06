@@ -36,6 +36,8 @@
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-get-random-values": "^1.8.0",
+    "react-native-i18n": "^2.0.15",
+    "react-native-iap": "^12.10.5",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-permissions": "^3.8.0",

@@ -25,6 +25,14 @@
           ],
           "category": "function",
           "resourceName": "whisper"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "translateGPT"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -89,6 +97,12 @@
       "service": "Lambda"
     },
     "speekgpte76c72d3": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "translateGPT": {
       "build": true,
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
@@ -171,6 +185,30 @@
         {
           "category": "function",
           "resourceName": "speekgpte76c72d3"
+        }
+      ]
+    },
+    "AMPLIFY_function_translateGPT_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "translateGPT"
+        }
+      ]
+    },
+    "AMPLIFY_function_translateGPT_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "translateGPT"
+        }
+      ]
+    },
+    "AMPLIFY_function_translateGPT_yourApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "translateGPT"
         }
       ]
     },

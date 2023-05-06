@@ -13,8 +13,6 @@ module.exports = async function() {
     TrackPlayer.stop();
   });
 
-  TrackPlayer.destroy();
-
   TrackPlayer.addEventListener('remote-seek', async (event) => {
     await TrackPlayer.seekTo(event.position);
   });

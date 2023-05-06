@@ -21,6 +21,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/translategpt": {
+      "name": "/translategpt",
+      "lambdaFunction": "translateGPT",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }
