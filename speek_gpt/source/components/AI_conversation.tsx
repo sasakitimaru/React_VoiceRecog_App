@@ -11,6 +11,7 @@ import VoiceRecog from './VoiceRecog';
 import sendMessage from './History/index';
 import fetchLastSectionID from './History/GetLastSectionID';
 import { Auth } from 'aws-amplify';
+import { Iconify } from 'react-native-iconify';
 
 type Message = {
   messageID: string | number[];
@@ -55,7 +56,7 @@ const AI_conversation:React.FC = (topic) => {
           }}
           style={{ marginLeft: 10 }}
         >
-        <Text>Back</Text>
+        <Iconify icon="material-symbols:arrow-back-ios-new" size={30} color="#000000" />
         </TouchableOpacity>
       ),
       headerRight: () => (
@@ -67,7 +68,7 @@ const AI_conversation:React.FC = (topic) => {
           }}
           style={{ marginRight: 10 }}
         >
-        <Text>quit&write</Text>
+        <Iconify icon="ic:outline-save-alt" size={30} color="#000000" />
         </TouchableOpacity>
       ),
     });
@@ -76,7 +77,7 @@ const AI_conversation:React.FC = (topic) => {
     <SafeAreaView style={styles.container}>
       <ChatList messages={messages}/>
       {/* <TextInputArea setMessages={setMessages} /> */}
-      <VoiceRecog messages={messages} setMessages={setMessages} topic={topic}/>
+      <VoiceRecog messages={messages} setMessages={setMessages} topic={topic} isElevenlabsEffective={false}/>
     </SafeAreaView>
   );
 }

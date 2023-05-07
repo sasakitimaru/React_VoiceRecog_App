@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import formatUTCtoJapanDate from './History/format';
+import { Iconify } from 'react-native-iconify';
 
 type conversationsHistory = {
     sectionID: string;
@@ -39,7 +40,7 @@ const History = ({ route }) => {
                     onPress={() => navigation.goBack()}
                     style={{ marginLeft: 10 }}
                 >
-                    <Text>Back</Text>
+                    <Iconify icon="material-symbols:arrow-back-ios-new" size={30} color="#000000" />
                 </TouchableOpacity>
             ),
         });

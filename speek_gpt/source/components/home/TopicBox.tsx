@@ -17,11 +17,11 @@ const TopicBox:React.FC<TopicBoxProps> = ({topic}) => {
       navigate.navigate('AI_conversation', {topic: topic})
     };
     const colors = [
-        '#8EF1FF',
+        '#33CCFF',
         '#8EB8FF',
         '#C299FF'
     ];
-    const backgroundColor = colors[1]
+    const backgroundColor = colors[0]
 
     return (
         <Animatable.View
@@ -41,18 +41,11 @@ export default TopicBox;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     borderRadius: 10,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
+    marginBottom: 12,
     elevation: 4,
   },
   cardContent: {
@@ -61,7 +54,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardText: {
+    color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

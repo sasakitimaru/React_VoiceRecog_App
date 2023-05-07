@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, FlatList, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, FlatList, Text, TextInput } from 'react-native';
 import TopicBox from './home/TopicBox';
 import data from '../prompt.json';
+import { Iconify } from 'react-native-iconify';
+// import TextInputArea from './TextInputArea';
 // import  LinearGradient  from 'react-native-linear-gradient';
 
 const ConversationList: React.FC = () => {
@@ -19,16 +21,20 @@ const ConversationList: React.FC = () => {
     setTopicRandom();
   }, []);
   return (
+    <>
     <View style={styles.container}>
+      <Text style={styles.titleText}>トピックを決めて会話を始めよう！</Text>
+      <TouchableOpacity style={styles.button} onPress={() => setTopicRandom()}>
+        <Text style={styles.buttonText}>NEXT</Text>
+      </TouchableOpacity>
       <FlatList
         style={{ padding: 10 }}
         data={topic}
         renderItem={({ item }) => (<TopicBox topic={item}/>)}
       />
-      <TouchableOpacity style={styles.button} onPress={() => setTopicRandom()}>
-        <Text style={styles.buttonText}>Flush</Text>
-      </TouchableOpacity>
     </View>
+    {/* <TextInputArea></TextInputArea> */}
+    </>
   );
 };
 
@@ -41,16 +47,22 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   button: {
-    width: '50%',
+    // width: '50%',
     padding: 10,
     backgroundColor: '#8EB8FF',
     alignItems: 'center',
-    borderRadius: 5,
-    marginBottom: '20%',
+    borderRadius: 30,
+    marginBottom: '5%',
   },
   buttonText: {
-    color: 'black',
+    color: '#fff',
     fontSize: 14,
+    fontWeight: 'bold',
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: '5%',
   },
 });
 

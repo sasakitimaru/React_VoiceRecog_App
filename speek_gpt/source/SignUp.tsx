@@ -15,9 +15,6 @@ const SignUp = () => {
     <View style={styles.container}>
       <TitleAndComment />
       <CreateForm />
-      <TouchableOpacity style={styles.input} onPress={() => moveTodesignatedPage(desiredPageName)}>
-        <Text style={styles.submitText}>For debug: Move to designated page</Text>
-      </TouchableOpacity>
     </View>
   );
 };

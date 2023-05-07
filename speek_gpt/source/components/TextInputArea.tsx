@@ -11,30 +11,25 @@ import {
 
 import GenerateResponse from './GenerateResponse';
 
-type TextInputAreaProps = {
-    setMessages: React.Dispatch<React.SetStateAction<Array<{ text: string; isUser: boolean }>>>;
-  };
-
-const TextInputArea = ({setMessages}: TextInputAreaProps) => {
+const TextInputArea = () => {
     const [textInput, setTextInput] = useState('');
       
     const handleSendMessage = async() => {
         const currentTextInput = textInput;
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            { text: currentTextInput, isUser: true },
-        ]);
+        // setMessages((prevMessages) => [
+        //     ...prevMessages,
+        //     { text: currentTextInput, isUser: true },
+        // ]);
         
         setTextInput('');
         setTimeout(() => {
             Keyboard.dismiss();
         }, 1);
 
-        const aiResponse = await GenerateResponse(currentTextInput);
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            { text: aiResponse, isUser: false },
-        ]);
+        // setMessages((prevMessages) => [
+        //     ...prevMessages,
+        //     { text: aiResponse, isUser: false },
+        // ]);
     };
     
     return (
@@ -58,7 +53,7 @@ const TextInputArea = ({setMessages}: TextInputAreaProps) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 0,
+        flex: 1,
         justifyContent: 'flex-end',
     },
     inputContainer: {

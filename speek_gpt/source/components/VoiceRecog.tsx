@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Button } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Button, ActivityIndicator} from 'react-native';
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
@@ -7,6 +7,7 @@ import UUID from 'react-native-uuid';
 import Tts from 'react-native-tts'; //Use this when Elevenlabs is uneffective
 import TrackPlayer from 'react-native-track-player';
 import Elevenlabs from './Conversation/ElevenLabAPI';
+import { Iconify } from 'react-native-iconify';
 
 
 type Message = {
@@ -26,13 +27,15 @@ type VoiceRecogProps = {
   topic: any;
   messages: Message[];
   setMessages: SetMessages;
+  isElevenlabsEffective: boolean;
 };
 
-const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic }) => {
+const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, isElevenlabsEffective }) => {
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
-  const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
+  // const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
+  const [isLoadingToggle, setIsLoadingToggle] = useState<boolean>(false);
   const [recognigedText, setRecognigedText] = useState<string>('');
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
@@ -138,10 +141,12 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
 
   const handleVoiceRecognition = async () => {
     if (voiceRecogToggle) {
+      setIsLoadingToggle(true);
       const audioFile = await stopRecording();
       const transcription: string | void = await whisper(audioFile);
-      console.log('transcription', transcription)
+      // console.log('transcription', transcription)
       setRecognigedText(transcription);
+      setIsLoadingToggle(false); // !isLoadingToggleだと前のステートが反映されないまま反転処理をしようとしてうまくいかない
       setSendMessageToggle(!sendMessageToggle);
     } else {
       if (isElevenlabsEffective) {
@@ -165,9 +170,19 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic })
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleVoiceRecognition} style={styles.voiceButton}>
-        <Text style={styles.voiceButtonText}>{voiceRecogToggle ? 'Stop' : 'Start'} Voice Recognition</Text>
+        {/* {voiceRecogToggle ? 
+          <Iconify icon="material-symbols:android-recorder" size={24} color="white" /> 
+          : 
+          null  */}
+        { isLoadingToggle ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : voiceRecogToggle ? (
+          <Iconify icon="material-symbols:android-recorder" size={24} color="white" /> 
+        ) : (
+          <Iconify icon="material-symbols:mic" size={24} color="white" />
+        )}
       </TouchableOpacity>
-      <Button onPress={() => setIsElevenlabsEffective(!isElevenlabsEffective)} title={isElevenlabsEffective ? 'Use TTS' : 'Use Elevenlabs'} />
+      {/* <Button onPress={() => setIsElevenlabsEffective(!isElevenlabsEffective)} title={isElevenlabsEffective ? 'Use TTS' : 'Use Elevenlabs'} /> */}
     </View>
   );
 };
@@ -181,7 +196,7 @@ const styles = StyleSheet.create({
   },
   voiceButton: {
     backgroundColor: '#2196f3',
-    borderRadius: 20,
+    borderRadius: 50,
     padding: 10,
     marginBottom: 10,
   },

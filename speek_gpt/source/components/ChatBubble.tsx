@@ -3,6 +3,7 @@ import { View, Text, StyleSheet} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CorrectGrammer from './Conversation/CorrectGrammer';
 import TranslateText from './Conversation/TranslateText';
+import { Iconify } from 'react-native-iconify';
 
 type ChatBubbleProps = {
     isUser: boolean;
@@ -41,15 +42,15 @@ const ChatBubble = ({ isUser, text }: ChatBubbleProps) => {
             <Text style={styles.chatText}>{text}</Text>
             { isUser ? 
                 <TouchableOpacity style={styles.reviewButton} onPress={() => addCorrectedText()} >
-                <Text style={styles.reviewText}>review</Text>
+                    <Iconify icon="codicon:open-preview" size={20} color="blue" />
                 </TouchableOpacity>
                 : 
                 <TouchableOpacity style={styles.translateButton} onPress={() => addTranslatedText()} >
-                <Text style={styles.reviewText}>translate</Text>
+                    <Iconify icon="material-symbols:translate" size={20} color="blue" />
                 </TouchableOpacity>
             }   
-            {isReviewPushed ? <Text>{`corrected:\n${correctedText}`}</Text> : null}
-            {isTranslatedPushed ? <Text>{`translated:\n${translatedText}`}</Text> : null}
+            {isReviewPushed ? <Text>{`修正例:\n${correctedText}`}</Text> : null}
+            {isTranslatedPushed ? <Text>{`翻訳例:\n${translatedText}`}</Text> : null}
         </View>
     );
 };
