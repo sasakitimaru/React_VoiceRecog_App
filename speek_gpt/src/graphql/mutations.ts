@@ -13,6 +13,7 @@ export const createUser = /* GraphQL */ `
       email
       conversations {
         sectionID
+        topic
         timestamp
         conversation {
           messageID
@@ -37,6 +38,7 @@ export const updateUser = /* GraphQL */ `
       email
       conversations {
         sectionID
+        topic
         timestamp
         conversation {
           messageID
@@ -61,6 +63,7 @@ export const deleteUser = /* GraphQL */ `
       email
       conversations {
         sectionID
+        topic
         timestamp
         conversation {
           messageID

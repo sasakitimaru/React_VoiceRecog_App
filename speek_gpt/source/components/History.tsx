@@ -5,6 +5,7 @@ import formatUTCtoJapanDate from './History/format';
 
 type conversationsHistory = {
     sectionID: string;
+    topic: string;
     timestamp: string;
     conversation: conversation;
 }
@@ -67,7 +68,7 @@ const History = ({ route }) => {
                         onPress={() => exportFetchedUser({ item })}
                         style={styles.listItem}
                     >
-                        <Text>{formatUTCtoJapanDate(item.timestamp)}</Text>
+                        <Text>{item.topic}</Text>
                     </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.sectionID}

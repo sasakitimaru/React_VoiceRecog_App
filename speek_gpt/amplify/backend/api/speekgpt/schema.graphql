@@ -11,6 +11,7 @@ type Conversation {
 
 type ConversationEntry {
   sectionID: ID
+  topic: String
   timestamp: String
   conversation: [Conversation]
 }
@@ -42,6 +43,7 @@ input ConversationInput {
 
 input ConversationEntryInput {
   sectionID: ID
+  topic: String
   timestamp: String
   conversation: [ConversationInput]
 }

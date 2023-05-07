@@ -11,6 +11,7 @@ export type CreateUserInput = {
 
 export type ConversationEntryInput = {
   sectionID?: string | null,
+  topic?: string | null,
   timestamp?: string | null,
   conversation?: Array< ConversationInput | null > | null,
 };
@@ -85,6 +86,7 @@ export type User = {
 export type ConversationEntry = {
   __typename: "ConversationEntry",
   sectionID?: string | null,
+  topic?: string | null,
   timestamp?: string | null,
   conversation?:  Array<Conversation | null > | null,
 };
@@ -106,6 +108,11 @@ export type UpdateUserInput = {
 
 export type DeleteUserInput = {
   id: string,
+};
+
+export type MessageForAIInput = {
+  role?: string | null,
+  content?: string | null,
 };
 
 export type ModelUserFilterInput = {
@@ -195,6 +202,7 @@ export type CreateUserMutation = {
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
+      topic?: string | null,
       timestamp?: string | null,
       conversation?:  Array< {
         __typename: "Conversation",
@@ -223,6 +231,7 @@ export type UpdateUserMutation = {
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
+      topic?: string | null,
       timestamp?: string | null,
       conversation?:  Array< {
         __typename: "Conversation",
@@ -251,6 +260,7 @@ export type DeleteUserMutation = {
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
+      topic?: string | null,
       timestamp?: string | null,
       conversation?:  Array< {
         __typename: "Conversation",
@@ -263,6 +273,14 @@ export type DeleteUserMutation = {
     createdAt?: string | null,
     updatedAt?: string | null,
   } | null,
+};
+
+export type GenerateResponseQueryVariables = {
+  messageForAI?: Array< MessageForAIInput | null > | null,
+};
+
+export type GenerateResponseQuery = {
+  generateResponse?: string | null,
 };
 
 export type GetUserQueryVariables = {
@@ -278,6 +296,7 @@ export type GetUserQuery = {
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
+      topic?: string | null,
       timestamp?: string | null,
       conversation?:  Array< {
         __typename: "Conversation",
@@ -309,6 +328,7 @@ export type ListUsersQuery = {
       conversations?:  Array< {
         __typename: "ConversationEntry",
         sectionID?: string | null,
+        topic?: string | null,
         timestamp?: string | null,
       } | null > | null,
       createdAt?: string | null,
@@ -331,6 +351,7 @@ export type OnCreateUserSubscription = {
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
+      topic?: string | null,
       timestamp?: string | null,
       conversation?:  Array< {
         __typename: "Conversation",
@@ -358,6 +379,7 @@ export type OnUpdateUserSubscription = {
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
+      topic?: string | null,
       timestamp?: string | null,
       conversation?:  Array< {
         __typename: "Conversation",
@@ -385,6 +407,7 @@ export type OnDeleteUserSubscription = {
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
+      topic?: string | null,
       timestamp?: string | null,
       conversation?:  Array< {
         __typename: "Conversation",

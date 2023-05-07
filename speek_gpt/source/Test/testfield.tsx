@@ -62,7 +62,7 @@ const Test = () => {
 
     return (
         <View style={styles.container}>
-        <CalendarList
+        <Calendar
             onDayPress={day => {
                 setSelected(day.dateString);
                 navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })
@@ -73,8 +73,8 @@ const Test = () => {
             pagingEnabled
             // pastScrollRange={2}
             // futureScrollRange={2}
-            scrollEnabled
-            showScrollIndicator
+            // scrollEnabled
+            // showScrollIndicator
         />
         </View>
     );

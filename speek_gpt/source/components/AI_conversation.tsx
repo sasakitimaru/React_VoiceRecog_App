@@ -17,7 +17,6 @@ type Message = {
   isUser: boolean;
   message: string;
 }
-type topic = string;
 
 const AI_conversation:React.FC = (topic) => {
   // const [textInput, setTextInput] = useState('');
@@ -43,7 +42,8 @@ const AI_conversation:React.FC = (topic) => {
       getlastsectionID();
   }, []);
   useEffect(() => {
-    if(headerRigtToggle) sendMessage(LastSectionID+1, messages);
+    //　LastSectionIDのstateの更新後に実行するためにuseEffectで実行
+    if(headerRigtToggle) sendMessage(LastSectionID+1, topic.route.params.topic, messages);
   }, [headerRigtToggle]);
   useEffect(() => {
     navigation.setOptions({
@@ -61,6 +61,7 @@ const AI_conversation:React.FC = (topic) => {
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
+            // sendMessage(LastSectionID+1, topic, messages); ここでは送信されない
             navigation.goBack();
             setHeaderRightToggle(!headerRigtToggle)
           }}

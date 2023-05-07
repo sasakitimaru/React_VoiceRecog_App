@@ -2,6 +2,11 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const generateResponse = /* GraphQL */ `
+  query GenerateResponse($messageForAI: [MessageForAIInput]) {
+    generateResponse(messageForAI: $messageForAI)
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -10,6 +15,7 @@ export const getUser = /* GraphQL */ `
       email
       conversations {
         sectionID
+        topic
         timestamp
         conversation {
           messageID
@@ -24,15 +30,14 @@ export const getUser = /* GraphQL */ `
   }
 `;
 export const getUserSectionID = /* GraphQL */ `
-query GetUser($id: ID!) {
-  getUser(id: $id) {
-    conversations {
-      sectionID
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      conversations {
+        sectionID
+      }
     }
   }
-}
 `;
-
 export const listUsers = /* GraphQL */ `
   query ListUsers(
     $filter: ModelUserFilterInput
@@ -46,6 +51,7 @@ export const listUsers = /* GraphQL */ `
         email
         conversations {
           sectionID
+          topic
           timestamp
         }
         createdAt
