@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import formatUTCtoJapanDate from './History/format';
+import formatUTCtoJapanDate from './format';
 
 type conversationsHistory = {
     sectionID: string;

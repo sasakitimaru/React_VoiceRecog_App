@@ -6,6 +6,7 @@ import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
 import Test from './Test/testfield';
+import Calendar from './components/Calendar';
 
 const Home:React.FC = () => {
   const [PageName, setPageName] = useState<String>('Home');
@@ -25,7 +26,7 @@ const Home:React.FC = () => {
         setCurrentComponent(<ConversationList />);
         break;
       case 'History': 
-        setCurrentComponent(<History />);
+        setCurrentComponent(<Calendar />);
         break;
       case 'Setting':
         setCurrentComponent(<Setting />);

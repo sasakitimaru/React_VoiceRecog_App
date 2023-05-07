@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { useNavigation } from '@react-navigation/native';
 import fetchUser from '../components/History/FetchUser';
-import formatUTCtoJapanDate from './format';
+import formatUTCtoJapanDate from './History/format';
 
 type conversationsHistory = {
     sectionID: string;
@@ -62,7 +62,7 @@ const Test = () => {
 
     return (
         <View style={styles.container}>
-        <CalendarList
+        <Calendar
             onDayPress={day => {
                 setSelected(day.dateString);
                 navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })
@@ -70,11 +70,11 @@ const Test = () => {
             markedDates={{
                 ...DateList
             }}
-            pagingEnabled
+            // pagingEnabled
             // pastScrollRange={2}
             // futureScrollRange={2}
-            scrollEnabled
-            showScrollIndicator
+            // scrollEnabled
+            // showScrollIndicator
         />
         </View>
     );

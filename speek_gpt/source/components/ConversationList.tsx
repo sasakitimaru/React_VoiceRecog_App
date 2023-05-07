@@ -21,6 +21,7 @@ const ConversationList: React.FC = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        style={{ padding: 10 }}
         data={topic}
         renderItem={({ item }) => (<TopicBox topic={item}/>)}
       />
