@@ -33,6 +33,14 @@
           ],
           "category": "function",
           "resourceName": "translateGPT"
+        },
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "Elevenlabs"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -84,6 +92,12 @@
     }
   },
   "function": {
+    "Elevenlabs": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "GPTAPI": {
       "build": true,
       "dependsOn": [],
@@ -116,6 +130,30 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_Elevenlabs_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "Elevenlabs"
+        }
+      ]
+    },
+    "AMPLIFY_function_Elevenlabs_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "Elevenlabs"
+        }
+      ]
+    },
+    "AMPLIFY_function_Elevenlabs_yourApiKey": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "Elevenlabs"
+        }
+      ]
+    },
     "AMPLIFY_function_GPTAPI_deploymentBucketName": {
       "usedBy": [
         {

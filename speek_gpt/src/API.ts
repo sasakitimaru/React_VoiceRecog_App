@@ -26,6 +26,8 @@ export type ConversationInput = {
 export type ModelUserConditionInput = {
   name?: ModelStringInput | null,
   email?: ModelStringInput | null,
+  usedElevenTokens?: ModelIntInput | null,
+  usedTokens?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
@@ -73,11 +75,25 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type User = {
   __typename: "User",
   id?: string | null,
   name?: string | null,
   email?: string | null,
+  usedElevenTokens?: number | null,
+  usedTokens?: number | null,
   conversations?:  Array<ConversationEntry | null > | null,
   createdAt?: string | null,
   updatedAt?: string | null,
@@ -103,6 +119,8 @@ export type UpdateUserInput = {
   id?: string | null,
   name?: string | null,
   email?: string | null,
+  usedElevenTokens?: number | null,
+  usedTokens?: number | null,
   conversations?: Array< ConversationEntryInput | null > | null,
 };
 
@@ -119,6 +137,8 @@ export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
   email?: ModelStringInput | null,
+  usedElevenTokens?: ModelIntInput | null,
+  usedTokens?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
@@ -152,6 +172,8 @@ export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   email?: ModelSubscriptionStringInput | null,
+  usedElevenTokens?: ModelSubscriptionIntInput | null,
+  usedTokens?: ModelSubscriptionIntInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
@@ -188,6 +210,18 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
+};
+
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -199,6 +233,8 @@ export type CreateUserMutation = {
     id?: string | null,
     name?: string | null,
     email?: string | null,
+    usedElevenTokens?: number | null,
+    usedTokens?: number | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
@@ -228,6 +264,8 @@ export type UpdateUserMutation = {
     id?: string | null,
     name?: string | null,
     email?: string | null,
+    usedElevenTokens?: number | null,
+    usedTokens?: number | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
@@ -257,6 +295,8 @@ export type DeleteUserMutation = {
     id?: string | null,
     name?: string | null,
     email?: string | null,
+    usedElevenTokens?: number | null,
+    usedTokens?: number | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
@@ -293,6 +333,8 @@ export type GetUserQuery = {
     id?: string | null,
     name?: string | null,
     email?: string | null,
+    usedElevenTokens?: number | null,
+    usedTokens?: number | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
@@ -325,6 +367,8 @@ export type ListUsersQuery = {
       id?: string | null,
       name?: string | null,
       email?: string | null,
+      usedElevenTokens?: number | null,
+      usedTokens?: number | null,
       conversations?:  Array< {
         __typename: "ConversationEntry",
         sectionID?: string | null,
@@ -348,6 +392,8 @@ export type OnCreateUserSubscription = {
     id?: string | null,
     name?: string | null,
     email?: string | null,
+    usedElevenTokens?: number | null,
+    usedTokens?: number | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
@@ -376,6 +422,8 @@ export type OnUpdateUserSubscription = {
     id?: string | null,
     name?: string | null,
     email?: string | null,
+    usedElevenTokens?: number | null,
+    usedTokens?: number | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,
@@ -404,6 +452,8 @@ export type OnDeleteUserSubscription = {
     id?: string | null,
     name?: string | null,
     email?: string | null,
+    usedElevenTokens?: number | null,
+    usedTokens?: number | null,
     conversations?:  Array< {
       __typename: "ConversationEntry",
       sectionID?: string | null,

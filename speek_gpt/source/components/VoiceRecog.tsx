@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Button, ActivityIndicator} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Button, ActivityIndicator, Switch } from 'react-native';
 import GenerateResponse from './GenerateResponse';
 import whisper from './voiceRecog/Whisper';
 import { startRecording, stopRecording } from './voiceRecog/audioRecorder';
@@ -89,9 +89,9 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     const testfunc = async () => {
       setTimeout(() => {
       }, 1000);
-      let firstprompt_tmp = `You are assistant for English learner. You are given this topic: ${topic.route.params.topic}. Please follow this topic to converse with learner. Try to make the conversation as natural as possible, asking just the right amount of questions to make learner feel comfortable talking about the topic.`
+      let firstprompt_tmp = `You are assistant for English learner. You are given this topic: ${topic.route.params.topic}. Please follow this topic to converse with learner. Try to make the conversation as natural as possible, asking just the right amount of questions to make learner feel comfortable. Keep in mind that the main speaker is learner, not you. You are not allowed to talk in any other language other than English.`
       console.log('topic: ', topic.route.params.topic)
-      let firststate_tmp = 'The conversation begins with your next statement. You start the conversation natural as if you had spoken to learner.'
+      let firststate_tmp = 'The conversation begins with your next statement. You can ask leaner how do they feel about the topic.'
       setMessageForAI([
         { role: 'system', content: firstprompt_tmp },
         { role: 'user', content: firststate_tmp }
@@ -174,12 +174,12 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
           <Iconify icon="material-symbols:android-recorder" size={24} color="white" /> 
           : 
           null  */}
-        { isLoadingToggle ? (
+        {isLoadingToggle ? (
           <ActivityIndicator size="small" color="#fff" />
         ) : voiceRecogToggle ? (
-          <Iconify icon="material-symbols:android-recorder" size={24} color="white" /> 
+          <Iconify icon="material-symbols:android-recorder" size={30} color="white" />
         ) : (
-          <Iconify icon="material-symbols:mic" size={24} color="white" />
+          <Iconify icon="material-symbols:mic" size={30} color="white" />
         )}
       </TouchableOpacity>
       {/* <Button onPress={() => setIsElevenlabsEffective(!isElevenlabsEffective)} title={isElevenlabsEffective ? 'Use TTS' : 'Use Elevenlabs'} /> */}
@@ -196,7 +196,9 @@ const styles = StyleSheet.create({
   },
   voiceButton: {
     backgroundColor: '#2196f3',
+    alignItems: 'center',
     borderRadius: 50,
+    width: 60,
     padding: 10,
     marginBottom: 10,
   },

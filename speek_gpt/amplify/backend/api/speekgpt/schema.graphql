@@ -20,6 +20,8 @@ type User @model{
   id: ID
   name: String
   email: String
+  usedElevenTokens: Int
+  usedTokens: Int
   conversations: [ConversationEntry]
   createdAt: String
   updatedAt: String
@@ -27,6 +29,14 @@ type User @model{
 
 type Query {
   generateResponse(messageForAI: [MessageForAIInput]): String
+}
+
+type Query {
+  getUser(id: ID!): User{
+    conversationsHistory{
+      sectionID
+    }
+  }
 }
 
 input MessageForAIInput {
@@ -59,6 +69,7 @@ input UpdateUserInput {
   id: ID
   name: String
   email: String
+  usedElevenTokens: Int
+  usedTokens: Int
   conversations: [ConversationEntryInput]
 }
-

@@ -61,6 +61,11 @@
           "yourApiKey": "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",
           "deploymentBucketName": "amplify-speekgpt-reactdev-120216-deployment",
           "s3Key": "amplify-builds/translateGPT-72654c79625167375657-build.zip"
+        },
+        "Elevenlabs": {
+          "yourApiKey": "b644b5e4b52101c2043d52887f8076a7",
+          "deploymentBucketName": "amplify-speekgpt-reactdev-120216-deployment",
+          "s3Key": "amplify-builds/Elevenlabs-773561646b5253564163-build.zip"
         }
       },
       "api": {

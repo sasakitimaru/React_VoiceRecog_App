@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { useNavigation } from '@react-navigation/native';
@@ -25,7 +25,7 @@ type DateList = {
         selectedColor: string;
     }
 }
-const Test = () => {
+const Calendarview = () => {
     const navigation = useNavigation();
     const [selected, setSelected] = useState<string>('');
     const [conversationsHistory, setConversationsHistory] = useState<conversationsHistory[]>([]);
@@ -62,7 +62,7 @@ const Test = () => {
 
     return (
         <View style={styles.container}>
-        <Calendar
+        <CalendarList
             onDayPress={day => {
                 setSelected(day.dateString);
                 navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })
@@ -70,16 +70,16 @@ const Test = () => {
             markedDates={{
                 ...DateList
             }}
-            // pagingEnabled
+            // pagingEnabled={true}
             // pastScrollRange={2}
             // futureScrollRange={2}
-            // scrollEnabled
-            // showScrollIndicator
+            scrollEnabled
+            showScrollIndicator
         />
         </View>
     );
 };
-export default Test;
+export default Calendarview;
 
 const styles = StyleSheet.create({
     container: {

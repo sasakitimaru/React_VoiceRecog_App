@@ -20,6 +20,8 @@ type Message = {
 }
 
 const AI_conversation:React.FC = (topic) => {
+   const isElevenlabsEffective = topic.route.params.isElevenlabsEffective;
+  // console.log("AI_conversation.tsx: isElevenlabsEffective:", topic.route.params.isElevenlabsEffective);
   // const [textInput, setTextInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const navigation = useNavigation();
@@ -77,7 +79,7 @@ const AI_conversation:React.FC = (topic) => {
     <SafeAreaView style={styles.container}>
       <ChatList messages={messages}/>
       {/* <TextInputArea setMessages={setMessages} /> */}
-      <VoiceRecog messages={messages} setMessages={setMessages} topic={topic} isElevenlabsEffective={false}/>
+      <VoiceRecog messages={messages} setMessages={setMessages} topic={topic} isElevenlabsEffective={isElevenlabsEffective}/>
     </SafeAreaView>
   );
 }

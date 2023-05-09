@@ -28,6 +28,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/Elevenlabs": {
+      "name": "/Elevenlabs",
+      "lambdaFunction": "Elevenlabs",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

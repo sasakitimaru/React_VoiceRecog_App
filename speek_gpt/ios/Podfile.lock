@@ -448,8 +448,6 @@ PODS:
     - React-Core
   - RNAWSCognito (6.2.0):
     - React-Core
-  - RNCAsyncStorage (1.18.1):
-    - React-Core
   - RNCMaskedView (0.1.11):
     - React
   - RNCPicker (2.4.10):
@@ -575,7 +573,6 @@ DEPENDENCIES:
   - RNAudioRecord (from `../node_modules/react-native-audio-record`)
   - RNAudioRecorderPlayer (from `../node_modules/react-native-audio-recorder-player`)
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - RNFS (from `../node_modules/react-native-fs`)
@@ -700,8 +697,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-audio-recorder-player"
   RNAWSCognito:
     :path: "../node_modules/amazon-cognito-identity-js"
-  RNCAsyncStorage:
-    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPicker:
@@ -787,7 +782,6 @@ SPEC CHECKSUMS:
   RNAudioRecord: 162fee3b8fb628773ec704bf0333823125be2ed7
   RNAudioRecorderPlayer: 6638283925b46808310c9fdf803ebabc3abdbadc
   RNAWSCognito: 100c2a1e21010f4e201d8ac43deb400b8d5e7ba6
-  RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNCPicker: 0bc2f0a29abcca7b7ed44a2d036aac9ab6d25700
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688

@@ -15,7 +15,6 @@
   "dependencies": {
     "@aws-amplify/cli": "^11.1.0",
     "@aws-sdk/client-dynamodb": "^3.316.0",
-    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^9.3.9",
     "@react-native-picker/picker": "^2.4.10",

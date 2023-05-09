@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
+import { ElevenlabsContext } from '../ConversationList';
 
 type topic = string;
 
@@ -11,13 +12,15 @@ type TopicBoxProps = {
   topic: topic;
   // setTopic: setTopic;
 };
+
 const TopicBox:React.FC<TopicBoxProps> = ({topic}) => {
+    const  isElevenlabsEffective  = useContext(ElevenlabsContext);
     const navigate = useNavigation();
     const handlePress = () => {
-      navigate.navigate('AI_conversation', {topic: topic})
+      navigate.navigate('AI_conversation', {topic: topic, isElevenlabsEffective})
     };
     const colors = [
-        '#33CCFF',
+        '#0099FF',
         '#8EB8FF',
         '#C299FF'
     ];

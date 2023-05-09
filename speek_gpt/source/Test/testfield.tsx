@@ -62,7 +62,7 @@ const Test = () => {
 
     return (
         <View style={styles.container}>
-        <Calendar
+        <CalendarList
             onDayPress={day => {
                 setSelected(day.dateString);
                 navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })

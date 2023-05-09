@@ -13,6 +13,8 @@ export const getUser = /* GraphQL */ `
       id
       name
       email
+      usedElevenTokens
+      usedTokens
       conversations {
         sectionID
         topic
@@ -30,13 +32,13 @@ export const getUser = /* GraphQL */ `
   }
 `;
 export const getUserSectionID = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      conversations {
-        sectionID
-      }
+query GetUser($id: ID!) {
+  getUser(id: $id) {
+    conversations {
+      sectionID
     }
   }
+}
 `;
 export const listUsers = /* GraphQL */ `
   query ListUsers(
@@ -49,6 +51,8 @@ export const listUsers = /* GraphQL */ `
         id
         name
         email
+        usedElevenTokens
+        usedTokens
         conversations {
           sectionID
           topic
