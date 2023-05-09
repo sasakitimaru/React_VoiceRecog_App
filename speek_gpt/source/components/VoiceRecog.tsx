@@ -8,6 +8,8 @@ import Tts from 'react-native-tts'; //Use this when Elevenlabs is uneffective
 import TrackPlayer from 'react-native-track-player';
 import Elevenlabs from './Conversation/ElevenLabAPI';
 import { Iconify } from 'react-native-iconify';
+import CountTokens from './Conversation/CountTokens';
+import fetchUser from './History/FetchUser';
 
 
 type Message = {
@@ -39,8 +41,12 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
   const [recognigedText, setRecognigedText] = useState<string>('');
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
-
+  const [userid, setUserid] = useState<string>('');
   useEffect(() => {
+    fetchUser().then((user) => {
+      setUserid(user.id);
+    });
+
     return () => {
       const cleanup = async () => {
         TrackPlayer.pause();
@@ -53,6 +59,24 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      if (messages[messages.length - 1].isUser === true) {
+        console.log("checkpoint 3:", messages[messages.length - 1].isUser)
+        const cntcharactorfunc = async () => {
+          const cntCharactor = messages[messages.length - 1].message.length;
+          console.log("cntCharactor:", cntCharactor);
+          console.log("messages[messages.length - 1].message:", messages[messages.length - 1].message);
+          if (cntCharactor > 0 && userid !== '') {
+            console.log("userid:", userid);
+            await CountTokens(userid, cntCharactor);
+          }
+        }
+        cntcharactorfunc();
+      }
+    }
+  }, [messages]);
 
   useEffect(() => {
     if (isElevenlabsEffective) {

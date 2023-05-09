@@ -18,14 +18,12 @@ type conversation = {
 
 
 const History = ({ route }) => {
+    console.log('route', route)
     const { date, conversationsHistoryProps } = route.params;
     const conversationsHistory: conversationsHistory[] = conversationsHistoryProps;
-    // const [selectedDate, setSelectedDate] = useState<string>(selected);
-    // console.log('selectedDate', selectedDate)
-    console.log('selected_b', date)
-    console.log('timestamp', formatUTCtoJapanDate(conversationsHistoryProps[0].timestamp))
     const navigation = useNavigation();
     const exportFetchedUser = (props) => {
+        if(!props.item.conversation) navigation.navigate('ChatHistory', { props: [] });
         const item: conversationsHistory = props.item.conversation;
         navigation.navigate('ChatHistory', { props: item });
     }
@@ -67,7 +65,7 @@ const History = ({ route }) => {
                         onPress={() => exportFetchedUser({ item })}
                         style={styles.listItem}
                     >
-                        <Text>{formatUTCtoJapanDate(item.timestamp)}</Text>
+                        <Text>{(item.timestamp) && formatUTCtoJapanDate(item.timestamp)}</Text>
                     </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.sectionID}

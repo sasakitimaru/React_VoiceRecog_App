@@ -44,6 +44,7 @@ const Calendarview = () => {
     }, []);
 
     useEffect(() => {
+        if(!conversationsHistory) return;
         conversationsHistory.map((conversation) => {
             const timestamp = conversation.timestamp;
             const formattedDate = formatUTCtoJapanDate(timestamp);
@@ -59,13 +60,14 @@ const Calendarview = () => {
             })
         })
     }, [conversationsHistory]);
-
     return (
         <View style={styles.container}>
         <CalendarList
             onDayPress={day => {
                 setSelected(day.dateString);
-                navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })
+                (day.dateString) ? 
+                    navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })
+                    : navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })
             }}
             markedDates={{
                 ...DateList

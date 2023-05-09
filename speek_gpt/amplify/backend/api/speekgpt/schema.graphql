@@ -31,14 +31,6 @@ type Query {
   generateResponse(messageForAI: [MessageForAIInput]): String
 }
 
-type Query {
-  getUser(id: ID!): User{
-    conversationsHistory{
-      sectionID
-    }
-  }
-}
-
 input MessageForAIInput {
   role: String
   content: String
@@ -62,6 +54,8 @@ input CreateUserInput {
   id: ID
   name: String
   email: String
+  usedElevenTokens: Int
+  usedTokens: Int
   conversations: [ConversationEntryInput]
 }
 

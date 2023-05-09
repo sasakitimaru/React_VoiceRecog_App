@@ -6,6 +6,8 @@ export type CreateUserInput = {
   id?: string | null,
   name?: string | null,
   email?: string | null,
+  usedElevenTokens?: number | null,
+  usedTokens?: number | null,
   conversations?: Array< ConversationEntryInput | null > | null,
 };
 

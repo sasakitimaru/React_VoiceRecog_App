@@ -34,12 +34,13 @@
     },
     "categories": {
       "auth": {
-        "speekgptc441461a": {}
+        "speekgptc441461a": {},
+        "userPoolGroups": {}
       },
       "function": {
         "speekgpte76c72d3": {
           "deploymentBucketName": "amplify-speekgpt-reactdev-120216-deployment",
-          "s3Key": "amplify-builds/speekgpte76c72d3-4657644a38365654746a-build.zip"
+          "s3Key": "amplify-builds/speekgpte76c72d3-4638545557376e674d70-build.zip"
         },
         "GPTAPI": {
           "yourApiKey": "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",

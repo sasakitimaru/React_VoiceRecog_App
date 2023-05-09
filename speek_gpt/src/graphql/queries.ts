@@ -7,6 +7,15 @@ export const generateResponse = /* GraphQL */ `
     generateResponse(messageForAI: $messageForAI)
   }
 `;
+export const getUserSectionID = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      conversations {
+        sectionID
+      }
+    }
+  }
+`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -30,15 +39,6 @@ export const getUser = /* GraphQL */ `
       updatedAt
     }
   }
-`;
-export const getUserSectionID = /* GraphQL */ `
-query GetUser($id: ID!) {
-  getUser(id: $id) {
-    conversations {
-      sectionID
-    }
-  }
-}
 `;
 export const listUsers = /* GraphQL */ `
   query ListUsers(
