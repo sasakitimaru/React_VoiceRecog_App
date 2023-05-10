@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  Text,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ChatList } from './index';
@@ -27,6 +27,24 @@ const AI_conversation:React.FC = (topic) => {
   const navigation = useNavigation();
   const [LastSectionID, setLastSectionID] = useState<number | null>(0);
   const [headerRigtToggle, setHeaderRightToggle] = useState<boolean>(false);
+
+  const createSaveAlert = () =>
+    Alert.alert(
+      "会話を保存しますか？",
+      "保存すると会話を終了します。",
+      [
+        {
+          text: "キャンセル",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "保存する", onPress: () => {
+          navigation.goBack();
+          setHeaderRightToggle(!headerRigtToggle)
+        }}
+      ],
+      { cancelable: false }
+    );
 
   useEffect(() => {
       const getlastsectionID = async () => {
@@ -65,8 +83,7 @@ const AI_conversation:React.FC = (topic) => {
         <TouchableOpacity
           onPress={() => {
             // sendMessage(LastSectionID+1, topic, messages); ここでは送信されない
-            navigation.goBack();
-            setHeaderRightToggle(!headerRigtToggle)
+            createSaveAlert();
           }}
           style={{ marginRight: 10 }}
         >

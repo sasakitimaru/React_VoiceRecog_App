@@ -26,9 +26,9 @@ const UnderMenuBar: React.FC<UnderMenuBarProps> = ({ setPageName }) => {
                     <Text style={styles.icontext}>アカウント</Text>
                 </View>
             </IconButton>
-            <IconButton setPageName={setPageName} Pagetarget='test'>
+            {/* <IconButton setPageName={setPageName} Pagetarget='test'>
                 <Text>Test</Text>
-            </IconButton>
+            </IconButton> */}
         </View>
     )
 };
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     },
     iconcontainer: {
         // flexDirection: 'column',
+        paddingTop: 10,
         justifyContent: 'center',
         alignItems: 'center',
     },

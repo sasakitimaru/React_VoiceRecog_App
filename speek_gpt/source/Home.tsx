@@ -1,15 +1,16 @@
-import React, { useState,useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { UnderMenuBar } from './components';
 import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
 import Test from './Test/testfield';
 import Calendar from './components/Calendar';
+import { SafeAreaFrameContext } from 'react-native-safe-area-context';
 
-const Home:React.FC = () => {
+const Home: React.FC = () => {
   const [PageName, setPageName] = useState<String>('Home');
-  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList/>);
+  const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList />);
   const navigate = useNavigation();
   useEffect(() => {
     navigate.setOptions({
@@ -19,12 +20,12 @@ const Home:React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('current PageName: ',PageName)
+    console.log('current PageName: ', PageName)
     switch (PageName) {
       case 'Home':
         setCurrentComponent(<ConversationList />);
         break;
-      case 'History': 
+      case 'History':
         setCurrentComponent(<Calendar />);
         break;
       case 'Setting':
@@ -43,7 +44,9 @@ const Home:React.FC = () => {
         {currentComponent}
       </View>
       <View style={styles.bottomView}>
-        <UnderMenuBar setPageName={setPageName}></UnderMenuBar>
+        <SafeAreaView>
+          <UnderMenuBar setPageName={setPageName}></UnderMenuBar>
+        </SafeAreaView>
       </View>
     </View>
   );
@@ -60,18 +63,18 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '80%',
-    paddingBottom: '18%',
+    paddingBottom: '20%',
   },
   bottomView: {
     width: '100%',
-    height: '10%',
+    height: '11%',
     backgroundColor: '#DCDCDC',
     // borderTopColor: 'black',
     // borderTopWidth: 1.0,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute', 
-    bottom: 0, 
+    position: 'absolute',
+    bottom: 0,
   },
   textStyle: {
     color: '#fff',
