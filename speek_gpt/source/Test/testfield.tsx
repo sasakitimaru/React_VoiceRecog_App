@@ -1,89 +1,90 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { useNavigation } from '@react-navigation/native';
-import fetchUser from '../components/History/FetchUser';
-import formatUTCtoJapanDate from './format';
+import React, { useEffect, useRef } from 'react';
+import { Animated, StyleSheet, Text } from 'react-native';
+import { View } from 'react-native-animatable';
+import Svg, { Circle } from 'react-native-svg';
 
-type conversationsHistory = {
-    sectionID: string;
-    timestamp: string;
-    conversation: conversation;
-}
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-type conversation = {
-    messageID: string;
-    isUser: boolean;
-    message: string;
-    timestamp: string;
-}[]
-
-type DateList = {
-    [key: string]: {
-        selected: boolean;
-        marked: boolean;
-        selectedColor: string;
+export default function CircleAnimation(token: number, plan: string, isElevenlabs: boolean) {
+    let percentageOfUsedNomalToken: number = 0; // 0 はtokenに置き換え
+    let percentageOfUsedPremiumToken: number = 0; // 0 はtokenに置き換え
+    isElevenlabs = false;
+    let circlecolor = '';
+    isElevenlabs ? circlecolor = '#136FFF' : circlecolor = '#FF367F';
+    token = 800;
+    plan = 'premium';
+    if (plan === 'nomal') {
+        percentageOfUsedNomalToken = token / 200;
+        percentageOfUsedPremiumToken = token / 100;
+    } else if (plan === 'standard') {
+        percentageOfUsedNomalToken = token / 2000;
+        percentageOfUsedPremiumToken = token / 100;
+    } else if (plan === 'premium') {
+        percentageOfUsedNomalToken = token / 2000;
+        percentageOfUsedPremiumToken = token / 1000;
     }
-}
-const Test = () => {
-    const navigation = useNavigation();
-    const [selected, setSelected] = useState<string>('');
-    const [conversationsHistory, setConversationsHistory] = useState<conversationsHistory[]>([]);
-    const [DateList, setDateList] = useState<DateList>({});
+    const animatedValue = useRef(new Animated.Value(0)).current;
+    const r = 30;
+    const circumference = 2 * Math.PI * r; // 2πr
+
+    const strokeDashoffset = animatedValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [circumference, circumference * Math.max(1 - (
+            isElevenlabs ? percentageOfUsedPremiumToken :
+                percentageOfUsedNomalToken
+        ), 0)],
+    });
 
     useEffect(() => {
-        const asyncfetchuser = async () => {
-            const currentUser = await fetchUser();
-            if (!currentUser) {
-                console.error("User not found:", currentUser.id);
-            } else {
-                setConversationsHistory(currentUser.conversations)
-            }
-        }
-        asyncfetchuser();
+        Animated.timing(animatedValue, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: false,
+        }).start();
     }, []);
-
-    useEffect(() => {
-        conversationsHistory.map((conversation) => {
-            const timestamp = conversation.timestamp;
-            const formattedDate = formatUTCtoJapanDate(timestamp);
-            setDateList((prev) => {
-                return {
-                    ...prev,
-                    [formattedDate]: {
-                        selected: true,
-                        marked: true,
-                        selectedColor: '',
-                    }
-                }
-            })
-        })
-    }, [conversationsHistory]);
 
     return (
         <View style={styles.container}>
-        <CalendarList
-            onDayPress={day => {
-                setSelected(day.dateString);
-                navigation.navigate('History', { date:day.dateString,conversationsHistoryProps: conversationsHistory })
-            }}
-            markedDates={{
-                ...DateList
-            }}
-            pagingEnabled
-            // pastScrollRange={2}
-            // futureScrollRange={2}
-            // scrollEnabled
-            // showScrollIndicator
-        />
+            <Text>CircleAnimation</Text>
+            <View style={styles.circlecontainer}>
+                <Svg viewBox="0 0 100 100">
+                    <Circle
+                        cx="50"
+                        cy="50"
+                        r={r}
+                        fill="none"
+                        stroke="#E6E6E6"
+                        strokeWidth={5}
+                    />
+                    <AnimatedCircle
+                        cx="50"
+                        cy="50"
+                        r={r}
+                        fill="none"
+                        transform={`rotate(-90 50 50)`}
+                        stroke={circlecolor}
+                        strokeWidth={5}
+                        strokeDasharray={circumference}
+                        strokeDashoffset={strokeDashoffset}
+                    />
+                </Svg>
+            </View>
         </View>
     );
-};
-export default Test;
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    circlecontainer: {
+        flex: 0.4,
+        width: '80%',
+        height: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // backgroundColor: '#FFEEEE',
     },
 });
