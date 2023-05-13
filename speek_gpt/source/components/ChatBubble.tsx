@@ -4,13 +4,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import CorrectGrammer from './Conversation/CorrectGrammer';
 import TranslateText from './Conversation/TranslateText';
 import { Iconify } from 'react-native-iconify';
+import AudioReplay from './Conversation/AudioReplay';
 
 type ChatBubbleProps = {
     isUser: boolean;
     text: string;
+    isElevenlabsEffective?: boolean;
 };
 
-const ChatBubble = ({ isUser, text }: ChatBubbleProps) => {
+const ChatBubble:React.FC<ChatBubbleProps> = ({ isUser, text, isElevenlabsEffective }) => {
     const [isReviewPushed, setIsReviewPushed] = useState<boolean>(false);
     const [isCorrected, setIsCorrected] = useState<boolean>(false);
     const [isTranslated, setIsTranslated] = useState<boolean>(false);
@@ -45,9 +47,12 @@ const ChatBubble = ({ isUser, text }: ChatBubbleProps) => {
                     <Iconify icon="codicon:open-preview" size={20} color="blue" />
                 </TouchableOpacity>
                 : 
-                <TouchableOpacity style={styles.translateButton} onPress={() => addTranslatedText()} >
-                    <Iconify icon="material-symbols:translate" size={20} color="blue" />
-                </TouchableOpacity>
+                <View style={styles.isReplayContainer}>
+                    <TouchableOpacity style={styles.translateButton} onPress={() => addTranslatedText()} >
+                        <Iconify icon="material-symbols:translate" size={20} color="blue" />
+                    </TouchableOpacity>
+                    <AudioReplay text={text} isElevenlabsEffective={isElevenlabsEffective}/>
+                </View>
             }   
             {isReviewPushed ? <Text>{`修正例:\n${correctedText}`}</Text> : null}
             {isTranslatedPushed ? <Text>{`翻訳例:\n${translatedText}`}</Text> : null}
@@ -84,7 +89,11 @@ const styles = StyleSheet.create({
     reviewText: {
         fontSize: 16,
         color: '#2196f3',
-    }
+    },
+    isReplayContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
 });
 
 export default ChatBubble;

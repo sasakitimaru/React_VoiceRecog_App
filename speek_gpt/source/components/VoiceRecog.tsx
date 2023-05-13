@@ -85,7 +85,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
   useEffect(() => {
     if (isElevenlabsEffective) {
       TrackPlayer.addEventListener('remote-seek', (event) => {
-        TrackPlayer.seekTo(1);
+        // TrackPlayer.seekTo(1);
       });
     } else {
       Tts.addEventListener('tts-start', (event) => {

@@ -94,7 +94,7 @@ const AI_conversation:React.FC = (topic) => {
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <ChatList messages={messages}/>
+      <ChatList messages={messages} isElevenlabsEffective={isElevenlabsEffective}/>
       {/* <TextInputArea setMessages={setMessages} /> */}
       <VoiceRecog messages={messages} setMessages={setMessages} topic={topic} isElevenlabsEffective={isElevenlabsEffective}/>
     </SafeAreaView>

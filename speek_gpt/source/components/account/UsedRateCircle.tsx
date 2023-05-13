@@ -24,15 +24,15 @@ const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) =
     isElevenlabs ? circlecolor = '#136FFF' : circlecolor = '#FF367F';
     // token = 800;
     if (plan === 'nomal') {
-        percentageOfUsedNomalToken = token / 200;
-        percentageOfUsedPremiumToken = eleventoken / 100;
+        percentageOfUsedNomalToken = token / 2000;
+        percentageOfUsedPremiumToken = eleventoken / 1000;
     } else if (plan === 'standard') {
         console.log('standard', isElevenlabs)
-        percentageOfUsedNomalToken = token / 2000;
-        percentageOfUsedPremiumToken = eleventoken / 100;
-    } else if (plan === 'premium') {
-        percentageOfUsedNomalToken = token / 3000;
+        percentageOfUsedNomalToken = token / 30000;
         percentageOfUsedPremiumToken = eleventoken / 1000;
+    } else if (plan === 'premium') {
+        percentageOfUsedNomalToken = token / 50000;
+        percentageOfUsedPremiumToken = eleventoken / 30000;
     }
     const animatedValue = useRef(new Animated.Value(0)).current;
     const r = 40;
@@ -64,7 +64,7 @@ const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) =
                         r={r}
                         fill="none"
                         stroke="#E6E6E6"
-                        strokeWidth={5}
+                        strokeWidth={7}
                     />
                     <AnimatedCircle
                         cx="50"
@@ -73,7 +73,7 @@ const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) =
                         fill="none"
                         transform={`rotate(-90 50 50)`}
                         stroke={circlecolor}
-                        strokeWidth={5}
+                        strokeWidth={7}
                         strokeDasharray={circumference}
                         strokeDashoffset={strokeDashoffset}
                     />

@@ -25,11 +25,11 @@ const PurchaseModalView:React.FC = () => {
             <View style={styles.container}>
                 { isPlanPremium ?
                     <Text style={styles.header}>{`まるでネイティブと\n話しているような没頭感`}</Text>
-                    : <Text style={styles.header}>{`スタンダードプランで\nAIと英会話を楽しもう`}</Text>
+                    : <Text style={styles.header}>{`いつでもどこでも\nAIと英会話を楽しもう`}</Text>
                 }
                 { isPlanPremium ?
-                    <Text style={styles.comment}>ネイティブ読み上げ機能を使うと、より自然な音声で文章を読み上げます。プランに登録しなくても200文字まで無料でお試しが可能です！</Text>
-                    : <Text style={styles.comment}>{`スタンダードプランでは3000文字/月での使用が可能になります。プランに登録しなくても300文字まで無料でお試しが可能です！`}</Text>
+                    <Text style={styles.comment}>ネイティブ読み上げ機能を使うと、より自然な音声で文章を読み上げます。プランに登録しなくても1000文字まで無料でお試しが可能です！</Text>
+                    : <Text style={styles.comment}>{`スタンダードプランでは通常の読み上げモードで30000文字/月での使用が可能になります。プランに登録しなくても2000文字まで無料でお試しが可能です！`}</Text>
                 }
                 {isPlanPremium ? <PremiumpPlanBox /> : <StandardPlanBox />}
                 <TouchableOpacity
