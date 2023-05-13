@@ -9,6 +9,7 @@ export const onCreateUser = /* GraphQL */ `
       name
       email
       plan
+      planRegisteredDate
       usedElevenTokens
       usedTokens
       validDays
@@ -35,6 +36,7 @@ export const onUpdateUser = /* GraphQL */ `
       name
       email
       plan
+      planRegisteredDate
       usedElevenTokens
       usedTokens
       validDays
@@ -61,6 +63,7 @@ export const onDeleteUser = /* GraphQL */ `
       name
       email
       plan
+      planRegisteredDate
       usedElevenTokens
       usedTokens
       validDays
@@ -75,6 +78,48 @@ export const onDeleteUser = /* GraphQL */ `
           timestamp
         }
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateInquiryForm = /* GraphQL */ `
+  subscription OnCreateInquiryForm(
+    $filter: ModelSubscriptionInquiryFormFilterInput
+  ) {
+    onCreateInquiryForm(filter: $filter) {
+      email
+      item
+      message
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateInquiryForm = /* GraphQL */ `
+  subscription OnUpdateInquiryForm(
+    $filter: ModelSubscriptionInquiryFormFilterInput
+  ) {
+    onUpdateInquiryForm(filter: $filter) {
+      email
+      item
+      message
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteInquiryForm = /* GraphQL */ `
+  subscription OnDeleteInquiryForm(
+    $filter: ModelSubscriptionInquiryFormFilterInput
+  ) {
+    onDeleteInquiryForm(filter: $filter) {
+      email
+      item
+      message
+      id
       createdAt
       updatedAt
     }

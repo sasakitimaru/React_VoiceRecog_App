@@ -12,6 +12,7 @@ export const createUser = /* GraphQL */ `
       name
       email
       plan
+      planRegisteredDate
       usedElevenTokens
       usedTokens
       validDays
@@ -41,6 +42,7 @@ export const updateUser = /* GraphQL */ `
       name
       email
       plan
+      planRegisteredDate
       usedElevenTokens
       usedTokens
       validDays
@@ -70,6 +72,7 @@ export const deleteUser = /* GraphQL */ `
       name
       email
       plan
+      planRegisteredDate
       usedElevenTokens
       usedTokens
       validDays
@@ -84,6 +87,51 @@ export const deleteUser = /* GraphQL */ `
           timestamp
         }
       }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createInquiryForm = /* GraphQL */ `
+  mutation CreateInquiryForm(
+    $input: CreateInquiryFormInput!
+    $condition: ModelInquiryFormConditionInput
+  ) {
+    createInquiryForm(input: $input, condition: $condition) {
+      email
+      item
+      message
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateInquiryForm = /* GraphQL */ `
+  mutation UpdateInquiryForm(
+    $input: UpdateInquiryFormInput!
+    $condition: ModelInquiryFormConditionInput
+  ) {
+    updateInquiryForm(input: $input, condition: $condition) {
+      email
+      item
+      message
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteInquiryForm = /* GraphQL */ `
+  mutation DeleteInquiryForm(
+    $input: DeleteInquiryFormInput!
+    $condition: ModelInquiryFormConditionInput
+  ) {
+    deleteInquiryForm(input: $input, condition: $condition) {
+      email
+      item
+      message
+      id
       createdAt
       updatedAt
     }

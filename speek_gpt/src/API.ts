@@ -7,6 +7,7 @@ export type CreateUserInput = {
   name?: string | null,
   email?: string | null,
   plan?: string | null,
+  planRegisteredDate?: string | null,
   validDays?: number | null,
   usedElevenTokens?: number | null,
   usedTokens?: number | null,
@@ -31,6 +32,7 @@ export type ModelUserConditionInput = {
   name?: ModelStringInput | null,
   email?: ModelStringInput | null,
   plan?: ModelStringInput | null,
+  planRegisteredDate?: ModelStringInput | null,
   usedElevenTokens?: ModelIntInput | null,
   usedTokens?: ModelIntInput | null,
   validDays?: ModelIntInput | null,
@@ -99,6 +101,7 @@ export type User = {
   name?: string | null,
   email?: string | null,
   plan?: string | null,
+  planRegisteredDate?: string | null,
   usedElevenTokens?: number | null,
   usedTokens?: number | null,
   validDays?: number | null,
@@ -128,6 +131,7 @@ export type UpdateUserInput = {
   name?: string | null,
   email?: string | null,
   plan?: string | null,
+  planRegisteredDate?: string | null,
   validDays?: number | null,
   usedElevenTokens?: number | null,
   usedTokens?: number | null,
@@ -135,6 +139,42 @@ export type UpdateUserInput = {
 };
 
 export type DeleteUserInput = {
+  id?: string | null,
+};
+
+export type CreateInquiryFormInput = {
+  email?: string | null,
+  item?: string | null,
+  message?: string | null,
+};
+
+export type ModelInquiryFormConditionInput = {
+  email?: ModelStringInput | null,
+  item?: ModelStringInput | null,
+  message?: ModelStringInput | null,
+  and?: Array< ModelInquiryFormConditionInput | null > | null,
+  or?: Array< ModelInquiryFormConditionInput | null > | null,
+  not?: ModelInquiryFormConditionInput | null,
+};
+
+export type InquiryForm = {
+  __typename: "InquiryForm",
+  email?: string | null,
+  item?: string | null,
+  message?: string | null,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateInquiryFormInput = {
+  email?: string | null,
+  item?: string | null,
+  message?: string | null,
+  id: string,
+};
+
+export type DeleteInquiryFormInput = {
   id: string,
 };
 
@@ -148,6 +188,7 @@ export type ModelUserFilterInput = {
   name?: ModelStringInput | null,
   email?: ModelStringInput | null,
   plan?: ModelStringInput | null,
+  planRegisteredDate?: ModelStringInput | null,
   usedElevenTokens?: ModelIntInput | null,
   usedTokens?: ModelIntInput | null,
   validDays?: ModelIntInput | null,
@@ -180,11 +221,27 @@ export type ModelUserConnection = {
   nextToken?: string | null,
 };
 
+export type ModelInquiryFormFilterInput = {
+  email?: ModelStringInput | null,
+  item?: ModelStringInput | null,
+  message?: ModelStringInput | null,
+  and?: Array< ModelInquiryFormFilterInput | null > | null,
+  or?: Array< ModelInquiryFormFilterInput | null > | null,
+  not?: ModelInquiryFormFilterInput | null,
+};
+
+export type ModelInquiryFormConnection = {
+  __typename: "ModelInquiryFormConnection",
+  items:  Array<InquiryForm | null >,
+  nextToken?: string | null,
+};
+
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   name?: ModelSubscriptionStringInput | null,
   email?: ModelSubscriptionStringInput | null,
   plan?: ModelSubscriptionStringInput | null,
+  planRegisteredDate?: ModelSubscriptionStringInput | null,
   usedElevenTokens?: ModelSubscriptionIntInput | null,
   usedTokens?: ModelSubscriptionIntInput | null,
   validDays?: ModelSubscriptionIntInput | null,
@@ -236,6 +293,14 @@ export type ModelSubscriptionIntInput = {
   notIn?: Array< number | null > | null,
 };
 
+export type ModelSubscriptionInquiryFormFilterInput = {
+  email?: ModelSubscriptionStringInput | null,
+  item?: ModelSubscriptionStringInput | null,
+  message?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionInquiryFormFilterInput | null > | null,
+  or?: Array< ModelSubscriptionInquiryFormFilterInput | null > | null,
+};
+
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
   condition?: ModelUserConditionInput | null,
@@ -248,6 +313,7 @@ export type CreateUserMutation = {
     name?: string | null,
     email?: string | null,
     plan?: string | null,
+    planRegisteredDate?: string | null,
     usedElevenTokens?: number | null,
     usedTokens?: number | null,
     validDays?: number | null,
@@ -281,6 +347,7 @@ export type UpdateUserMutation = {
     name?: string | null,
     email?: string | null,
     plan?: string | null,
+    planRegisteredDate?: string | null,
     usedElevenTokens?: number | null,
     usedTokens?: number | null,
     validDays?: number | null,
@@ -314,6 +381,7 @@ export type DeleteUserMutation = {
     name?: string | null,
     email?: string | null,
     plan?: string | null,
+    planRegisteredDate?: string | null,
     usedElevenTokens?: number | null,
     usedTokens?: number | null,
     validDays?: number | null,
@@ -332,6 +400,57 @@ export type DeleteUserMutation = {
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
+  } | null,
+};
+
+export type CreateInquiryFormMutationVariables = {
+  input: CreateInquiryFormInput,
+  condition?: ModelInquiryFormConditionInput | null,
+};
+
+export type CreateInquiryFormMutation = {
+  createInquiryForm?:  {
+    __typename: "InquiryForm",
+    email?: string | null,
+    item?: string | null,
+    message?: string | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateInquiryFormMutationVariables = {
+  input: UpdateInquiryFormInput,
+  condition?: ModelInquiryFormConditionInput | null,
+};
+
+export type UpdateInquiryFormMutation = {
+  updateInquiryForm?:  {
+    __typename: "InquiryForm",
+    email?: string | null,
+    item?: string | null,
+    message?: string | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteInquiryFormMutationVariables = {
+  input: DeleteInquiryFormInput,
+  condition?: ModelInquiryFormConditionInput | null,
+};
+
+export type DeleteInquiryFormMutation = {
+  deleteInquiryForm?:  {
+    __typename: "InquiryForm",
+    email?: string | null,
+    item?: string | null,
+    message?: string | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 
@@ -354,6 +473,7 @@ export type GetUserQuery = {
     name?: string | null,
     email?: string | null,
     plan?: string | null,
+    planRegisteredDate?: string | null,
     usedElevenTokens?: number | null,
     usedTokens?: number | null,
     validDays?: number | null,
@@ -390,6 +510,7 @@ export type ListUsersQuery = {
       name?: string | null,
       email?: string | null,
       plan?: string | null,
+      planRegisteredDate?: string | null,
       usedElevenTokens?: number | null,
       usedTokens?: number | null,
       validDays?: number | null,
@@ -406,6 +527,44 @@ export type ListUsersQuery = {
   } | null,
 };
 
+export type GetInquiryFormQueryVariables = {
+  id: string,
+};
+
+export type GetInquiryFormQuery = {
+  getInquiryForm?:  {
+    __typename: "InquiryForm",
+    email?: string | null,
+    item?: string | null,
+    message?: string | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListInquiryFormsQueryVariables = {
+  filter?: ModelInquiryFormFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListInquiryFormsQuery = {
+  listInquiryForms?:  {
+    __typename: "ModelInquiryFormConnection",
+    items:  Array< {
+      __typename: "InquiryForm",
+      email?: string | null,
+      item?: string | null,
+      message?: string | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
 };
@@ -417,6 +576,7 @@ export type OnCreateUserSubscription = {
     name?: string | null,
     email?: string | null,
     plan?: string | null,
+    planRegisteredDate?: string | null,
     usedElevenTokens?: number | null,
     usedTokens?: number | null,
     validDays?: number | null,
@@ -449,6 +609,7 @@ export type OnUpdateUserSubscription = {
     name?: string | null,
     email?: string | null,
     plan?: string | null,
+    planRegisteredDate?: string | null,
     usedElevenTokens?: number | null,
     usedTokens?: number | null,
     validDays?: number | null,
@@ -481,6 +642,7 @@ export type OnDeleteUserSubscription = {
     name?: string | null,
     email?: string | null,
     plan?: string | null,
+    planRegisteredDate?: string | null,
     usedElevenTokens?: number | null,
     usedTokens?: number | null,
     validDays?: number | null,
@@ -499,5 +661,53 @@ export type OnDeleteUserSubscription = {
     } | null > | null,
     createdAt?: string | null,
     updatedAt?: string | null,
+  } | null,
+};
+
+export type OnCreateInquiryFormSubscriptionVariables = {
+  filter?: ModelSubscriptionInquiryFormFilterInput | null,
+};
+
+export type OnCreateInquiryFormSubscription = {
+  onCreateInquiryForm?:  {
+    __typename: "InquiryForm",
+    email?: string | null,
+    item?: string | null,
+    message?: string | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateInquiryFormSubscriptionVariables = {
+  filter?: ModelSubscriptionInquiryFormFilterInput | null,
+};
+
+export type OnUpdateInquiryFormSubscription = {
+  onUpdateInquiryForm?:  {
+    __typename: "InquiryForm",
+    email?: string | null,
+    item?: string | null,
+    message?: string | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteInquiryFormSubscriptionVariables = {
+  filter?: ModelSubscriptionInquiryFormFilterInput | null,
+};
+
+export type OnDeleteInquiryFormSubscription = {
+  onDeleteInquiryForm?:  {
+    __typename: "InquiryForm",
+    email?: string | null,
+    item?: string | null,
+    message?: string | null,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };

@@ -21,6 +21,7 @@ type User @model{
   name: String
   email: String
   plan: String
+  planRegisteredDate: String
   usedElevenTokens: Int
   usedTokens: Int
   validDays: Int
@@ -31,6 +32,12 @@ type User @model{
 
 type Query {
   generateResponse(messageForAI: [MessageForAIInput]): String
+}
+
+type InquiryForm @model{
+  email: String
+  item: String
+  message: String
 }
 
 input MessageForAIInput {
@@ -57,6 +64,7 @@ input CreateUserInput {
   name: String
   email: String
   plan: String
+  planRegisteredDate: String
   validDays: Int
   usedElevenTokens: Int
   usedTokens: Int
@@ -68,8 +76,19 @@ input UpdateUserInput {
   name: String
   email: String
   plan: String
+  planRegisteredDate: String
   validDays: Int
   usedElevenTokens: Int
   usedTokens: Int
   conversations: [ConversationEntryInput]
+}
+
+input DeleteUserInput {
+  id: ID
+}
+
+input CreateInquiryFormInput {
+  email: String
+  item: String
+  message: String
 }

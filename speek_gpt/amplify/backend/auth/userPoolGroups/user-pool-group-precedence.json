@@ -2,5 +2,9 @@
   {
     "groupName": "speekgptc441461a",
     "precedence": 1
+  },
+  {
+    "groupName": "reactAI",
+    "precedence": 2
   }
 ]

@@ -5,6 +5,7 @@ import data from '../prompt.json';
 import { Iconify } from 'react-native-iconify';
 import PurchaseModalView from './home/PurchaseModalView';
 import { ModalVisibleContext } from '../../App';
+import { useSelector } from 'react-redux';
 // import { Iconify } from 'react-native-iconify';
 // import TextInputArea from './TextInputArea';
 // import  LinearGradient  from 'react-native-linear-gradient';
@@ -13,33 +14,71 @@ type ModalVisibleContextProps = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+type Plan = 'nomal' | 'standard' | 'premium' | 'special';
+
+type User = {
+  plan: Plan;
+  token: number;
+  eleventoken: number;
+};
+
+type Tokenlimit = {
+  [P in Plan]: {
+    token: number;
+    eleventoken: number;
+  };
+};
+
 export const ElevenlabsContext = createContext<boolean>(false);
 
 const ConversationList: React.FC = () => {
+  const user: User = useSelector((state: any) => state.user);
+  const tokenlimit: Tokenlimit = {
+    nomal: {
+      token: 1000,
+      eleventoken: 1000,
+    },
+    standard: {
+      token: 30000,
+      eleventoken: 1000,
+    },
+    premium: {
+      token: 50000,
+      eleventoken: 30000,
+    },
+    special: {
+      token: 9999999,
+      eleventoken: 9999999,
+    }
+  };
   const [topic, setTopic] = useState<string[]>([]);
   const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
   const [cnt, setCnt] = useState<number>(0);
   const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
-  const ElevenlabsDetails = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['キャンセル', 'ネイティブ読み上げ機能を使う', 'ネイティブ読み上げ機能を使わない'],
-        cancelButtonIndex: 0,
-        title: 'ネイティブ読み上げ機能について',
-        message: 'ネイティブ読み上げ機能を使うと、より自然な音声で文章を読み上げます。あなたがプレミアムプランでない場合は1000トークンまでに使用が制限されます。'
-      },
-      (buttonIndex) => {
-        if (buttonIndex === 1) {
-          setIsElevenlabsEffective(true);
-        } else if (buttonIndex === 2) {
-          setIsElevenlabsEffective(false);
-        }
-      }
-    );
-  };
+
   useEffect(() => {
-    console.log('modalVisible: ', modalVisible);
-    }, [modalVisible]);
+    const ElevenlabsDetails = () => {
+      console.log('user: ', user);
+      if (user.eleventoken > tokenlimit[user.plan].eleventoken) {
+        console.log('eleventoken: ', user.eleventoken);
+        console.log('tokenlimit: ', tokenlimit[user.plan].eleventoken);
+        ActionSheetIOS.showActionSheetWithOptions(
+          {
+            options: ['キャンセル'],
+            cancelButtonIndex: 0,
+            title: '使用上限に到達しました。',
+            message: 'さらにネイティブ読み上げ機能を使いたい場合、Premiumプランへのご登録をお願いいたします。'
+          },
+          (buttonIndex) => {
+            if (buttonIndex === 0) setIsElevenlabsEffective(false);
+          }
+        );
+      }
+    };
+    if (isElevenlabsEffective) ElevenlabsDetails();
+    console.log('isElevenlabsEffective: ', isElevenlabsEffective)
+  }, [isElevenlabsEffective]);
 
   const setTopicRandom = () => {
     setTopic([]);
@@ -51,6 +90,7 @@ const ConversationList: React.FC = () => {
   };
   useEffect(() => {
     setTopicRandom();
+    setIsElevenlabsEffective(false);
   }, []);
   return (
     <View style={styles.container}>
@@ -81,7 +121,7 @@ const ConversationList: React.FC = () => {
         </TouchableOpacity>
       </View>
       {/* <ModalVisibleContext.Provider value={{modalVisible,setModalVisible}}> */}
-      <PurchaseModalView/>
+      <PurchaseModalView />
       {/* </ModalVisibleContext.Provider> */}
     </View>
     // {/* <TextInputArea></TextInputArea> */}

@@ -1,27 +1,50 @@
-import React, { useState, useEffect , useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { UnderMenuBar } from './components';
 import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
-import Test from './Test/testfield';
+// import Test from './Test/testfield';
 import Calendar from './components/Calendar';
 import fetchUser from './components/History/FetchUser';
 import { useDispatch, useSelector } from 'react-redux';
-import { initializeStateAction } from './redux/user/useractions';
+import { initializeStateAction, resetTokenLimitAction } from './redux/user/useractions';
+import { API, graphqlOperation } from 'aws-amplify';
+import { updateUser } from '../src/graphql/mutations';
 
 const Home: React.FC = () => {
   const [PageName, setPageName] = useState<String>('Home');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList />);
   const navigate = useNavigation();
   const dispatch = useDispatch();
-  const selecter = useSelector((state: any) => state);
+  // const selecter = useSelector((state: any) => state);
   useEffect(() => {
     fetchUser().then((user) => {
-      const { plan, usedTokens, usedElevenTokens } = user;
-      console.log('user: ', user.usedTokens)
-      dispatch(initializeStateAction( usedTokens, usedElevenTokens, plan));
-      console.log('selecter: ', selecter)
+      const { email, plan, usedTokens, usedElevenTokens } = user;
+      // console.log('user: ', user)
+      dispatch(initializeStateAction(email, usedTokens, usedElevenTokens, plan));
+      // console.log('selecter: ', selecter)
+      if (user.planRegisteredDate && Date.now() - Number(user.planRegisteredDate) > 2592000000) {
+        // if (true) {
+        const resetData = {
+          id: user.id,
+          usedElevenTokens: 0,
+          usedTokens: 0,
+          planRegisteredDate: Date.now(),
+        };
+        const updateSubscription = async () => {
+          try {
+            await API.graphql(
+              graphqlOperation(updateUser, { input: resetData })
+            );
+            dispatch(resetTokenLimitAction());
+            // console.log('resetData success ');
+          } catch (error) {
+            console.log('error: ', error);
+          }
+        };
+        updateSubscription();
+      }
     });
     navigate.setOptions({
       headerShown: true,
@@ -43,8 +66,8 @@ const Home: React.FC = () => {
       case 'Setting':
         setCurrentComponent(<Setting />);
         break;
-      case 'test':
-        setCurrentComponent(<Test />);
+      // case 'test':
+      // setCurrentComponent(<Test />);
       // default:
       //   setCurrentComponent(<ConversationList setTopic={setTopic}/>);
     }

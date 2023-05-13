@@ -26,8 +26,8 @@ const PlanView:React.FC<PlanViewProps> = ({PlanElement}) => {
             </Text>
             <View style={styles.plancontainer}>
                 <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`1ヶ月${PlanElement.planPrice[0]}円`} />
-                <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`3ヶ月${PlanElement.planPrice[1]}円`} />
-                <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`6ヶ月${PlanElement.planPrice[2]}円`} />
+                {/* <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`3ヶ月${PlanElement.planPrice[1]}円`} />
+                <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`6ヶ月${PlanElement.planPrice[2]}円`} /> */}
             </View>
         </View>
     );
@@ -36,7 +36,7 @@ export default PlanView;
 
 const styles = StyleSheet.create({
     standardRegisterplanContainer: {
-        flex: 0.80,
+        flex: 0.50,
         flexDirection: 'column',
         alignItems: 'center',
         padding: 10,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         width: '80%',
     },
     premiumRegisterplanContainer: {
-        flex: 0.80,
+        flex: 0.50,
         flexDirection: 'column',
         alignItems: 'center',
         padding: 10,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 30,
+        // padding: 30,
         margin: 15,
     },
     standardPlanheader: {

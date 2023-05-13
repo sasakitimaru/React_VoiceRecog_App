@@ -22,6 +22,7 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolName": "string"
     },
     "userPoolGroups": {
+      "reactAIGroupRole": "string",
       "speekgptc441461aGroupRole": "string"
     }
   },

@@ -39,7 +39,8 @@
     "useDefault": "default",
     "triggers": {},
     "userPoolGroupList": [
-      "speekgptc441461a"
+      "speekgptc441461a",
+      "reactAI"
     ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,

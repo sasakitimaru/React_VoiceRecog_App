@@ -19,14 +19,14 @@ const CreateForm = () => {
     const navigation = useNavigation();
     const [warningText, setWarningText] = useState('');
 
-    const checkpassword = (e) => {
+    const checkpassword = (e: any) => {
         console.log("confirm password: ", e);
         console.log("current password: ", password);
         const match = e === password;
         setPasswordsMatch(match);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         if(passwordsMatch) {
             e.preventDefault();
             try {

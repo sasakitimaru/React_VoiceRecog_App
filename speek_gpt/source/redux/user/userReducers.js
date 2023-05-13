@@ -23,6 +23,11 @@ const userReducer = (state = initialState.user, action) => {
                 ...state,
                 ...action.payload
             }
+        case useractions.RESET_TOKENLIMIT:
+            return {
+                ...state,
+                ...action.payload
+            }
         default:
             return state;
     }

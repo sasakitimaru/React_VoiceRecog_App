@@ -1,8 +1,9 @@
 export const INITIALIZE_STATE = 'INITIALIZE_STATE';
-export const initializeStateAction = (token,eleventoken,plan) => {
+export const initializeStateAction = (email,token,eleventoken,plan) => {
     return {
         type: INITIALIZE_STATE,
         payload: {
+            email: email,
             token: token,
             eleventoken: eleventoken,
             plan: plan
@@ -36,6 +37,17 @@ export const changePlanAction = (plan) => {
         type: CHANGE_PLAN,
         payload: {
             plan: plan
+        }
+    }
+}
+
+export const RESET_TOKENLIMIT = 'RESET_TOKENLIMIT';
+export const resetTokenLimitAction = () => {
+    return {
+        type: RESET_TOKENLIMIT,
+        payload: {
+            token: 0,
+            eleventoken: 0
         }
     }
 }

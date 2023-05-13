@@ -35,9 +35,10 @@ const PurchaseModalView:React.FC = () => {
                 <TouchableOpacity
                     style={styles.toStandardPlan}
                     onPress={() => setIsPlanPremium(!isPlanPremium)}>
-                    { isPlanPremium ? <Text>スタンダードプラン</Text> : <Text>プレミアムプラン</Text>}
+                    { isPlanPremium ? <Text style={{color: '#136FFF'}}>スタンダードプラン</Text> : <Text style={{color: '#FF367F'}}>プレミアムプラン</Text>}
                     <Iconify icon={"ic:sharp-arrow-right"} color={'black'} />
                 </TouchableOpacity>
+                <Text style={styles.termsOfService}>購読権はiTunesのアカウントで、次の支払い時期の24時間前に購読キャンセルするまで自動的に支払いが行われます。iTunesアカウントの設定に進み、自動支払いの更新を管理できます。購入が完了するとiTunesアカウントでお支払いが行われます。会員登録を行うことで、個人情報保護方針及びサービス条件に同意することとみなされます。</Text>
             </View>
         </Modal>
     );
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     },
     comment: {
         fontSize: 14,
+        fontStyle: 'italic',
         paddingTop: 15,
         paddingBottom: 15,
         paddingLeft: 25,
@@ -71,5 +73,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 10,
+    },
+    termsOfService: {
+        padding: 30,
+        color: '#222222',
     }
 });

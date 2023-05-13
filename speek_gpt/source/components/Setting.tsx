@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, TouchableOpacity, Text, FlatList, StyleSheet, ActionSheetIOS } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { Iconify } from 'react-native-iconify';
+import { useSelector } from 'react-redux';
 
 type ProfileListItem = {
   key: string;
@@ -10,18 +11,7 @@ type ProfileListItem = {
 };
 const Setting = () => {
   const navigation = useNavigation();
-  const [username, setUsername] = useState<String>('');
-  useEffect(() => {
-    fetchUserData()
-  }, []);
-  const fetchUserData = async () => {
-    try {
-      const user = await Auth.currentAuthenticatedUser();
-      setUsername(user.username);
-    } catch (error) {
-      console.log('Error fetching user data:', error);
-    }
-  };
+  const email = useSelector((state: any) => state.user.email);
   const handleInquiryForm = () => {
     navigation.navigate('InquiryForm');
   };
@@ -37,11 +27,26 @@ const Setting = () => {
     }
   };
 
+  const handleActionSheet = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: ['キャンセル', 'ログアウトする'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 0,
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 1) {
+          handleSignOut();
+        }
+      },
+    );
+  };
+
   const profileListItems: ProfileListItem[] = [
     {
       key: 'email', component:
         <TouchableOpacity style={styles.listItemcontainer}>
-          <Text>Email : {username}</Text>
+          <Text>Email : {email}</Text>
           <Iconify icon='ic:sharp-keyboard-arrow-right' size={30} color='#000000' />
         </TouchableOpacity>
     },
@@ -68,7 +73,7 @@ const Setting = () => {
       key: 'signOut', component:
         <TouchableOpacity
           style={styles.listItemcontainer}
-          onPress={handleSignOut}>
+          onPress={handleActionSheet}>
           <Text>ログアウト</Text>
           <Iconify icon='ic:sharp-keyboard-arrow-right' size={30} color='#000000' />
         </TouchableOpacity>

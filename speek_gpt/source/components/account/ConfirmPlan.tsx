@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useContext, useDeferredValue } from 'react';
+import React, { useEffect, useState, useContext, useDeferredValue } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Iconify } from 'react-native-iconify';
@@ -18,7 +18,7 @@ type User = {
     eleventoken: number;
 };
 
-type Plan = 'nomal' | 'standard' | 'premium';
+type Plan = 'nomal' | 'standard' | 'premium' | 'special';
 
 type Tokenlimit = {
     [P in Plan]: {
@@ -32,7 +32,7 @@ const ConfirmPlan = () => {
     // const [isModailVisible, setIsModalVisible] = useState<boolean>(false);
     const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
     useEffect(() => {
-    console.log('modalVisible: ', modalVisible);
+        console.log('modalVisible: ', modalVisible);
     }, [modalVisible]);
     const selecter = useSelector((state) => state.user);
     // console.log('selecter: ', selecter)
@@ -41,13 +41,13 @@ const ConfirmPlan = () => {
     //     token: 654,
     //     eleventoken: 123,
     // };
-    const user:User = useSelector((state: any) => state.user);
+    const user: User = useSelector((state: any) => state.user);
     let token = user.token;
     let eleventoken = user.eleventoken;
     let plan = user.plan;
-    const tokenlimit:Tokenlimit = {
+    const tokenlimit: Tokenlimit = {
         nomal: {
-            token: 2000,
+            token: 1000,
             eleventoken: 1000,
         },
         standard: {
@@ -57,6 +57,10 @@ const ConfirmPlan = () => {
         premium: {
             token: 50000,
             eleventoken: 30000,
+        },
+        special: {
+            token: 9999999,
+            eleventoken: 9999999,
         }
     };
     const navigation = useNavigation();
@@ -78,16 +82,16 @@ const ConfirmPlan = () => {
     }, []);
 
     return (
-        
+
         <View style={styles.container}>
-            
-            <Text style={styles.headerText}>{'現在のプラン：'+plan}</Text>
+
+            <Text style={styles.headerText}>{'現在のプラン：' + plan}</Text>
             <Text style={styles.hText}>スタンダードトークン</Text>
-            <Text style={{marginTop: 10}}>{token + '/' + tokenlimit[plan].token}</Text>
-            <UsedRateCircle user={user} isElevenlabs={false}/>
+            <Text style={{ marginTop: 10 }}>{token + '/' + tokenlimit[plan].token}</Text>
+            <UsedRateCircle user={user} isElevenlabs={false} />
             <Text style={styles.hText}>ネイティブトークン</Text>
-            <Text style={{marginTop: 10}}>{eleventoken + '/' + tokenlimit[plan].eleventoken}</Text>
-            <UsedRateCircle user={user} isElevenlabs={true}/>
+            <Text style={{ marginTop: 10 }}>{eleventoken + '/' + tokenlimit[plan].eleventoken}</Text>
+            <UsedRateCircle user={user} isElevenlabs={true} />
             <TouchableOpacity
                 onPress={() => setModalVisible(!modalVisible)}
             >
@@ -104,8 +108,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor:'#ffffff',
-    },  
+        backgroundColor: '#ffffff',
+    },
     headerText: {
         paddingTop: 20,
         paddingBottom: 20,
