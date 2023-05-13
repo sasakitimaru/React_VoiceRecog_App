@@ -7,23 +7,16 @@ export const generateResponse = /* GraphQL */ `
     generateResponse(messageForAI: $messageForAI)
   }
 `;
-export const getUserSectionID = /* GraphQL */ `
-  query GetUser($id: ID!) {
-    getUser(id: $id) {
-      conversations {
-        sectionID
-      }
-    }
-  }
-`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
       id
       name
       email
+      plan
       usedElevenTokens
       usedTokens
+      validDays
       conversations {
         sectionID
         topic
@@ -40,6 +33,15 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
+export const getUserSectionID = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      conversations {
+        sectionID
+      }
+    }
+  }
+`;
 export const listUsers = /* GraphQL */ `
   query ListUsers(
     $filter: ModelUserFilterInput
@@ -51,8 +53,10 @@ export const listUsers = /* GraphQL */ `
         id
         name
         email
+        plan
         usedElevenTokens
         usedTokens
+        validDays
         conversations {
           sectionID
           topic

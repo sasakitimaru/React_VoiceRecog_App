@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import PlanView from './planView';
+import PlanView from './PlanView';
 
 type PlanElement = {
     isPlanPremium: boolean;

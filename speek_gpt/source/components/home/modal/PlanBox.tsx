@@ -8,7 +8,9 @@ type PlanBoxProps = {
 const PlanBox:React.FC<PlanBoxProps> = ({isplanPremium,planprice}) => {
     return (
         <View>
-        <TouchableOpacity style={styles.planview}>
+        <TouchableOpacity style={
+            isplanPremium ? styles.premiumPlanview : styles.standardPlanview
+        }>
             <Text style={styles.planviewtext}>{planprice}</Text>
         </TouchableOpacity>
         </View>
@@ -17,8 +19,16 @@ const PlanBox:React.FC<PlanBoxProps> = ({isplanPremium,planprice}) => {
 export default PlanBox;
 
 const styles = StyleSheet.create({
-    planview: {
+    premiumPlanview: {
         backgroundColor: '#136FFF',
+        borderRadius: 30,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    standardPlanview: {
+        backgroundColor: '#FF367F',
         borderRadius: 30,
         paddingLeft: 20,
         paddingRight: 20,

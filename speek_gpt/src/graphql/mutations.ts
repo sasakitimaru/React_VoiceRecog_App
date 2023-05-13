@@ -11,8 +11,10 @@ export const createUser = /* GraphQL */ `
       id
       name
       email
+      plan
       usedElevenTokens
       usedTokens
+      validDays
       conversations {
         sectionID
         topic
@@ -38,8 +40,10 @@ export const updateUser = /* GraphQL */ `
       id
       name
       email
+      plan
       usedElevenTokens
       usedTokens
+      validDays
       conversations {
         sectionID
         topic
@@ -65,8 +69,10 @@ export const deleteUser = /* GraphQL */ `
       id
       name
       email
+      plan
       usedElevenTokens
       usedTokens
+      validDays
       conversations {
         sectionID
         topic

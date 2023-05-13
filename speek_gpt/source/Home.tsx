@@ -5,13 +5,16 @@ import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
 import Test from './Test/testfield';
-import Calendar from './components/Calendar';
-import { SafeAreaFrameContext } from 'react-native-safe-area-context';
+import Calendar from './components/Calendar';;
+import { useDispatch, useSelector } from 'react-redux';
+import { changePlanAction, plusTokenAction } from './redux/user/useractions';
 
 const Home: React.FC = () => {
   const [PageName, setPageName] = useState<String>('Home');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList />);
   const navigate = useNavigation();
+  // const dispatch = useDispatch();
+  // const selecter = useSelector((state: any) => state);
   useEffect(() => {
     navigate.setOptions({
       headerShown: true,
@@ -20,7 +23,9 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('current PageName: ', PageName)
+    // dispatch(plusTokenAction(selecter.user.token + 50));
+    // dispatch(changePlanAction('プレミアム'));
+    // console.log('selecter: ', selecter);
     switch (PageName) {
       case 'Home':
         setCurrentComponent(<ConversationList />);

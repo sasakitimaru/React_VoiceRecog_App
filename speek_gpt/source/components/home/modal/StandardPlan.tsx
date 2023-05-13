@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import PlanView from './planView';
+import PlanView from './PlanView';
 
 type PlanElement = {
     isPlanPremium: boolean;
@@ -9,7 +9,7 @@ type PlanElement = {
 }
 const StandardPlanBox:React.FC = () => {
     const PlanElement:PlanElement = {
-        isPlanPremium: true,
+        isPlanPremium: false,
         planTitle: 'スタンダードプラン',
         planPrice: ['990','2,200','3,800'],
     };

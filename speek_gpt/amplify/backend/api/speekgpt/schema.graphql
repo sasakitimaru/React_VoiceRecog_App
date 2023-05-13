@@ -20,8 +20,10 @@ type User @model{
   id: ID
   name: String
   email: String
+  plan: String
   usedElevenTokens: Int
   usedTokens: Int
+  validDays: Int
   conversations: [ConversationEntry]
   createdAt: String
   updatedAt: String
@@ -54,6 +56,8 @@ input CreateUserInput {
   id: ID
   name: String
   email: String
+  plan: String
+  validDays: Int
   usedElevenTokens: Int
   usedTokens: Int
   conversations: [ConversationEntryInput]
@@ -63,6 +67,8 @@ input UpdateUserInput {
   id: ID
   name: String
   email: String
+  plan: String
+  validDays: Int
   usedElevenTokens: Int
   usedTokens: Int
   conversations: [ConversationEntryInput]

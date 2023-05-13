@@ -9,6 +9,8 @@ import ChatHistory from './source/components/History/ChatHistory';
 import AI_conversation from './source/components/AI_conversation';
 // import History from './source/components/History';
 import History from './source/components/History';
+import InquiryForm from './source/components/account/InquiryForm';
+import ConfirmPlan from './source/components/account/ConfirmPlan';
 
 
 
@@ -30,6 +32,8 @@ const Navigation:React.FC<NavigationProps> = ({IsAuthenticated}) => {
         <Stack.Screen name="AI_conversation" component={AI_conversation} />
         <Stack.Screen name='History' component={History} />
         <Stack.Screen name="ChatHistory" component={ChatHistory} />
+        <Stack.Screen name="InquiryForm" component={InquiryForm} />
+        <Stack.Screen name="ConfirmPlan" component={ConfirmPlan} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import PlanBox from './planBox';
+import PlanBox from './PlanBox';
 // import { Iconify } from 'react-native-iconify';
 
 type PlanViewProps = {
@@ -12,8 +12,18 @@ type PlanViewProps = {
 };
 const PlanView:React.FC<PlanViewProps> = ({PlanElement}) => {
     return (
-        <View style={styles.registerplanContainer}>
-            <Text style={styles.planheader}>{PlanElement.planTitle+`に登録する`}</Text>
+        <View 
+            style={
+                PlanElement.isPlanPremium ? styles.premiumRegisterplanContainer : styles.standardRegisterplanContainer
+            }
+        >
+            <Text 
+                style={
+                    PlanElement.isPlanPremium ? styles.premiumPlanheader : styles.standardPlanheader
+                }
+            >
+                {PlanElement.planTitle+`に登録する`}
+            </Text>
             <View style={styles.plancontainer}>
                 <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`1ヶ月${PlanElement.planPrice[0]}円`} />
                 <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`3ヶ月${PlanElement.planPrice[1]}円`} />
@@ -25,7 +35,16 @@ const PlanView:React.FC<PlanViewProps> = ({PlanElement}) => {
 export default PlanView;
 
 const styles = StyleSheet.create({
-    registerplanContainer: {
+    standardRegisterplanContainer: {
+        flex: 0.80,
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#FFEEFF',
+        borderRadius: 10,
+        width: '80%',
+    },
+    premiumRegisterplanContainer: {
         flex: 0.80,
         flexDirection: 'column',
         alignItems: 'center',
@@ -42,7 +61,13 @@ const styles = StyleSheet.create({
         padding: 30,
         margin: 15,
     },
-    planheader: {
+    standardPlanheader: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: '5%',
+        color: '#FF367F',
+    },
+    premiumPlanheader: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: '5%',

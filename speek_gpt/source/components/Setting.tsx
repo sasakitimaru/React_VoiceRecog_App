@@ -22,6 +22,12 @@ const Setting = () => {
       console.log('Error fetching user data:', error);
     }
   };
+  const handleInquiryForm = () => {
+    navigation.navigate('InquiryForm');
+  };
+  const handlePlan = () => {
+    navigation.navigate('ConfirmPlan');
+  };
   const handleSignOut = async () => {
     try {
       await Auth.signOut();
@@ -41,14 +47,19 @@ const Setting = () => {
     },
     {
       key: 'plan', component:
-        <TouchableOpacity style={styles.listItemcontainer}>
+        <TouchableOpacity 
+          onPress={handlePlan}
+          style={styles.listItemcontainer}>
           <Text>プラン</Text>
           <Iconify icon='ic:sharp-keyboard-arrow-right' size={30} color='#000000' />
         </TouchableOpacity>
     },
     {
       key: 'inquiryForm', component:
-        <TouchableOpacity style={styles.listItemcontainer}>
+        <TouchableOpacity 
+          style={styles.listItemcontainer}
+          onPress={handleInquiryForm}  
+        >
           <Text>お問い合わせ</Text>
           <Iconify icon='ic:sharp-keyboard-arrow-right' size={30} color='#000000' />
         </TouchableOpacity>
