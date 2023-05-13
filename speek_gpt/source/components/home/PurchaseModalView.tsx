@@ -1,19 +1,25 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Modal, TouchableOpacity, Text } from 'react-native';
 import { Iconify } from 'react-native-iconify';
-import { ModalVisibleContext } from '../ConversationList';
+import { ModalVisibleContext } from '../../../App';
 import PremiumpPlanBox from './modal/PremiumPlanBpx';
 import StandardPlanBox from './modal/StandardPlan';
-const PurchaseModalView = () => {
-    const { modalVisible, setModalVisible } = useContext(ModalVisibleContext);
+
+type ModalVisibleContextProps = {
+    modalVisible: boolean;
+    setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const PurchaseModalView:React.FC = () => {
+    const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
     const [isPlanPremium, setIsPlanPremium] = useState<boolean>(true);
+    console.log('modalVisible_purchase: ', modalVisible);
     return (
         <Modal
             visible={modalVisible}
             animationType="slide"
             presentationStyle='formSheet'
         >
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
+            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
                 <Iconify style={{ padding: 15, margin: 10 }} icon={"material-symbols:close"} color={'black'} />
             </TouchableOpacity>
             <View style={styles.container}>

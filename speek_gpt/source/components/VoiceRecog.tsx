@@ -8,8 +8,9 @@ import Tts from 'react-native-tts'; //Use this when Elevenlabs is uneffective
 import TrackPlayer from 'react-native-track-player';
 import Elevenlabs from './Conversation/ElevenLabAPI';
 import { Iconify } from 'react-native-iconify';
-import CountTokens from './Conversation/CountTokens';
+import { CountTokens, CountElevenTokens} from './Conversation/CountTokens';
 import fetchUser from './History/FetchUser';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 type Message = {
@@ -38,10 +39,13 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
   // const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
   const [isLoadingToggle, setIsLoadingToggle] = useState<boolean>(false);
-  const [recognigedText, setRecognigedText] = useState<string>('');
+  const [recognigedText, setRecognigedText] = useState<string | void>('');
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
   const [userid, setUserid] = useState<string>('');
+  const dispatch = useDispatch();
+  const selecter = useSelector((state: any) => state);
+  //ユーザーIDの取得とクリーンアップ処理
   useEffect(() => {
     fetchUser().then((user) => {
       setUserid(user.id);
@@ -51,6 +55,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
       const cleanup = async () => {
         TrackPlayer.pause();
         TrackPlayer.reset();
+        stopRecording();
       }
       cleanup();
       if (!isElevenlabsEffective) {
@@ -60,17 +65,15 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     }
   }, []);
 
+  //使用したトークン数のカウント
   useEffect(() => {
     if (messages.length > 0) {
       if (messages[messages.length - 1].isUser === true) {
-        console.log("checkpoint 3:", messages[messages.length - 1].isUser)
         const cntcharactorfunc = async () => {
           const cntCharactor = messages[messages.length - 1].message.length;
-          console.log("cntCharactor:", cntCharactor);
-          console.log("messages[messages.length - 1].message:", messages[messages.length - 1].message);
           if (cntCharactor > 0 && userid !== '') {
-            console.log("userid:", userid);
-            await CountTokens(userid, cntCharactor);
+            console.log('selected: ', selecter);
+            isElevenlabsEffective ? await dispatch(CountElevenTokens(userid, cntCharactor)) : await dispatch(CountTokens(userid, cntCharactor));
           }
         }
         cntcharactorfunc();
@@ -78,6 +81,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     }
   }, [messages]);
 
+  //イベントリスナーの設定と音声の再生、クリーンアップ処理
   useEffect(() => {
     if (isElevenlabsEffective) {
       TrackPlayer.addEventListener('remote-seek', (event) => {
@@ -109,6 +113,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     }
   }, [messages]);
 
+  //初回レンダリング時にAIの最初の発話を設定
   useEffect(() => {
     const testfunc = async () => {
       setTimeout(() => {
@@ -128,6 +133,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     testfunc();
   }, []);
 
+  //最初にAIから会話を始めるための例外処理
   useEffect(() => {
     if (FirstPrompt.length > 0) {
       const ToGetGenerateResponce = async () => {
@@ -139,6 +145,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     }
   }, [FirstPrompt]);
 
+  //AIからの発話を取得
   useEffect(() => {
     if (sendMessageToggle) {
       const ToGetGenerateResponce_ = async () => {
@@ -151,9 +158,10 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     }
   }, [firstRenderingToggle]);
 
+  //ユーザーの発話をAIに送信
   useEffect(() => {
     const handleSendMessage = async () => {
-      if (sendMessageToggle) {
+      if (sendMessageToggle && recognigedText !== '') {
         setMessages((prevMessages) => [...prevMessages, { messageID: UUID.v4(), message: recognigedText, isUser: true }]);
         setMessageForAI((prevMessageForAI) => [...prevMessageForAI, { role: 'user', content: recognigedText }]);
         setFirstRenderingToggle(!firstRenderingToggle)
@@ -193,7 +201,11 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleVoiceRecognition} style={styles.voiceButton}>
+      <TouchableOpacity 
+        onPress={handleVoiceRecognition} 
+        style={styles.voiceButton}
+        disabled={isLoadingToggle}
+      >
         {/* {voiceRecogToggle ? 
           <Iconify icon="material-symbols:android-recorder" size={24} color="white" /> 
           : 

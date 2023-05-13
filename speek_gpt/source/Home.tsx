@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { UnderMenuBar } from './components';
 import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
 import Test from './Test/testfield';
-import Calendar from './components/Calendar';;
+import Calendar from './components/Calendar';
+import fetchUser from './components/History/FetchUser';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePlanAction, plusTokenAction } from './redux/user/useractions';
+import { initializeStateAction } from './redux/user/useractions';
 
 const Home: React.FC = () => {
   const [PageName, setPageName] = useState<String>('Home');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList />);
   const navigate = useNavigation();
-  // const dispatch = useDispatch();
-  // const selecter = useSelector((state: any) => state);
+  const dispatch = useDispatch();
+  const selecter = useSelector((state: any) => state);
   useEffect(() => {
+    fetchUser().then((user) => {
+      const { plan, usedTokens, usedElevenTokens } = user;
+      console.log('user: ', user.usedTokens)
+      dispatch(initializeStateAction( usedTokens, usedElevenTokens, plan));
+      console.log('selecter: ', selecter)
+    });
     navigate.setOptions({
       headerShown: true,
       headerLeft: null,

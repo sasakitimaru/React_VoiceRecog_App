@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import Navigation from './Navigation';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Auth } from 'aws-amplify';
 import { ActivityIndicator } from 'react-native';
 import { Provider } from 'react-redux';
 // import TrackPlayer, { IOSCategory, IOSCategoryOptions } from 'react-native-track-player';
-import { userStore } from './source/redux/store/userStore';
+import { store as Store } from './source/redux/store/userStore';
 
-export const store = userStore;
+type ModalVisibleContextProps = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const ModalVisibleContext = createContext<ModalVisibleContextProps>({
+  modalVisible: false,
+  setModalVisible: () => {},
+});
+
+export const store = Store;
 
 const requestMicrophonePermission = async () => {
   const microphoneStatus = await check(PERMISSIONS.IOS.MICROPHONE);
@@ -21,6 +31,7 @@ const requestMicrophonePermission = async () => {
 const App = () => {
   const [IsAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const checkUserAuthentication = async () => {
     try {
@@ -61,7 +72,9 @@ const App = () => {
     loading ?
       <ActivityIndicator size="large" /> :
       <Provider store={store}>
-        <Navigation IsAuthenticated={IsAuthenticated} />
+        <ModalVisibleContext.Provider value={{ modalVisible, setModalVisible }}>
+         <Navigation IsAuthenticated={IsAuthenticated} />
+        </ModalVisibleContext.Provider>
       </Provider>
   );
 };

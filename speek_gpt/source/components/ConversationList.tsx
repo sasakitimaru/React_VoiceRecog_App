@@ -1,9 +1,10 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, Text, Switch, ActionSheetIOS, Modal } from 'react-native';
 import TopicBox from './home/TopicBox';
 import data from '../prompt.json';
 import { Iconify } from 'react-native-iconify';
 import PurchaseModalView from './home/PurchaseModalView';
+import { ModalVisibleContext } from '../../App';
 // import { Iconify } from 'react-native-iconify';
 // import TextInputArea from './TextInputArea';
 // import  LinearGradient  from 'react-native-linear-gradient';
@@ -12,18 +13,13 @@ type ModalVisibleContextProps = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export const ModalVisibleContext = createContext<ModalVisibleContextProps>({
-  modalVisible: false,
-  setModalVisible: () => {},
-});
 export const ElevenlabsContext = createContext<boolean>(false);
 
 const ConversationList: React.FC = () => {
   const [topic, setTopic] = useState<string[]>([]);
   const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
   const [cnt, setCnt] = useState<number>(0);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
   const ElevenlabsDetails = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -41,6 +37,9 @@ const ConversationList: React.FC = () => {
       }
     );
   };
+  useEffect(() => {
+    console.log('modalVisible: ', modalVisible);
+    }, [modalVisible]);
 
   const setTopicRandom = () => {
     setTopic([]);
@@ -81,9 +80,9 @@ const ConversationList: React.FC = () => {
           <Iconify icon={"solar:question-circle-linear"} size={20} color={'#0099FF'} />
         </TouchableOpacity>
       </View>
-      <ModalVisibleContext.Provider value={{modalVisible,setModalVisible}}>
+      {/* <ModalVisibleContext.Provider value={{modalVisible,setModalVisible}}> */}
       <PurchaseModalView/>
-      </ModalVisibleContext.Provider>
+      {/* </ModalVisibleContext.Provider> */}
     </View>
     // {/* <TextInputArea></TextInputArea> */}
   );

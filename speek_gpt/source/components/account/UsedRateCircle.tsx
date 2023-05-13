@@ -7,15 +7,17 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 type UsedRateCircleProps = {
     user: {
         token: number,
+        eleventoken: number,
         plan: string,
     },
     isElevenlabs: boolean,
 };
 const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) => {
-    console.log('user: ', user);
+    // console.log('user: ', user);
     let percentageOfUsedNomalToken: number = 0;
     let percentageOfUsedPremiumToken: number = 0;
     let token = user.token;
+    let eleventoken = user.eleventoken;
     let plan = user.plan;
     console.log(token, plan, isElevenlabs)
     let circlecolor = '';
@@ -23,14 +25,14 @@ const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) =
     // token = 800;
     if (plan === 'nomal') {
         percentageOfUsedNomalToken = token / 200;
-        percentageOfUsedPremiumToken = token / 100;
+        percentageOfUsedPremiumToken = eleventoken / 100;
     } else if (plan === 'standard') {
         console.log('standard', isElevenlabs)
         percentageOfUsedNomalToken = token / 2000;
-        percentageOfUsedPremiumToken = token / 100;
+        percentageOfUsedPremiumToken = eleventoken / 100;
     } else if (plan === 'premium') {
-        percentageOfUsedNomalToken = token / 2000;
-        percentageOfUsedPremiumToken = token / 1000;
+        percentageOfUsedNomalToken = token / 3000;
+        percentageOfUsedPremiumToken = eleventoken / 1000;
     }
     const animatedValue = useRef(new Animated.Value(0)).current;
     const r = 40;
@@ -83,8 +85,8 @@ const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) =
                         fontSize="10"
                         dy=".3em" // vertically center text
                     >
-                        {isElevenlabs ? `${Math.max(percentageOfUsedPremiumToken * 100, 0).toFixed(0)}%` :
-                            `${Math.max(percentageOfUsedNomalToken * 100, 0).toFixed(0)}%`}
+                        {isElevenlabs ? `${Math.min(percentageOfUsedPremiumToken * 100,100).toFixed(0)}%` :
+                            `${Math.min(percentageOfUsedNomalToken * 100,100).toFixed(0)}%`}
                     </SvgText>
                 </Svg>
             </View>
