@@ -21,10 +21,10 @@ const EnrollForm = () => {
     setIsLoggingIn(true);
     try {
       const user = await Auth.signIn(email, password);
-      console.log('email:', user.email, '\npassword:', user.password);
-      console.log('user:', user);
+      // console.log('email:', user.email, '\npassword:', user.password);
+      // console.log('user:', user);
       navigation.navigate('Home');
-    } catch (error) {
+    } catch (error: any) {
       console.log('error signing in', error);
       setWarningText(error.message);
       if(error.message === 'User is not confirmed.') navigation.navigate('Verify', { username: email });

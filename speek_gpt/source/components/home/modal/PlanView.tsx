@@ -1,28 +1,28 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import PlanBox from './PlanBox';
 // import { Iconify } from 'react-native-iconify';
 
 type PlanViewProps = {
     PlanElement: {
-    isPlanPremium: boolean;
-    planTitle: string;
-    planPrice: string[];
+        isPlanPremium: boolean;
+        planTitle: string;
+        planPrice: string[];
     };
 };
-const PlanView:React.FC<PlanViewProps> = ({PlanElement}) => {
+const PlanView: React.FC<PlanViewProps> = ({ PlanElement }) => {
     return (
-        <View 
+        <View
             style={
                 PlanElement.isPlanPremium ? styles.premiumRegisterplanContainer : styles.standardRegisterplanContainer
             }
         >
-            <Text 
+            <Text
                 style={
                     PlanElement.isPlanPremium ? styles.premiumPlanheader : styles.standardPlanheader
                 }
             >
-                {PlanElement.planTitle+`に登録する`}
+                {PlanElement.planTitle + `に登録する`}
             </Text>
             <View style={styles.plancontainer}>
                 <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`1ヶ月${PlanElement.planPrice[0]}円`} />

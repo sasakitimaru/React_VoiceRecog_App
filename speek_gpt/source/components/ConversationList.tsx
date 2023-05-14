@@ -59,10 +59,10 @@ const ConversationList: React.FC = () => {
 
   useEffect(() => {
     const ElevenlabsDetails = () => {
-      console.log('user: ', user);
+      console.log('user: ', user.eleventoken);
       if (user.eleventoken > tokenlimit[user.plan].eleventoken) {
-        console.log('eleventoken: ', user.eleventoken);
-        console.log('tokenlimit: ', tokenlimit[user.plan].eleventoken);
+        // console.log('eleventoken: ', user.eleventoken);
+        // console.log('tokenlimit: ', tokenlimit[user.plan].eleventoken);
         ActionSheetIOS.showActionSheetWithOptions(
           {
             options: ['キャンセル'],

@@ -20,8 +20,8 @@ const CreateForm = () => {
     const [warningText, setWarningText] = useState('');
 
     const checkpassword = (e: any) => {
-        console.log("confirm password: ", e);
-        console.log("current password: ", password);
+        // console.log("confirm password: ", e);
+        // console.log("current password: ", password);
         const match = e === password;
         setPasswordsMatch(match);
     };
@@ -39,7 +39,7 @@ const CreateForm = () => {
                     },
                 });
                 console.log('user created:', user);
-                navigation.navigate('Verify', { username: email });
+                navigation.navigate('Verify', { username: email, password: password });
             } catch (error) {
                 console.log('error signing up:', error);
                 setWarningText(error.message);

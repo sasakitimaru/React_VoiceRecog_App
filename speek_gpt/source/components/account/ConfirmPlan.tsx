@@ -84,13 +84,12 @@ const ConfirmPlan = () => {
     return (
 
         <View style={styles.container}>
-
             <Text style={styles.headerText}>{'現在のプラン：' + plan}</Text>
             <Text style={styles.hText}>スタンダードトークン</Text>
-            <Text style={{ marginTop: 10 }}>{token + '/' + tokenlimit[plan].token}</Text>
+            <Text style={{ marginTop: 10 }}>{Math.min(token,tokenlimit[plan].token) + '/' + tokenlimit[plan].token}</Text>
             <UsedRateCircle user={user} isElevenlabs={false} />
             <Text style={styles.hText}>ネイティブトークン</Text>
-            <Text style={{ marginTop: 10 }}>{eleventoken + '/' + tokenlimit[plan].eleventoken}</Text>
+            <Text style={{ marginTop: 10 }}>{Math.min(eleventoken,tokenlimit[plan].eleventoken) + '/' + tokenlimit[plan].eleventoken}</Text>
             <UsedRateCircle user={user} isElevenlabs={true} />
             <TouchableOpacity
                 onPress={() => setModalVisible(!modalVisible)}

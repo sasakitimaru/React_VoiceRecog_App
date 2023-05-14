@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, TouchableOpacity, Text } from 'react-native';
 import ChatHistoryList from './ChatHistoryList';
 import { useNavigation } from '@react-navigation/native';
 import { Iconify } from 'react-native-iconify';
+
 type Message = {
     isUser: boolean;
     message: string;
@@ -23,7 +24,7 @@ const ChatHistory: React.FC<ChatHistoryProps> = (props) => {
                     onPress={() => navigate.goBack()}
                     style={{ marginLeft: 10 }}
                 >
-                    <Iconify icon="material-symbols:arrow-back-ios-new" size={30} color="#000000" />
+                    <Iconify icon="material-symbols:arrow-back-ios" size={30} color="#000000" />
                 </TouchableOpacity>
             ),
         });

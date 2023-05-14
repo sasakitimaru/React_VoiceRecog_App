@@ -8,8 +8,9 @@ const Verify = (props) => {
     const navigation = useNavigation();
     const [warningText, setWarningText] = useState(null);
     const username = props.route.params.username;
+    const password = props.route.params.password;
     const [resendmessage, setResendmessage] = useState(null);
-
+    console.log('props : ', props.route.params.username)
     const MoveToLogin = () => {
         try {
             navigation.navigate('SignUp');
@@ -22,7 +23,8 @@ const Verify = (props) => {
         try {
             await Auth.confirmSignUp(username, code);
             console.log("Code confirmed successfully.");
-            navigation.navigate('SignIn');
+            await Auth.signIn(username, password);
+            navigation.navigate('Home');
         } catch (error) {
             console.log("Error confirming the code: ", error);
             setWarningText(error.message);

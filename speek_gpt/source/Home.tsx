@@ -17,7 +17,7 @@ const Home: React.FC = () => {
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList />);
   const navigate = useNavigation();
   const dispatch = useDispatch();
-  // const selecter = useSelector((state: any) => state);
+  const selecter = useSelector((state: any) => state);
   useEffect(() => {
     fetchUser().then((user) => {
       const { email, plan, usedTokens, usedElevenTokens } = user;

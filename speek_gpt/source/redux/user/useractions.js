@@ -12,7 +12,7 @@ export const initializeStateAction = (email,token,eleventoken,plan) => {
 }
 
 export const PLUS_TOKEN = 'PLUS_TOKEN';
-export const plusTokenAction = (usedToken) => {
+export const plusTokenActssion = (usedToken) => {
     return {
         type: PLUS_TOKEN,
         payload: {
@@ -36,6 +36,8 @@ export const changePlanAction = (plan) => {
     return {
         type: CHANGE_PLAN,
         payload: {
+            token: 0,
+            eleventoken: 0,
             plan: plan
         }
     }

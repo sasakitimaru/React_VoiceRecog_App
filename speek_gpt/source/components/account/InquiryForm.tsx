@@ -64,6 +64,7 @@ const InquiryForm = () => {
     };
     return (
         <View style={styles.container}>
+            <View style={styles.formcontainer}>
             <View style={styles.componentcontainer}>
                 <Text>メールアドレス</Text>
                 <TextInput 
@@ -95,9 +96,11 @@ const InquiryForm = () => {
                     ))}
                 </Picker> */}
             </View>
+            <View style={styles.formcomponentcontainer}>
             <Text>お問い合わせ内容</Text>
             <TextInput
                 style={styles.textinput}
+                scrollEnabled={true}
                 onChangeText={(text) => setContent(text)}
                 multiline={true}
                 textAlignVertical='top'
@@ -118,6 +121,8 @@ const InquiryForm = () => {
                 // <Text style={styles.buttonText}>送信</Text>
                 }
             </TouchableOpacity>
+            </View>
+            </View>
         </View>
     );
 };
@@ -131,28 +136,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FFFFFF',
     },
-    pickerIOS: {
-        width: 200,
-        // height: 50, // height increased
-        // backgroundColor: '#FFFFFF',
-    },
-    picker: {
+    formcontainer: {
         width: '100%',
-        // height: 50, // explicit height for each item
-        backgroundColor: '#fff' // background color for each item
+        // height: '100%',
+        flexDirection: 'column',
     },
     componentcontainer: {
         width: '100%',
-        height: '10%',
+        // height: '10%',
         flexDirection: 'column',
         // justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+        // backgroundColor: '#FFFFFF',
     },
     textinputsmall: {
         width: '60%',
-        height: '20%',
-        backgroundColor: '#FFFFFF',
+        // height: '20%',
+        // backgroundColor: '#FFFFFF',
         borderWidth: 1,
         borderColor: '#000000',
         borderRadius: 5,
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
     textinput: {
         // flex: 1,
         width: '60%',
-        height: '30%',
-        backgroundColor: '#FFFFFF',
+        height: '100%',
+        // backgroundColor: '#FFFFFF',
         borderWidth: 1,
         borderColor: '#000000',
         borderRadius: 10,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '60%',
-        // height: '10%',
+        // height: '100%',
         backgroundColor: '#fff',
         borderWidth: 2,
         borderColor: '#136FFF',
@@ -186,5 +186,13 @@ const styles = StyleSheet.create({
         color: '#136FFF',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    formcomponentcontainer: {
+        width: '100%',
+        height: '40%',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '20%'
     },
 });

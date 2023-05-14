@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Navigation from './Navigation';
+import { StyleSheet } from 'react-native';
 import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Auth } from 'aws-amplify';
 import { ActivityIndicator } from 'react-native';
@@ -70,7 +71,7 @@ const App = () => {
   }, []);
   return (
     loading ?
-      <ActivityIndicator size="large" /> :
+      <ActivityIndicator style={styles.container} size="large" /> :
       <Provider store={store}>
         <ModalVisibleContext.Provider value={{ modalVisible, setModalVisible }}>
          <Navigation IsAuthenticated={IsAuthenticated} />
@@ -80,3 +81,10 @@ const App = () => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
