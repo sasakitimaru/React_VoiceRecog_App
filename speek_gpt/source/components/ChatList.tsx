@@ -9,15 +9,16 @@ type MessageType = {
 
 type ChatListProps = {
     messages: MessageType[];
+    isElevenlabsEffective: boolean;
 };
 
-const ChatList:React.FC<ChatListProps> = ({ messages }) => {
+const ChatList:React.FC<ChatListProps> = ({ messages, isElevenlabsEffective }) => {
     const flatListRef = useRef(null);
     
     return (
         <FlatList
             data={messages}
-            renderItem={({ item }) => <ChatBubble isUser={item.isUser} text={item.message} />}
+            renderItem={({ item }) => <ChatBubble isUser={item.isUser} text={item.message} isElevenlabsEffective={isElevenlabsEffective}/>}
             keyExtractor={(_, index) => index.toString()}
             ref={flatListRef}
             onContentSizeChange={() => messages.length > 0 && flatListRef.current.scrollToEnd({animated: true})}

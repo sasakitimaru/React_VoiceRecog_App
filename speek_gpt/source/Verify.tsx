@@ -6,15 +6,28 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-nativ
 const Verify = (props) => {
     const [code, setCode] = useState("");
     const navigation = useNavigation();
+    const [warningText, setWarningText] = useState(null);
     const username = props.route.params.username;
+    const password = props.route.params.password;
+    const [resendmessage, setResendmessage] = useState(null);
+    console.log('props : ', props.route.params.username)
+    const MoveToLogin = () => {
+        try {
+            navigation.navigate('SignUp');
+        } catch (error) {
+            console.log('this page currently does not work')
+        }
+    }
 
     const verifyCode = async () => {
         try {
             await Auth.confirmSignUp(username, code);
             console.log("Code confirmed successfully.");
-            navigation.navigate('SignIn');
+            await Auth.signIn(username, password);
+            navigation.navigate('Home');
         } catch (error) {
             console.log("Error confirming the code: ", error);
+            setWarningText(error.message);
         }
     };
 
@@ -22,15 +35,20 @@ const Verify = (props) => {
         try {
             await Auth.resendSignUp(username);
             console.log("Code resent successfully");
+            setResendmessage("認証コードを再送しました");
         } catch (error) {
             console.log("Error resending the code: ", error);
+            setWarningText(error.message);
         }
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>We are verifying your account</Text>
-            <Text style={styles.subtitle}>Enter the code sent to your email</Text>
+            <TouchableOpacity onPress={MoveToLogin}>
+                <Text style={{ color: 'blue' , paddingBottom: 10 }}>Sign up</Text>
+            </TouchableOpacity>
+            <Text style={styles.title}>アカウント認証</Text>
+            <Text style={styles.subtitle}>メールアドレスに送られたコードを入力してください</Text>
             <TextInput
                 style={styles.input}
                 onChangeText={(text) => setCode(text)}
@@ -40,8 +58,14 @@ const Verify = (props) => {
                 <Text style={styles.submitText}>Verify</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={resendCode}>
-                <Text style={styles.resendCodeText}>Resend Code</Text>
+                <Text style={styles.resendCodeText}> 認証コードを再送する</Text>
             </TouchableOpacity>
+            {(resendmessage !== null) &&
+                <Text style={styles.resendMessage}>{resendmessage}</Text>
+            }
+            {(warningText !== null) && (
+                <Text style={styles.createAccountWarning}>{warningText}</Text>
+            )}
         </View>
     );
 };
@@ -60,7 +84,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: 14,
         textAlign: "center",
         marginBottom: 20,
     },
@@ -87,6 +111,15 @@ const styles = StyleSheet.create({
     resendCodeText: {
         color: "#007BFF",
         marginTop: 10,
+    },
+    createAccountWarning: {
+        color: 'red',
+        fontSize: 14,
+        marginTop: 5,
+    },
+    resendMessage: {
+        fontSize: 14,
+        marginTop: 5,
     },
 });
 

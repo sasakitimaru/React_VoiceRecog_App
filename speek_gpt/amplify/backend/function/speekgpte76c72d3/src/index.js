@@ -25,6 +25,9 @@ exports.handler = async (event) => {
                 id: userId,
                 name: name,
                 email: email,
+                plan: 'free',
+                usedElevenTokens: 0,
+                usedTokens: 0,
             },
         };
 

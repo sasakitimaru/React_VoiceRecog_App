@@ -14,17 +14,20 @@ const EnrollForm = () => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [warningText, setWarningText] = useState(null);
 
 
   const handleLogin = async () => {
     setIsLoggingIn(true);
     try {
       const user = await Auth.signIn(email, password);
-      console.log('email:', user.email, '\npassword:', user.password);
-      console.log('user:', user);
+      // console.log('email:', user.email, '\npassword:', user.password);
+      // console.log('user:', user);
       navigation.navigate('Home');
-    } catch (error) {
+    } catch (error: any) {
       console.log('error signing in', error);
+      setWarningText(error.message);
+      if(error.message === 'User is not confirmed.') navigation.navigate('Verify', { username: email });
       setIsLoggingIn(false);
     }
   };
@@ -49,13 +52,16 @@ const EnrollForm = () => {
           <Text style={styles.submitText}>Login</Text>
         </TouchableOpacity>
         <View style={styles.createAccountContainer}>
-          <Text>Need a new account? </Text>
+          <Text>新しいアカウントを作る </Text>
           <TouchableOpacity
             style={styles.createAccount}
             onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.createAccountText}>Sign up</Text>
           </TouchableOpacity>
         </View>
+        {(warningText !== null) && (
+          <Text style={styles.createAccountWarning}>{warningText}</Text>
+        )}
       </View>
     </View>
   );
@@ -99,6 +105,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+  },
+  createAccountWarning: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: 5,
   },
   createAccountText: {
     color: '#007BFF',

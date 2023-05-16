@@ -21,6 +21,20 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/translategpt": {
+      "name": "/translategpt",
+      "lambdaFunction": "translateGPT",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/Elevenlabs": {
+      "name": "/Elevenlabs",
+      "lambdaFunction": "Elevenlabs",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

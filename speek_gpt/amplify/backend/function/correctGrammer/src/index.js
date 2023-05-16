@@ -30,7 +30,7 @@ exports.handler = async (event) => {
   console.log('text:',text)
   const data = {
     "model": "text-davinci-003",
-    "prompt": `Correct this to standard English: ${text}`,
+    "prompt": `You are native English speaker. Make this sentence sounds more natural: ${text}`,
     "max_tokens": 60,
     "temperature": 0.9,
     "top_p": 1,

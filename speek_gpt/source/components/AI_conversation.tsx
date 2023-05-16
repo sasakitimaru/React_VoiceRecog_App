@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  Text,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ChatList } from './index';
@@ -11,6 +11,7 @@ import VoiceRecog from './VoiceRecog';
 import sendMessage from './History/index';
 import fetchLastSectionID from './History/GetLastSectionID';
 import { Auth } from 'aws-amplify';
+import { Iconify } from 'react-native-iconify';
 
 type Message = {
   messageID: string | number[];
@@ -18,12 +19,32 @@ type Message = {
   message: string;
 }
 
-const AI_conversation:React.FC = () => {
+const AI_conversation:React.FC = (topic) => {
+   const isElevenlabsEffective = topic.route.params.isElevenlabsEffective;
+  // console.log("AI_conversation.tsx: isElevenlabsEffective:", topic.route.params.isElevenlabsEffective);
   // const [textInput, setTextInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const navigation = useNavigation();
   const [LastSectionID, setLastSectionID] = useState<number | null>(0);
   const [headerRigtToggle, setHeaderRightToggle] = useState<boolean>(false);
+
+  const createSaveAlert = () =>
+    Alert.alert(
+      "会話を保存しますか？",
+      "保存すると会話を終了します。",
+      [
+        {
+          text: "キャンセル",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "保存する", onPress: () => {
+          navigation.goBack();
+          setHeaderRightToggle(!headerRigtToggle)
+        }}
+      ],
+      { cancelable: false }
+    );
 
   useEffect(() => {
       const getlastsectionID = async () => {
@@ -42,7 +63,8 @@ const AI_conversation:React.FC = () => {
       getlastsectionID();
   }, []);
   useEffect(() => {
-    if(headerRigtToggle) sendMessage(LastSectionID+1, messages);
+    //　LastSectionIDのstateの更新後に実行するためにuseEffectで実行
+    if(headerRigtToggle) sendMessage(LastSectionID+1, topic.route.params.topic, messages);
   }, [headerRigtToggle]);
   useEffect(() => {
     navigation.setOptions({
@@ -54,27 +76,27 @@ const AI_conversation:React.FC = () => {
           }}
           style={{ marginLeft: 10 }}
         >
-        <Text>Back</Text>
+        <Iconify icon="material-symbols:arrow-back-ios-new" size={30} color="#000000" />
         </TouchableOpacity>
       ),
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
-            setHeaderRightToggle(!headerRigtToggle)
+            // sendMessage(LastSectionID+1, topic, messages); ここでは送信されない
+            createSaveAlert();
           }}
           style={{ marginRight: 10 }}
         >
-        <Text>quit&write</Text>
+        <Iconify icon="ic:outline-save-alt" size={30} color="#000000" />
         </TouchableOpacity>
       ),
     });
   }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <ChatList messages={messages}/>
+      <ChatList messages={messages} isElevenlabsEffective={isElevenlabsEffective}/>
       {/* <TextInputArea setMessages={setMessages} /> */}
-      <VoiceRecog messages={messages} setMessages={setMessages} />
+      <VoiceRecog messages={messages} setMessages={setMessages} topic={topic} isElevenlabsEffective={isElevenlabsEffective}/>
     </SafeAreaView>
   );
 }

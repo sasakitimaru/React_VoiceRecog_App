@@ -19,7 +19,7 @@ const whisper: WhisperProps = async (filePath) => {
 
   try {
     const response = await API.post(apiName, path, data);
-    console.log('res:', response);
+    // console.log('res:', response);
     return response.text;
   } catch (error) {
     console.error(error);
