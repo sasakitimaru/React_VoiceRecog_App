@@ -17,7 +17,7 @@ const TitleAndComment:React.FC = () => {
     <View style={styles.createAccountWrapper}>
       <Text style={styles.createAccountLogo}>Sign up a new account</Text>
       <Text style={styles.createAccountDesc}>
-        if you already have an account,
+        すでにアカウントを持っている方
       </Text>
       <TouchableOpacity onPress={MoveToLogin}>
           <Text style={{color: 'blue'}}>Sign In</Text>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   createAccountDesc: {
-    fontSize: 16,
+    fontSize: 14,
     textAlign: 'center',
     paddingHorizontal: 20,
   },

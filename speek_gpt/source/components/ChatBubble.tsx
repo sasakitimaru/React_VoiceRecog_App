@@ -2,16 +2,31 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CorrectGrammer from './Conversation/CorrectGrammer';
+import TranslateText from './Conversation/TranslateText';
+import { Iconify } from 'react-native-iconify';
+import AudioReplay from './Conversation/AudioReplay';
 
 type ChatBubbleProps = {
     isUser: boolean;
     text: string;
+    isElevenlabsEffective?: boolean;
 };
 
-const ChatBubble = ({ isUser, text }: ChatBubbleProps) => {
+const ChatBubble:React.FC<ChatBubbleProps> = ({ isUser, text, isElevenlabsEffective }) => {
     const [isReviewPushed, setIsReviewPushed] = useState<boolean>(false);
     const [isCorrected, setIsCorrected] = useState<boolean>(false);
+    const [isTranslated, setIsTranslated] = useState<boolean>(false);
+    const [isTranslatedPushed, setIsTranslatedPushed] = useState<boolean>(false);
     const [correctedText, setCorrectedText] = useState<string>('');
+    const [translatedText, setTranslatedText] = useState<string>('');
+    const addTranslatedText = async () => {
+        if (!isTranslated) {
+            const translatedTextTmp = await TranslateText(text);
+            setTranslatedText(translatedTextTmp);
+            setIsTranslated(true);
+        }
+        setIsTranslatedPushed(!isTranslatedPushed)
+    }
     const addCorrectedText = async () => {
         if (!isCorrected) {
             const correctedTextTmp = await CorrectGrammer(text);
@@ -20,7 +35,6 @@ const ChatBubble = ({ isUser, text }: ChatBubbleProps) => {
         }
         setIsReviewPushed(!isReviewPushed)
     }
-
     return (
         <View
             style={[
@@ -30,11 +44,18 @@ const ChatBubble = ({ isUser, text }: ChatBubbleProps) => {
             <Text style={styles.chatText}>{text}</Text>
             { isUser ? 
                 <TouchableOpacity style={styles.reviewButton} onPress={() => addCorrectedText()} >
-                <Text style={styles.reviewText}>review</Text>
+                    <Iconify icon="codicon:open-preview" size={20} color="blue" />
                 </TouchableOpacity>
-                : null
+                : 
+                <View style={styles.isReplayContainer}>
+                    <TouchableOpacity style={styles.translateButton} onPress={() => addTranslatedText()} >
+                        <Iconify icon="material-symbols:translate" size={20} color="blue" />
+                    </TouchableOpacity>
+                    <AudioReplay text={text} isElevenlabsEffective={isElevenlabsEffective}/>
+                </View>
             }   
-            {isReviewPushed ? <Text>{`corrected:\n${correctedText}`}</Text> : null}
+            {isReviewPushed ? <Text>{`修正例:\n${correctedText}`}</Text> : null}
+            {isTranslatedPushed ? <Text>{`翻訳例:\n${translatedText}`}</Text> : null}
         </View>
     );
 };
@@ -61,10 +82,18 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
         padding: '1%',
     },
+    translateButton: {
+        alignItems: "flex-start",
+        padding: '1%',
+    },
     reviewText: {
         fontSize: 16,
         color: '#2196f3',
-    }
+    },
+    isReplayContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
 });
 
 export default ChatBubble;

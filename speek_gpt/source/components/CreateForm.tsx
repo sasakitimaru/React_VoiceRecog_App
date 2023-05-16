@@ -11,23 +11,24 @@ import {
 
 const CreateForm = () => {
     const passRef = useRef();
-    const [passwordsMatch, setPasswordsMatch] = useState(true);
+    const [passwordsMatch, setPasswordsMatch] = useState(false);
+    const ref = useRef();
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const navigation = useNavigation();
+    const [warningText, setWarningText] = useState('');
 
-    const checkpassword = (e) => {
-        console.log("confirm password: ", confirmPassword);
-        console.log("current password: ", password);
-        const match = confirmPassword === password;
+    const checkpassword = (e: any) => {
+        // console.log("confirm password: ", e);
+        // console.log("current password: ", password);
+        const match = e === password;
         setPasswordsMatch(match);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // if (passwordsMatch) {
+    const handleSubmit = async (e: any) => {
+        if(passwordsMatch) {
+            e.preventDefault();
             try {
                 const { user } = await Auth.signUp({
                     username: email,
@@ -38,19 +39,19 @@ const CreateForm = () => {
                     },
                 });
                 console.log('user created:', user);
-                navigation.navigate('Verify', { username: email });
+                navigation.navigate('Verify', { username: email, password: password });
             } catch (error) {
                 console.log('error signing up:', error);
-            }
-        // } else {
-            // console.log("passwords don't match");
-        // }　なんかパスワードマッチがうまくいかないからコメントアウト
-        //多分だけどuseStateのレンダリングとパスワード更新のタイミングが違う
+                setWarningText(error.message);
+            };
+        } else {
+            setWarningText('パスワードが一致しません');
+        }
     };
 
     return (
         <View style={styles.createAccountBox}>
-            <Text style={styles.createAccountLabel}>Username</Text>
+            <Text style={styles.createAccountLabel}>ニックネーム</Text>
             <TextInput
                 onChangeText={(text) => setUsername(text)}
                 placeholder="Username"
@@ -66,21 +67,20 @@ const CreateForm = () => {
             <Text style={styles.createAccountLabel}>Password</Text>
             <TextInput
                 onChangeText={(text) => setPassword(text)}
-                ref={passRef}
                 secureTextEntry={true}
                 placeholder="Password"
                 style={styles.createAccountInput}
             />
-            <Text style={styles.createAccountLabel}>Password Again</Text>
+            <Text style={styles.createAccountLabel}>Password(確認)</Text>
             <TextInput
-                onChangeText={(text) => setConfirmPassword(text)}
-                onChange={(e) => checkpassword(e)}
+                onChangeText={(text) => checkpassword(text)}
+                // onChange={(e) => checkpassword(e)}
                 secureTextEntry={true}
                 placeholder="Password Again"
                 style={styles.createAccountInput}
             />
-            {!passwordsMatch && (
-                <Text style={styles.createAccountWarning}>Not match</Text>
+            {(warningText !== null) && (
+                <Text style={styles.createAccountWarning}>{warningText}</Text>
             )}
             <TouchableOpacity onPress={handleSubmit} style={styles.createAccountButton}>
                 <Text style={styles.createAccountButtonText}>Sign up</Text>

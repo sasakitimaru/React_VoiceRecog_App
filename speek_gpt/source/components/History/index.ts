@@ -10,7 +10,7 @@ type Message = {
 
 type MessageList = Message[];
 
-const sendMessage = async (_id: string, messageList: MessageList) => {
+const sendMessage = async (_id: string, topic: string, messageList: MessageList) => {
     const newuuid = UUID.v4();
     const currentUser = await fetchUser();
     const userId = currentUser.id;
@@ -31,20 +31,20 @@ const sendMessage = async (_id: string, messageList: MessageList) => {
     if (existingConversationEntryIndex !== -1) {
       // Update existing ConversationEntry
       updatedConversations = [...currentUserChecked];
-      console.log('existingConversationEntryIndex:', existingConversationEntryIndex)
+      // console.log('existingConversationEntryIndex:', existingConversationEntryIndex)
       updatedConversations[existingConversationEntryIndex] = {
         sectionID: _id,
+        topic: topic,
         timestamp: new Date().toISOString(),
         conversation: messageList
       };
-      console.log ('多分この中には入らないと思う:', messageList)
-      console.log('id:' , _id)
     } else {
       // Add new ConversationEntry
       updatedConversations = [
         ...currentUserChecked,
         {
           sectionID: _id,
+          topic: topic,
           timestamp: new Date().toISOString(),
           conversation: messageList
         },

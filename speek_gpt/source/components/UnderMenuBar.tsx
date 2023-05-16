@@ -1,25 +1,34 @@
 import React from 'react';
-import { StyleSheet, View, Text} from 'react-native';
-import  IconButton from './bottom/IconButton';
+import { StyleSheet, View, Text } from 'react-native';
+import IconButton from './bottom/IconButton';
+import { Iconify } from 'react-native-iconify';
 type UnderMenuBarProps = {
-    setTopic: (topic: String) => void;
     setPageName: (PageName: String) => void;
 };
-const UnderMenuBar:React.FC<UnderMenuBarProps> = ({setTopic,setPageName}) => {
-    return(
+const UnderMenuBar: React.FC<UnderMenuBarProps> = ({ setPageName }) => {
+    return (
         <View style={styles.container}>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='Home'>
-                <Text>Home</Text>
+            <IconButton setPageName={setPageName} Pagetarget='Home'>
+                <View style={styles.iconcontainer}>
+                    <Iconify icon="solar:chat-round-call-linear" size={30} color="#000000" />
+                    <Text style={styles.icontext}>AIChat</Text>
+                </View>
             </IconButton>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='History'>
-                <Text>History</Text>
+            <IconButton setPageName={setPageName} Pagetarget='History'>
+                <View style={styles.iconcontainer}>
+                    <Iconify icon="icon-park-outline:history-query" size={30} color="#000000" />
+                    <Text style={styles.icontext}>学習履歴</Text>
+                </View>
             </IconButton>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='Setting'>
-                <Text>Setting</Text>
+            <IconButton setPageName={setPageName} Pagetarget='Setting'>
+                <View style={styles.iconcontainer}>
+                    <Iconify icon="material-symbols:account-circle-full" size={30} color="#000000" />
+                    <Text style={styles.icontext}>アカウント</Text>
+                </View>
             </IconButton>
-            <IconButton setTopic={setTopic} setPageName={setPageName} Pagetarget='test'>
+            {/* <IconButton setPageName={setPageName} Pagetarget='test'>
                 <Text>Test</Text>
-            </IconButton>
+            </IconButton> */}
         </View>
     )
 };
@@ -33,5 +42,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
-  });
-  
+    iconcontainer: {
+        // flexDirection: 'column',
+        paddingTop: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    icontext: {
+        fontSize: 10,
+    },
+});

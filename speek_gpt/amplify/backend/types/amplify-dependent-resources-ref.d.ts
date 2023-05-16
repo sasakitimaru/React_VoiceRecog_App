@@ -20,9 +20,20 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
+    },
+    "userPoolGroups": {
+      "reactAIGroupRole": "string",
+      "speekgptc441461aGroupRole": "string"
     }
   },
   "function": {
+    "Elevenlabs": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "GPTAPI": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -38,6 +49,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "speekgpte76c72d3": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "translateGPT": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",
