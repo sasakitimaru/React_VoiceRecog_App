@@ -1,15 +1,15 @@
 const initialState = {
     user: {
-        mail: '',
+        email: '',
         token: 0,
         eleventoken: 0,
         plan: 'nomal'
     },
-    planContent:{
+    planContent:[{
         planRate: 0,
         planName: '',
         planDescription: '',
-    }
+    }]
 }
 
 export default initialState;

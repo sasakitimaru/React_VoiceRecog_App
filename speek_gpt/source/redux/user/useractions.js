@@ -12,7 +12,7 @@ export const initializeStateAction = (email,token,eleventoken,plan) => {
 }
 
 export const PLUS_TOKEN = 'PLUS_TOKEN';
-export const plusTokenActssion = (usedToken) => {
+export const plusTokenAction = (usedToken) => {
     return {
         type: PLUS_TOKEN,
         payload: {

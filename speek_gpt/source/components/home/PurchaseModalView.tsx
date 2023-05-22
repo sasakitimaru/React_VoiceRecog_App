@@ -26,8 +26,8 @@ const PurchaseModalView: React.FC = () => {
             </TouchableOpacity>
             <View style={styles.container}>
                 {isPlanPremium ?
-                    <Text style={styles.header}>{`まるでネイティブと\n話しているような没頭感`}</Text>
-                    : <Text style={styles.header}>{`いつでもどこでも\nAIと英会話を楽しもう`}</Text>
+                    <Text style={styles.header}>{`ほぼネイティブスピーカーの\n発音で英会話をする`}</Text>
+                    : <Text style={styles.header}>{`いつでもあなたのそばにいます。\nAIと英会話を楽しもう。`}</Text>
                 }
                 {isPlanPremium ?
                     <Text style={styles.comment}>ネイティブ読み上げ機能を使うと、より自然な音声で文章を読み上げます。プランに登録しなくても1000文字まで無料でお試しが可能です！</Text>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     header: {
-        fontSize: 30,
+        fontSize: 28,
         paddingTop: 10,
         paddingLeft: 10,
         paddingRight: 10,

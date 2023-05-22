@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Keyboard } from 'react-native';
 // import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { Iconify } from 'react-native-iconify';
@@ -17,13 +17,6 @@ const InquiryForm = () => {
     const [item, setItem] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const navigation = useNavigation();
-    const items: items[] = [
-        { label: 'その他', value: '0' },
-        { label: '不具合', value: '1' },
-        { label: '機能追加', value: '2' },
-        { label: 'その他', value: '3' },
-    ];
-    const [selectedValue, setSelectedValue] = useState<items>(items[0]);
 
     useEffect(() => {
         navigation.setOptions({
@@ -34,10 +27,10 @@ const InquiryForm = () => {
                         navigation.goBack();
                     }}
                 >
-                    <Iconify 
-                        icon="material-symbols:arrow-back-ios-new" 
-                        size={30} 
-                        color="#000000" 
+                    <Iconify
+                        icon="material-symbols:arrow-back-ios-new"
+                        size={30}
+                        color="#000000"
                         style={{ marginLeft: 10 }}
                     />
                 </TouchableOpacity>
@@ -47,13 +40,13 @@ const InquiryForm = () => {
     }, []);
 
     const handleInquiryForm = async () => {
-        if(!email || !item || !content) return;
+        if (!email || !item || !content) return;
         const Data = {
             email: email,
             item: item,
             message: content,
         };
-        try{
+        try {
             API.graphql(
                 graphqlOperation(createInquiryForm, { input: Data })
             );
@@ -63,67 +56,61 @@ const InquiryForm = () => {
         }
     };
     return (
-        <View style={styles.container}>
-            <View style={styles.formcontainer}>
-            <View style={styles.componentcontainer}>
-                <Text>メールアドレス</Text>
-                <TextInput 
-                    style={styles.textinputsmall}
-                    // placeholder='XXX@example.com'
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                />
-            </View>
-            <View style={styles.componentcontainer}>
-                <Text>問い合わせ項目</Text>
-                <TextInput 
-                    style={styles.textinputsmall} 
-                    onChangeText={(text) => setItem(text)}
-                    value={item}
-                />
-                {/* <Picker
-                    style={styles.textinputsmall}
-                    itemStyle={styles.picker}
-                    selectedValue={selectedValue ? selectedValue.value : items[0].value}
-                    onValueChange={(value, index) => setSelectedValue(items[index])}
-                >
-                    {items.map((items, index) => (
-                        <Picker.Item
-                            key={index}
-                            label={items.label}
-                            value={items.value}
+        <KeyboardAvoidingView style={styles.container}>
+            {/* <View style={styles.container}> */}
+                <View style={styles.formcontainer}>
+                    <View style={styles.componentcontainer}>
+                        <Text>メールアドレス</Text>
+                        <TextInput
+                            style={styles.textinputsmall}
+                            // placeholder='XXX@example.com'
+                            onChangeText={(text) => setEmail(text)}
+                            value={email}
                         />
-                    ))}
-                </Picker> */}
-            </View>
-            <View style={styles.formcomponentcontainer}>
-            <Text>お問い合わせ内容</Text>
-            <TextInput
-                style={styles.textinput}
-                scrollEnabled={true}
-                onChangeText={(text) => setContent(text)}
-                multiline={true}
-                textAlignVertical='top'
-                maxLength={400}
-                value={content}
-            />
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                    handleInquiryForm();
-                }}
-                disabled={isSendMessage}
-            >
-                {!isSendMessage ? 
-                <Text style={styles.buttonText}>送信</Text>
-                 : 
-                <Iconify icon="material-symbols:check-circle-rounded" size={30} color="#136FFF" />
-                // <Text style={styles.buttonText}>送信</Text>
-                }
-            </TouchableOpacity>
-            </View>
-            </View>
-        </View>
+                    </View>
+                    <View style={styles.componentcontainer}>
+                        <Text>問い合わせ項目</Text>
+                        <TextInput
+                            style={styles.textinputsmall}
+                            onChangeText={(text) => setItem(text)}
+                            value={item}
+                        />
+                    </View>
+                    <View style={styles.formcomponentcontainer}>
+                        <Text>お問い合わせ内容</Text>
+                        <TextInput
+                            style={styles.textinput}
+                            scrollEnabled={true}
+                            onChangeText={(text) => setContent(text)}
+                            multiline={true}
+                            textAlignVertical='top'
+                            maxLength={400}
+                            value={content}
+                            returnKeyLabel='確定'
+                            returnKeyType='done'
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss();
+                            }
+                            }
+                        />
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                                handleInquiryForm();
+                            }}
+                            disabled={isSendMessage}
+                        >
+                            {!isSendMessage ?
+                                <Text style={styles.buttonText}>送信</Text>
+                                :
+                                <Iconify icon="material-symbols:check-circle-rounded" size={30} color="#136FFF" />
+                                // <Text style={styles.buttonText}>送信</Text>
+                            }
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            {/* </View> */}
+        </KeyboardAvoidingView>
     );
 };
 

@@ -21,9 +21,9 @@ const Home: React.FC = () => {
   useEffect(() => {
     fetchUser().then((user) => {
       const { email, plan, usedTokens, usedElevenTokens } = user;
-      // console.log('user: ', user)
+      // console.log('plan: ', selecter)
       dispatch(initializeStateAction(email, usedTokens, usedElevenTokens, plan));
-      // console.log('selecter: ', selecter)
+      console.log('selecter: ', selecter)
       if (user.planRegisteredDate && Date.now() - Number(user.planRegisteredDate) > 2592000000) {
         // if (true) {
         const resetData = {
@@ -38,7 +38,6 @@ const Home: React.FC = () => {
               graphqlOperation(updateUser, { input: resetData })
             );
             dispatch(resetTokenLimitAction());
-            // console.log('resetData success ');
           } catch (error) {
             console.log('error: ', error);
           }
@@ -53,9 +52,6 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // dispatch(plusTokenAction(selecter.user.token + 50));
-    // dispatch(changePlanAction('プレミアム'));
-    // console.log('selecter: ', selecter);
     switch (PageName) {
       case 'Home':
         setCurrentComponent(<ConversationList />);
@@ -66,10 +62,6 @@ const Home: React.FC = () => {
       case 'Setting':
         setCurrentComponent(<Setting />);
         break;
-      // case 'test':
-      // setCurrentComponent(<Test />);
-      // default:
-      //   setCurrentComponent(<ConversationList setTopic={setTopic}/>);
     }
   }, [PageName]);
 
@@ -98,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '80%',
-    paddingBottom: '20%',
+    paddingBottom: '18%',
   },
   bottomView: {
     width: '100%',

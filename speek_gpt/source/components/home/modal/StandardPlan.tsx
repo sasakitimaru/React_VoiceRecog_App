@@ -1,20 +1,37 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import PlanView from './PlanView';
+import { useSelector } from 'react-redux';
 
 type PlanElement = {
     isPlanPremium: boolean;
     planTitle: string;
-    planPrice: string[];
+    planPrice: string;
 }
-const StandardPlanBox:React.FC = () => {
-    const PlanElement:PlanElement = {
-        isPlanPremium: false,
-        planTitle: 'スタンダードプラン',
-        planPrice: ['990','2,200','3,800'],
+const StandardPlanBox: React.FC = () => {
+    const plan = useSelector((state: any) => state.planContent);
+    let isPlanPremium = false;
+    let planTitle = 'データを取得できませんでした';
+    let planPrice = '---';
+    console.log('plan', plan);
+    if (plan && plan.length > 2) {
+        if (plan[1].planName === 'StandardPlan') {
+            isPlanPremium = false;
+            planTitle = plan[1].planName;
+            planPrice = plan[1].planRate;
+        } else if (plan[2].planName === 'StandardPlan') {
+            isPlanPremium = false;
+            planTitle = plan[2].planName;
+            planPrice = plan[2].planRate;
+        }
+    }
+    const planElement: PlanElement = {
+        isPlanPremium: isPlanPremium,
+        planTitle: planTitle,
+        planPrice: planPrice,
     };
+    console.log('planElement1', planElement);
     return (
-        <PlanView PlanElement={PlanElement}/>
+        <PlanView planElement={planElement} />
     );
 };
 export default StandardPlanBox;

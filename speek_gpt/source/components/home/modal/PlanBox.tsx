@@ -4,30 +4,40 @@ import { purchaseSubscription } from '../../../../src/services/IAPService';
 import { Subscription, getAvailablePurchases } from 'react-native-iap';
 import { useDispatch } from 'react-redux';
 
+type PlanElement = {
+    isPlanPremium: boolean;
+    planTitle: string;
+    planPrice: string;
+}
+
 type PlanBoxProps = {
-    isplanPremium: boolean;
-    planprice: string;
+    planElement: PlanElement;
 };
-const PlanBox: React.FC<PlanBoxProps> = ({ isplanPremium, planprice }) => {
-    const [products, setProducts] = useState<Subscription[] | null>([]);
+const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
+    // const [products, setProducts] = useState<Subscription[] | null>([]);
+    const [product, setProduct] = useState<string>('');
     const [isPurchasing, setIsPurchasing] = useState<boolean>(false);
     const [showLoading, setShowLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
-
     const purchaseProcess = async (sku: string) => {
         setShowLoading(true);
+        console.log('start purchaseprocess')
         try {
             // console.log('purchaseSubscription', sku);
             await purchaseSubscription({ sku });
+            console.log('finish purchaseprocess')
         } catch (error) {
             console.log('purchaseSubscription error', error);
             setShowLoading(false);
         }
     };
+    useEffect(() => {
+        planElement.isPlanPremium ? setProduct('speechablePremium') : setProduct('speechableStandard');
+    }, []);
     const handlePurchase = () => {
-        console.log('products', products)
-        if (products && products.length > 0) {
-            isplanPremium ? purchaseProcess(products[1].productId) : purchaseProcess(products[0].productId);
+        console.log('products', product)
+        if (product) {
+            purchaseProcess(product);
         }
     };
     const restorePurchasesProcess = async () => {
@@ -40,9 +50,9 @@ const PlanBox: React.FC<PlanBoxProps> = ({ isplanPremium, planprice }) => {
             } else {
                 console.log('restoredPurchases', restoredPurchases[0].productId);
                 console.log('restoredPurchases', restoredPurchases.length);
-                // Assuming the first purchase is the subscription
                 if (restoredPurchases && restoredPurchases.length > 0) {
                     const subscription = restoredPurchases[0];
+                    console.log('subscription_restored',subscription)
                     // do something with the subscription, like storing it somewhere
                     // or validating it with your server
 
@@ -63,11 +73,11 @@ const PlanBox: React.FC<PlanBoxProps> = ({ isplanPremium, planprice }) => {
         <View>
             <TouchableOpacity
                 style={
-                    isplanPremium ? styles.premiumPlanview : styles.standardPlanview
+                    planElement.isPlanPremium ? styles.premiumPlanview : styles.standardPlanview
                 }
                 onPress={() => handlePurchase()}
             >
-                <Text style={styles.planviewtext}>{planprice}</Text>
+                <Text style={styles.planviewtext}>{planElement.planPrice}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 onPress={() => restorePurchasesProcess()}

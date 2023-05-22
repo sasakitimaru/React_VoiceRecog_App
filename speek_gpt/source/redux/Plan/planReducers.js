@@ -3,11 +3,11 @@ import initialState from '../store/initialState';
 
 const planReducer = (state = initialState.planContent, action) => {
     switch (action.type) {
-        case planaction.INITIALIZE_STATE:
-            return {
+        case planaction.INITIALIZE_PLAN_STATE:
+            return [
                 ...state,
-                ...action.payload
-            }
+                action.payload
+           ]
         default:
             return state;
     }
