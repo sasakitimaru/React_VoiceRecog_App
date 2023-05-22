@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { purchaseSubscription } from '../../../../src/services/IAPService';
-import { Subscription, getAvailablePurchases } from 'react-native-iap';
+import { getAvailablePurchases } from 'react-native-iap';
 import { useDispatch } from 'react-redux';
 
 type PlanElement = {
@@ -34,9 +34,14 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
     useEffect(() => {
         planElement.isPlanPremium ? setProduct('speechablePremium') : setProduct('speechableStandard');
     }, []);
-    const handlePurchase = () => {
-        console.log('products', product)
+    const handlePurchase = async () => {
         if (product) {
+            const purchases = await getAvailablePurchases();
+            const isAlreadyPurchased = purchases.find(purchase => purchase.productId === product);
+            if (isAlreadyPurchased) {
+                console.log('You have already purchased this item.',purchases.length);
+                return;
+            }
             purchaseProcess(product);
         }
     };
@@ -52,7 +57,7 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
                 console.log('restoredPurchases', restoredPurchases.length);
                 if (restoredPurchases && restoredPurchases.length > 0) {
                     const subscription = restoredPurchases[0];
-                    console.log('subscription_restored',subscription)
+                    console.log('subscription_restored', subscription)
                     // do something with the subscription, like storing it somewhere
                     // or validating it with your server
 

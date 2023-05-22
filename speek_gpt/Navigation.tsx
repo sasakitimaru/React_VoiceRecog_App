@@ -35,13 +35,13 @@ const Navigation: React.FC<NavigationProps> = ({ IsAuthenticated }) => {
   useEffect(() => {
     initializePayment().then(response => setProducts(response));
     subscribePurchaseUpdate(async (purchase: any) => {
-      console.log('purchaseUpdatedListener', purchase);
+      // console.log('purchaseUpdatedListener', purchase);
       if (purchase) {
         // finish the transaction
         console.log('start the transaction',purchase)
         await finishTransaction({purchase});
         console.log('finish the transaction',purchase.productId)
-        getAndStoreReceipt();
+        getAndStoreReceipt(purchase);
       }
 
     });
@@ -56,16 +56,15 @@ const Navigation: React.FC<NavigationProps> = ({ IsAuthenticated }) => {
       unsubscribePurchaseError();
     };
   }, []);
-  const getAndStoreReceipt = async () => {
+  const getAndStoreReceipt = async (purchase) => {
     const receipt = await getReceiptIOS({});
-    console.log('receipt', receipt.productId)
     if (receipt) {
       await AsyncStorage.setItem('receipt', receipt);
       const isValidate = await validateReceipt();
       console.log("chekc isValidate", isValidate)
       if (isValidate) {
         console.log('isValidate', isValidate)
-        updateUserPlan(receipt.productId);
+        updateUserPlan(purchase);
       }
     }
   };
@@ -78,17 +77,17 @@ const Navigation: React.FC<NavigationProps> = ({ IsAuthenticated }) => {
     }
   }, [products]);
 
-  const updateUserPlan = async (productId: string) => {
+  const updateUserPlan = async (purchase: any) => {
     const user = await fetchUser();
     try {
-      const isPlanPremium = productId === "PremiumPlan" ? true : false;
-      // const isPlanPremium = true; //仮置き
+      console.log('productId', purchase)
+      const isPlanPremium = purchase.productId === "speechablePremium" ? true : false;
       const planData = {
         id: user.id,
         usedElevenTokens: 0,
         usedTokens: 0,
         plan: isPlanPremium ? 'premium' : 'standard', 
-        planRegisteredDate: Date.now(),
+        planRegisteredDate: purchase.transactionDate,
       };
       try {
         await API.graphql(
