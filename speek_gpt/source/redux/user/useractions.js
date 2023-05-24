@@ -32,12 +32,12 @@ export const plusElevenTokenAction = (usedElevenToken) => {
 }
 
 export const CHANGE_PLAN = 'CHANGE_PLAN';
-export const changePlanAction = (plan) => {
+export const changePlanAction = (token,eleventoken,plan) => {
     return {
         type: CHANGE_PLAN,
         payload: {
-            token: 0,
-            eleventoken: 0,
+            token: token,
+            eleventoken: eleventoken,
             plan: plan
         }
     }

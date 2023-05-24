@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { purchaseSubscription } from '../../../../src/services/IAPService';
 import { getAvailablePurchases } from 'react-native-iap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { User } from '../../../Plan.type';
+import ValidateReceipt from './ValidateReceipt'
 
 type PlanElement = {
     isPlanPremium: boolean;
@@ -16,9 +18,12 @@ type PlanBoxProps = {
 const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
     // const [products, setProducts] = useState<Subscription[] | null>([]);
     const [product, setProduct] = useState<string>('');
+    const [latestPurchase, setLatestPurchase] = useState<any>(null);
     const [isPurchasing, setIsPurchasing] = useState<boolean>(false);
+    const [isRestoring, setIsRestoring] = useState<boolean>(false);
     const [showLoading, setShowLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
+    const user: User = useSelector((state: any) => state.user);
     const purchaseProcess = async (sku: string) => {
         setShowLoading(true);
         console.log('start purchaseprocess')
@@ -36,10 +41,12 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
     }, []);
     const handlePurchase = async () => {
         if (product) {
-            const purchases = await getAvailablePurchases();
-            const isAlreadyPurchased = purchases.find(purchase => purchase.productId === product);
-            if (isAlreadyPurchased) {
-                console.log('You have already purchased this item.',purchases.length);
+            if ((product === 'speechableStandard') && (user.plan === 'premium' || user.plan === 'standard')) {
+                console.log('you are already subscribed');
+                return;
+            }
+            if ((product === 'speechablePremium') && (user.plan === 'premium')) {
+                console.log('You have already purchased this item.');
                 return;
             }
             purchaseProcess(product);
@@ -53,16 +60,11 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
                 // There are no purchases to restore
                 console.log('There are no purchases to restore');
             } else {
-                console.log('restoredPurchases', restoredPurchases[0].productId);
-                console.log('restoredPurchases', restoredPurchases.length);
                 if (restoredPurchases && restoredPurchases.length > 0) {
-                    const subscription = restoredPurchases[0];
-                    console.log('subscription_restored', subscription)
-                    // do something with the subscription, like storing it somewhere
-                    // or validating it with your server
-
+                    const sortedPurchases = restoredPurchases.sort((a, b) => b.transactionDate - a.transactionDate);
+                    setLatestPurchase(sortedPurchases[0]);
+                    setIsRestoring(true);
                 } else if (restoredPurchases.length === 0) {
-                    // There are no purchases to restore
                     console.log('There are no purchases to restore');
                 }
             }
@@ -76,6 +78,14 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
 
     return (
         <View>
+            {isRestoring && (
+                <ValidateReceipt
+                    purchase={latestPurchase}
+                    isRestoring={isRestoring}
+                    setIsRestoring={setIsRestoring}
+                    fromPlanBox={true}
+                />
+            )}
             <TouchableOpacity
                 style={
                     planElement.isPlanPremium ? styles.premiumPlanview : styles.standardPlanview

@@ -1,55 +1,79 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Alert } from 'react-native';
 import { UnderMenuBar } from './components';
 import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
 import { useNavigation } from '@react-navigation/native';
 // import Test from './Test/testfield';
-import Calendar from './components/Calendar';
 import fetchUser from './components/History/FetchUser';
+import { initializeStateAction } from './redux/user/useractions';
+import Calendar from './components/Calendar';
 import { useDispatch, useSelector } from 'react-redux';
-import { initializeStateAction, resetTokenLimitAction } from './redux/user/useractions';
-import { API, graphqlOperation } from 'aws-amplify';
-import { updateUser } from '../src/graphql/mutations';
+import { initializePlanStateAction } from './redux/Plan/planactions';
+import { initializePayment, subscribePurchaseError, subscribePurchaseUpdate, unsubscribePurchaseError, unsubscribePurchaseUpdate } from '../src/services/IAPService';
+import { Subscription, SubscriptionIOS, finishTransaction } from 'react-native-iap';
+import ValidateReceipt from './components/home/modal/ValidateReceipt';
 
 const Home: React.FC = () => {
+  const [products, setProducts] = useState<Subscription[] | null>([]);
+  const [purchaseError, setPurchaseError] = useState<string>('');
   const [PageName, setPageName] = useState<String>('Home');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList />);
+  const [isRestoring, setIsRestoring] = useState<boolean>(false);
+  const [latestPurchase, setLatestPurchase] = useState<Subscription | null>(null);
   const navigate = useNavigation();
   const dispatch = useDispatch();
-  const selecter = useSelector((state: any) => state);
+  // const selecter = useSelector((state: any) => state);
   useEffect(() => {
-    fetchUser().then((user) => {
-      const { email, plan, usedTokens, usedElevenTokens } = user;
-      // console.log('plan: ', selecter)
-      dispatch(initializeStateAction(email, usedTokens, usedElevenTokens, plan));
-      console.log('selecter: ', selecter)
-      if (user.planRegisteredDate && Date.now() - Number(user.planRegisteredDate) > 2592000000) {
-        // if (true) {
-        const resetData = {
-          id: user.id,
-          usedElevenTokens: 0,
-          usedTokens: 0,
-          planRegisteredDate: Date.now(),
-        };
-        const updateSubscription = async () => {
-          try {
-            await API.graphql(
-              graphqlOperation(updateUser, { input: resetData })
-            );
-            dispatch(resetTokenLimitAction());
-          } catch (error) {
-            console.log('error: ', error);
-          }
-        };
-        updateSubscription();
-      }
-    });
     navigate.setOptions({
       headerShown: true,
       headerLeft: null,
     });
   }, []);
+  useEffect(() => {
+    fetchUser().then((user) => {
+      const { email, plan, usedTokens, usedElevenTokens } = user;
+      dispatch(initializeStateAction(email, usedTokens, usedElevenTokens, plan));
+    });
+
+    initializePayment().then(response => setProducts(response));
+
+    subscribePurchaseError((error: any) => {
+      console.log('purchaseErrorListener', error);
+      setPurchaseError(error);
+      return;
+    });
+    subscribePurchaseUpdate(async (purchase: any) => {
+      console.log('purchaseUpdatedListener', purchase);
+      if (purchase) {
+        // finish the transaction
+        if (purchaseError) {
+          console.log('purchaseCanceled', purchaseError)
+          Alert.alert('購入が中断されました', purchaseError, [{ text: 'OK' }]);
+          setPurchaseError('');
+          return;
+        }
+        console.log('start the transaction', purchase.transactionReceipt.expires_date_ms)
+        await finishTransaction({ purchase });
+        console.log('finish the transaction', purchase.productId)
+        setLatestPurchase(purchase);
+        setIsRestoring(true);
+      }
+
+    });
+    return () => {
+      unsubscribePurchaseUpdate();
+      unsubscribePurchaseError();
+    };
+  }, []);
+
+  useEffect(() => {
+    // console.log('products', products);
+    if (products && products.length > 0) {
+      dispatch(initializePlanStateAction(products[0].localizedPrice, products[0].title, products[0].description))
+      dispatch(initializePlanStateAction(products[1].localizedPrice, products[1].title, products[1].description))
+    }
+  }, [products]);
 
   useEffect(() => {
     switch (PageName) {
@@ -66,16 +90,25 @@ const Home: React.FC = () => {
   }, [PageName]);
 
   return (
-    <View style={styles.containerMain}>
-      <View style={styles.contentView}>
-        {currentComponent}
+    <>
+      {isRestoring && (
+        <ValidateReceipt
+          purchase={latestPurchase}
+          isRestoring={isRestoring}
+          setIsRestoring={setIsRestoring}
+        />
+      )}
+      <View style={styles.containerMain}>
+        <View style={styles.contentView}>
+          {currentComponent}
+        </View>
+        <View style={styles.bottomView}>
+          <SafeAreaView>
+            <UnderMenuBar setPageName={setPageName}></UnderMenuBar>
+          </SafeAreaView>
+        </View>
       </View>
-      <View style={styles.bottomView}>
-        <SafeAreaView>
-          <UnderMenuBar setPageName={setPageName}></UnderMenuBar>
-        </SafeAreaView>
-      </View>
-    </View>
+    </>
   );
 };
 

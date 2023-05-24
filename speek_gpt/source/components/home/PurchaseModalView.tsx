@@ -5,6 +5,7 @@ import { ModalVisibleContext } from '../../../App';
 import PremiumpPlanBox from './modal/PremiumPlanBpx';
 import StandardPlanBox from './modal/StandardPlan';
 import TermsOfSerciveModal from './modal/TermsOfServiceModal';
+import { deepLinkToSubscriptionsIos, getAvailablePurchases } from 'react-native-iap';
 
 type ModalVisibleContextProps = {
     modalVisible: boolean;
@@ -14,7 +15,10 @@ const PurchaseModalView: React.FC = () => {
     const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
     const [isPlanPremium, setIsPlanPremium] = useState<boolean>(true);
     const [termsvisible , setTermsVisible] = useState<boolean>(false);
-    console.log('modalVisible_purchase: ', modalVisible);
+
+    const handlecancelSubscriptions = async () => {
+        deepLinkToSubscriptionsIos();
+      };
     return (
         <Modal
             visible={modalVisible}
@@ -47,6 +51,11 @@ const PurchaseModalView: React.FC = () => {
                     <Text style={styles.termsOfSerciveLink}>利用規約</Text>
                 </TouchableOpacity>
                 <TermsOfSerciveModal visible={termsvisible} setVisible={setTermsVisible}/>
+                <TouchableOpacity
+                onPress={handlecancelSubscriptions}
+                >
+                    <Text style={styles.cancellation}>解約</Text>
+                </TouchableOpacity>
             </View>
         </Modal>
     );
@@ -60,7 +69,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     header: {
-        fontSize: 28,
+        fontSize: 25,
         paddingTop: 10,
         paddingLeft: 10,
         paddingRight: 10,
@@ -89,5 +98,9 @@ const styles = StyleSheet.create({
     termsOfSerciveLink: {
         marginTop: 10,
         color: '#136FFF',
+    },
+    cancellation: {
+        marginTop: 20,
+        color: '#FF367F',
     }
 });
