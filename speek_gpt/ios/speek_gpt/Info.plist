@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>栗松でやんす</string>
+	<string>マイクは会話の音声を認識するためにのみ使用されます。</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>栗松でやんす</string>
+	<string>マイクは会話の音声をにんしきするためにのみ使用されます。</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
