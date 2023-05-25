@@ -22,10 +22,6 @@ type conversation = {
 const History = ({ route }) => {
     const { date, conversationsHistoryProps } = route.params;
     const conversationsHistory: conversationsHistory[] = conversationsHistoryProps;
-    // const [selectedDate, setSelectedDate] = useState<string>(selected);
-    // console.log('selectedDate', selectedDate)
-    // console.log('selected_b', date)
-    // console.log('timestamp', formatUTCtoJapanDate(conversationsHistoryProps[0].timestamp))
     const navigation = useNavigation();
     const exportFetchedUser = (props) => {
         if(!props.item.conversation) navigation.navigate('ChatHistory', { props: [] });
@@ -62,7 +58,7 @@ const History = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            { (filteredArray !== null) ?
+            { (filteredArray.length > 0) ?
             <FlatList
                 data={filteredArray}
                 renderItem={({ item }) => (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { purchaseSubscription } from '../../../../src/services/IAPService';
 import { getAvailablePurchases } from 'react-native-iap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,15 +22,15 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
     const [isPurchasing, setIsPurchasing] = useState<boolean>(false);
     const [isRestoring, setIsRestoring] = useState<boolean>(false);
     const [showLoading, setShowLoading] = useState<boolean>(false);
+    const [isNotRenewAccount, setIsNotRenewAccount] = useState<boolean>(false);
     const dispatch = useDispatch();
     const user: User = useSelector((state: any) => state.user);
     const purchaseProcess = async (sku: string) => {
-        setShowLoading(true);
-        console.log('start purchaseprocess')
         try {
             // console.log('purchaseSubscription', sku);
             await purchaseSubscription({ sku });
             console.log('finish purchaseprocess')
+            setShowLoading(false);
         } catch (error) {
             console.log('purchaseSubscription error', error);
             setShowLoading(false);
@@ -40,15 +40,21 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
         planElement.isPlanPremium ? setProduct('speechablePremium') : setProduct('speechableStandard');
     }, []);
     const handlePurchase = async () => {
+        setShowLoading(true);
         if (product) {
             if ((product === 'speechableStandard') && (user.plan === 'premium' || user.plan === 'standard')) {
                 console.log('you are already subscribed');
+                Alert.alert('すでに購入済みです');
+                setShowLoading(false);
                 return;
             }
             if ((product === 'speechablePremium') && (user.plan === 'premium')) {
                 console.log('You have already purchased this item.');
+                Alert.alert('すでに購入済みです');
+                setShowLoading(false);
                 return;
             }
+            console.log('start purchaseprocess:', product)
             purchaseProcess(product);
         }
     };
@@ -59,17 +65,15 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
             if (restoredPurchases.length === 0) {
                 // There are no purchases to restore
                 console.log('There are no purchases to restore');
-            } else {
-                if (restoredPurchases && restoredPurchases.length > 0) {
-                    const sortedPurchases = restoredPurchases.sort((a, b) => b.transactionDate - a.transactionDate);
-                    setLatestPurchase(sortedPurchases[0]);
-                    setIsRestoring(true);
-                } else if (restoredPurchases.length === 0) {
-                    console.log('There are no purchases to restore');
-                }
+                Alert.alert('購入情報がありません');
+                setShowLoading(false);
+            } else if (restoredPurchases && restoredPurchases.length > 0) {
+                const sortedPurchases = restoredPurchases.sort((a, b) => b.transactionDate - a.transactionDate);
+                setLatestPurchase(sortedPurchases[0]);
+                setShowLoading(false);
+                setIsRestoring(true);
+                setIsNotRenewAccount(true);
             }
-
-            setShowLoading(false);
         } catch (error) {
             console.log('restorePurchases error', error);
             setShowLoading(false);
@@ -84,7 +88,13 @@ const PlanBox: React.FC<PlanBoxProps> = ({ planElement }) => {
                     isRestoring={isRestoring}
                     setIsRestoring={setIsRestoring}
                     fromPlanBox={true}
+                    isNotRenewAccount={isNotRenewAccount}
                 />
+            )}
+            {showLoading && (
+                <View style={styles.overlay}>
+                    <ActivityIndicator size="large" color="#fff" />
+                </View>
             )}
             <TouchableOpacity
                 style={
@@ -132,5 +142,18 @@ const styles = StyleSheet.create({
         paddingTop: '10%',
         fontSize: 15,
         fontWeight: 'bold',
+    },
+    overlay: {
+        flex: 1,
+        position: 'absolute',
+        top: '-1000%',
+        left: '-100%',
+        right: '-100%',
+        bottom: '-1000%',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        zIndex: 100,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

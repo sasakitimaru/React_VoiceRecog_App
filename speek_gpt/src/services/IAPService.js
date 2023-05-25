@@ -22,7 +22,7 @@ export const initializePayment = async () => {
 
 export const purchaseSubscription = async (productId) => {
   try {
-    // console.log("purchaseSubscription:", productId)
+    console.log("purchaseSubscription:", productId)
     await requestSubscription(productId);
   } catch (err) {
     console.error("purchaseSubscription error", err);

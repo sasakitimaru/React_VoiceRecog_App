@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Keyboard, Platform, Alert } from 'react-native';
 // import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { Iconify } from 'react-native-iconify';
@@ -40,7 +40,10 @@ const InquiryForm = () => {
     }, []);
 
     const handleInquiryForm = async () => {
-        if (!email || !item || !content) return;
+        if (!email || !item || !content) {
+            Alert.alert('email,問い合わせ項目,お問い合わせ内容は必須です');
+            return;
+        }
         const Data = {
             email: email,
             item: item,
@@ -51,12 +54,19 @@ const InquiryForm = () => {
                 graphqlOperation(createInquiryForm, { input: Data })
             );
             setIsSendMessage(true);
+            setTimeout(() => {
+                navigation.goBack();
+            }
+            , 1000);
         } catch (error) {
             console.log(error);
         }
     };
     return (
-        <KeyboardAvoidingView style={styles.container}>
+        <KeyboardAvoidingView 
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
             {/* <View style={styles.container}> */}
                 <View style={styles.formcontainer}>
                     <View style={styles.componentcontainer}>
@@ -83,6 +93,7 @@ const InquiryForm = () => {
                             scrollEnabled={true}
                             onChangeText={(text) => setContent(text)}
                             multiline={true}
+                            blurOnSubmit={true}
                             textAlignVertical='top'
                             maxLength={400}
                             value={content}

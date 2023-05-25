@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, View, Alert } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Alert, AppState, ActivityIndicator } from 'react-native';
 import { UnderMenuBar } from './components';
 import Setting from './components/Setting';
 import ConversationList from './components/ConversationList';
@@ -11,19 +11,24 @@ import Calendar from './components/Calendar';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializePlanStateAction } from './redux/Plan/planactions';
 import { initializePayment, subscribePurchaseError, subscribePurchaseUpdate, unsubscribePurchaseError, unsubscribePurchaseUpdate } from '../src/services/IAPService';
-import { Subscription, SubscriptionIOS, finishTransaction } from 'react-native-iap';
+import { Subscription, getAvailablePurchases, finishTransaction } from 'react-native-iap';
 import ValidateReceipt from './components/home/modal/ValidateReceipt';
+// import { hasRunUpdateContext, HasRunUpdateSubscriptionProps } from '../App';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from './Plan.type';
 
 const Home: React.FC = () => {
   const [products, setProducts] = useState<Subscription[] | null>([]);
   const [purchaseError, setPurchaseError] = useState<string>('');
   const [PageName, setPageName] = useState<String>('Home');
   const [currentComponent, setCurrentComponent] = useState<JSX.Element>(<ConversationList />);
+  const [showLoading, setShowLoading] = useState<boolean>(false);
   const [isRestoring, setIsRestoring] = useState<boolean>(false);
-  const [latestPurchase, setLatestPurchase] = useState<Subscription | null>(null);
+  const [latestPurchase, setLatestPurchase] = useState<any | null>(null);
+  const [forSubscriptionUpdate, setForSubscriptionUpdate] = useState<boolean>(false);
   const navigate = useNavigation();
   const dispatch = useDispatch();
-  // const selecter = useSelector((state: any) => state);
+  const _user:User = useSelector((state: any) => state);
   useEffect(() => {
     navigate.setOptions({
       headerShown: true,
@@ -41,21 +46,24 @@ const Home: React.FC = () => {
     subscribePurchaseError((error: any) => {
       console.log('purchaseErrorListener', error);
       setPurchaseError(error);
+      Alert.alert('購入が中断されました', error.debugMessage, [{ text: 'OK' }]);
       return;
     });
     subscribePurchaseUpdate(async (purchase: any) => {
       console.log('purchaseUpdatedListener', purchase);
+      setShowLoading(true);
       if (purchase) {
         // finish the transaction
         if (purchaseError) {
           console.log('purchaseCanceled', purchaseError)
-          Alert.alert('購入が中断されました', purchaseError, [{ text: 'OK' }]);
+          setShowLoading(false);
           setPurchaseError('');
           return;
         }
         console.log('start the transaction', purchase.transactionReceipt.expires_date_ms)
         await finishTransaction({ purchase });
         console.log('finish the transaction', purchase.productId)
+        setShowLoading(false);
         setLatestPurchase(purchase);
         setIsRestoring(true);
       }
@@ -96,7 +104,13 @@ const Home: React.FC = () => {
           purchase={latestPurchase}
           isRestoring={isRestoring}
           setIsRestoring={setIsRestoring}
+          forSubscriptionUpdate={forSubscriptionUpdate}
         />
+      )}
+      {showLoading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
       )}
       <View style={styles.containerMain}>
         <View style={styles.contentView}>
@@ -139,5 +153,18 @@ const styles = StyleSheet.create({
   textStyle: {
     color: '#fff',
     fontSize: 18,
+  },
+  overlay: {
+    flex: 1,
+    position: 'absolute',
+    top: '-1000%',
+    left: '-100%',
+    right: '-100%',
+    bottom: '-1000%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 100,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
