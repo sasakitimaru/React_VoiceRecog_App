@@ -33,12 +33,14 @@ const EnrollForm = () => {
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.title}>Login</Text>
+        <Text style={styles.createAccountLabel}>Email</Text>
         <TextInput
           onChangeText={setEmail}
           style={styles.input}
           placeholder="Email-address"
           keyboardType="email-address"
         />
+        <Text style={styles.createAccountLabel}>Password</Text>
         <TextInput
           onChangeText={setPassword}
           style={styles.input}
@@ -103,6 +105,11 @@ const styles = StyleSheet.create({
   createAccountText: {
     color: '#007BFF',
   },
+  createAccountLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10,
+},
 });
 
 export default EnrollForm;
