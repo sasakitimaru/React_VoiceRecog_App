@@ -30,7 +30,6 @@ export const CountTokens = (userId: string, newTokenCount: number) => {
 export const CountElevenTokens = (userId: string, newTokenCount: number) => {
   return async (dispatch: any, getState: any) => {
     const user: User = getState().user;
-    console.log('user', user);
     const userDetails = {
       id: userId,
       usedElevenTokens: user.eleventoken + newTokenCount,

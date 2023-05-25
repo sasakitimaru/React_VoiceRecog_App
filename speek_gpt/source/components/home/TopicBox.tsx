@@ -5,8 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ElevenlabsContext } from '../ConversationList';
 import { useSelector } from 'react-redux';
 import { ModalVisibleContext } from '../../../App';
-
-type topic = string;
+import { User, tokenlimit } from '../../Plan.type';
 
 type ModalVisibleContextProps = {
   modalVisible: boolean;
@@ -14,57 +13,25 @@ type ModalVisibleContextProps = {
 };
 
 type TopicBoxProps = {
-  topic: topic;
-  // setTopic: setTopic;
-};
-
-type Plan = 'nomal' | 'standard' | 'premium' | 'special';
-
-type User = {
-  plan: Plan;
-  token: number;
-  eleventoken: number;
-};
-
-type Tokenlimit = {
-  [P in Plan]: {
-    token: number;
-    eleventoken: number;
-  };
+  topic: string;
 };
 
 const TopicBox: React.FC<TopicBoxProps> = ({ topic }) => {
   const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
   const user: User = useSelector((state: any) => state.user);
-  const tokenlimit: Tokenlimit = {
-    nomal: {
-      token: 1000,
-      eleventoken: 1000,
-    },
-    standard: {
-      token: 30000,
-      eleventoken: 1000,
-    },
-    premium: {
-      token: 50000,
-      eleventoken: 30000,
-    },
-    special: {
-      token: 9999999,
-      eleventoken: 9999999,
-    }
-  };
   const isElevenlabsEffective = useContext(ElevenlabsContext);
   const navigate = useNavigation();
   const handlePress = () => {
-    if(user.token < tokenlimit[user.plan].token){
+    const user_token = isElevenlabsEffective ? user.eleventoken : user.token
+    const limit_token = isElevenlabsEffective ? tokenlimit[user.plan].eleventoken : tokenlimit[user.plan].token
+    if(user_token < limit_token){
       navigate.navigate('AI_conversation', { topic: topic, isElevenlabsEffective })
     }else{
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          options: ['キャンセル'],
+          options: ['戻る'],
           cancelButtonIndex: 0,
-          title: '使用上限に到達しました。',
+          title: `${isElevenlabsEffective ? 'ネイティブトークンの' : 'スタンダードトークンの'}使用上限に到達しました。`,
           message: 'StandardプランかPremiumプランへのご登録をお願いいたします。'
         },
         (buttonIndex) => {

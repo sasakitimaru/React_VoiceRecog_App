@@ -2,14 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text } from 'react-native';
 import { View } from 'react-native-animatable';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
+import { User, tokenlimit } from '../../Plan.type';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 type UsedRateCircleProps = {
-    user: {
-        token: number,
-        eleventoken: number,
-        plan: string,
-    },
+    user: User,
     isElevenlabs: boolean,
 };
 const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) => {
@@ -24,26 +21,27 @@ const UsedRateCircle: React.FC<UsedRateCircleProps> = ({ user, isElevenlabs }) =
     isElevenlabs ? circlecolor = '#136FFF' : circlecolor = '#FF367F';
     // token = 800;
     if (plan === 'nomal') {
-        percentageOfUsedNomalToken = token / 2000;
-        percentageOfUsedPremiumToken = eleventoken / 1000;
+        percentageOfUsedNomalToken = token / tokenlimit['nomal'].token;
+        percentageOfUsedPremiumToken = eleventoken / tokenlimit['nomal'].eleventoken;
     } else if (plan === 'standard') {
         console.log('standard', isElevenlabs)
-        percentageOfUsedNomalToken = token / 30000;
-        percentageOfUsedPremiumToken = eleventoken / 1000;
+        percentageOfUsedNomalToken = token / tokenlimit['standard'].token;
+        percentageOfUsedPremiumToken = eleventoken / tokenlimit['standard'].eleventoken;
     } else if (plan === 'premium') {
-        percentageOfUsedNomalToken = token / 50000;
-        percentageOfUsedPremiumToken = eleventoken / 30000;
+        percentageOfUsedNomalToken = token / tokenlimit['premium'].token;
+        percentageOfUsedPremiumToken = eleventoken / tokenlimit['premium'].eleventoken;
     }
     const animatedValue = useRef(new Animated.Value(0)).current;
     const r = 40;
     const circumference = 2 * Math.PI * r; // 2πr
+    const revisedUsedRate = Math.max(1 - (
+        isElevenlabs ? percentageOfUsedPremiumToken :
+            percentageOfUsedNomalToken
+    ), 0)
 
     const strokeDashoffset = animatedValue.interpolate({
         inputRange: [0, 1],
-        outputRange: [circumference, circumference * Math.max(1 - (
-            isElevenlabs ? percentageOfUsedPremiumToken :
-                percentageOfUsedNomalToken
-        ), 0)],
+        outputRange: [circumference, circumference * revisedUsedRate],
     });
 
     useEffect(() => {

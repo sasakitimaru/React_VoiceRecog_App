@@ -6,65 +6,21 @@ import UsedRateCircle from './UsedRateCircle';
 import PurchaseModalView from '../home/PurchaseModalView';
 import { ModalVisibleContext } from '../../../App';
 import { useSelector } from 'react-redux';
+import { User, tokenlimit } from '../../Plan.type'
 
 type ModalVisibleContextProps = {
     modalVisible: boolean;
     setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type User = {
-    plan: Plan;
-    token: number;
-    eleventoken: number;
-};
-
-type Plan = 'nomal' | 'standard' | 'premium' | 'special';
-
-type Tokenlimit = {
-    [P in Plan]: {
-        token: number;
-        eleventoken: number;
-    };
-};
-
-
 const ConfirmPlan = () => {
-    // const [isModailVisible, setIsModalVisible] = useState<boolean>(false);
     const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
 
-    useEffect(() => {
-        console.log('modalVisible: ', modalVisible);
-    }, [modalVisible]);
-    const selecter = useSelector((state) => state.user);
-    // console.log('selecter: ', selecter)
-    // const user:User = {
-    //     plan: 'premium',
-    //     token: 654,
-    //     eleventoken: 123,
-    // };
-    const user = useSelector((state: any) => state.user);
-    console.log('user: ', user)
+    const user: User = useSelector((state: any) => state.user);
+    // console.log('user: ', user)
     let token = user.token;
     let eleventoken = user.eleventoken;
     let plan = user.plan;
-    const tokenlimit: Tokenlimit = {
-        nomal: {
-            token: 1000,
-            eleventoken: 1000,
-        },
-        standard: {
-            token: 30000,
-            eleventoken: 1000,
-        },
-        premium: {
-            token: 50000,
-            eleventoken: 30000,
-        },
-        special: {
-            token: 9999999,
-            eleventoken: 9999999,
-        }
-    };
     const navigation = useNavigation();
     useEffect(() => {
         navigation.setOptions({

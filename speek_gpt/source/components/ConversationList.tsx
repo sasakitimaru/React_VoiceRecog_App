@@ -34,6 +34,7 @@ export const ElevenlabsContext = createContext<boolean>(false);
 
 const ConversationList: React.FC = () => {
   const user: User = useSelector((state: any) => state.user);
+  const plan = useSelector((state: any) => state.plan);
   const tokenlimit: Tokenlimit = {
     nomal: {
       token: 1000,
@@ -59,7 +60,7 @@ const ConversationList: React.FC = () => {
 
   useEffect(() => {
     const ElevenlabsDetails = () => {
-      console.log('user: ', user.eleventoken);
+      // console.log('user: ', user.eleventoken);
       if (user.eleventoken > tokenlimit[user.plan].eleventoken) {
         // console.log('eleventoken: ', user.eleventoken);
         // console.log('tokenlimit: ', tokenlimit[user.plan].eleventoken);
@@ -77,7 +78,6 @@ const ConversationList: React.FC = () => {
       }
     };
     if (isElevenlabsEffective) ElevenlabsDetails();
-    console.log('isElevenlabsEffective: ', isElevenlabsEffective)
   }, [isElevenlabsEffective]);
 
   const setTopicRandom = () => {

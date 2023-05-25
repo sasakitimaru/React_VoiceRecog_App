@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActionSheetIOS, Alert, Modal } from 'react-native';
 import { initializePayment, purchaseSubscription, subscribePurchaseUpdate, subscribePurchaseError, unsubscribePurchaseUpdate, unsubscribePurchaseError } from '../../../../src/services/IAPService';
 import { Subscription } from 'react-native-iap';
+import { useSelector } from 'react-redux';
 
 type SubscribeModalProps = {
     isplanPremium: boolean;

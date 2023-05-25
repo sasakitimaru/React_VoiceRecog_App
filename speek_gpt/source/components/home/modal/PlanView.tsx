@@ -2,30 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import PlanBox from './PlanBox';
 // import { Iconify } from 'react-native-iconify';
-
-type PlanViewProps = {
-    PlanElement: {
+type PlanElement = {
         isPlanPremium: boolean;
         planTitle: string;
-        planPrice: string[];
-    };
+        planPrice: string;
 };
-const PlanView: React.FC<PlanViewProps> = ({ PlanElement }) => {
+type PlanViewProps = {
+    planElement: PlanElement;
+};
+const PlanView: React.FC<PlanViewProps> = ({ planElement }) => {
     return (
         <View
             style={
-                PlanElement.isPlanPremium ? styles.premiumRegisterplanContainer : styles.standardRegisterplanContainer
+                planElement.isPlanPremium ? styles.premiumRegisterplanContainer : styles.standardRegisterplanContainer
             }
         >
             <Text
                 style={
-                    PlanElement.isPlanPremium ? styles.premiumPlanheader : styles.standardPlanheader
+                    planElement.isPlanPremium ? styles.premiumPlanheader : styles.standardPlanheader
                 }
             >
-                {PlanElement.planTitle + `に登録する`}
+                {planElement.planTitle + `に登録する`}
             </Text>
             <View style={styles.plancontainer}>
-                <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`1ヶ月${PlanElement.planPrice[0]}円`} />
+                <PlanBox planElement={planElement}/>
                 {/* <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`3ヶ月${PlanElement.planPrice[1]}円`} />
                 <PlanBox isplanPremium={PlanElement.isPlanPremium} planprice={`6ヶ月${PlanElement.planPrice[2]}円`} /> */}
             </View>
@@ -36,7 +36,7 @@ export default PlanView;
 
 const styles = StyleSheet.create({
     standardRegisterplanContainer: {
-        flex: 0.50,
+        flex: 0.60,
         flexDirection: 'column',
         alignItems: 'center',
         padding: 10,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         width: '80%',
     },
     premiumRegisterplanContainer: {
-        flex: 0.50,
+        flex: 0.60,
         flexDirection: 'column',
         alignItems: 'center',
         padding: 10,

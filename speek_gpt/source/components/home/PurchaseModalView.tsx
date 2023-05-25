@@ -5,6 +5,7 @@ import { ModalVisibleContext } from '../../../App';
 import PremiumpPlanBox from './modal/PremiumPlanBpx';
 import StandardPlanBox from './modal/StandardPlan';
 import TermsOfSerciveModal from './modal/TermsOfServiceModal';
+import { deepLinkToSubscriptionsIos, getAvailablePurchases } from 'react-native-iap';
 
 type ModalVisibleContextProps = {
     modalVisible: boolean;
@@ -14,7 +15,10 @@ const PurchaseModalView: React.FC = () => {
     const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
     const [isPlanPremium, setIsPlanPremium] = useState<boolean>(true);
     const [termsvisible , setTermsVisible] = useState<boolean>(false);
-    console.log('modalVisible_purchase: ', modalVisible);
+
+    const handlecancelSubscriptions = async () => {
+        deepLinkToSubscriptionsIos();
+      };
     return (
         <Modal
             visible={modalVisible}
@@ -26,8 +30,8 @@ const PurchaseModalView: React.FC = () => {
             </TouchableOpacity>
             <View style={styles.container}>
                 {isPlanPremium ?
-                    <Text style={styles.header}>{`まるでネイティブと\n話しているような没頭感`}</Text>
-                    : <Text style={styles.header}>{`いつでもどこでも\nAIと英会話を楽しもう`}</Text>
+                    <Text style={styles.header}>{`ほぼネイティブスピーカーの\n発音で英会話をする`}</Text>
+                    : <Text style={styles.header}>{`いつでもあなたのそばにいます。\nAIと英会話を楽しもう。`}</Text>
                 }
                 {isPlanPremium ?
                     <Text style={styles.comment}>ネイティブ読み上げ機能を使うと、より自然な音声で文章を読み上げます。プランに登録しなくても1000文字まで無料でお試しが可能です！</Text>
@@ -47,6 +51,11 @@ const PurchaseModalView: React.FC = () => {
                     <Text style={styles.termsOfSerciveLink}>利用規約</Text>
                 </TouchableOpacity>
                 <TermsOfSerciveModal visible={termsvisible} setVisible={setTermsVisible}/>
+                <TouchableOpacity
+                onPress={handlecancelSubscriptions}
+                >
+                    <Text style={styles.cancellation}>解約</Text>
+                </TouchableOpacity>
             </View>
         </Modal>
     );
@@ -60,7 +69,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     header: {
-        fontSize: 30,
+        fontSize: 25,
         paddingTop: 10,
         paddingLeft: 10,
         paddingRight: 10,
@@ -89,5 +98,9 @@ const styles = StyleSheet.create({
     termsOfSerciveLink: {
         marginTop: 10,
         color: '#136FFF',
+    },
+    cancellation: {
+        marginTop: 20,
+        color: '#FF367F',
     }
 });
