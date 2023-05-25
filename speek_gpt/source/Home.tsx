@@ -50,7 +50,7 @@ const Home: React.FC = () => {
       return;
     });
     subscribePurchaseUpdate(async (purchase: any) => {
-      console.log('purchaseUpdatedListener', purchase);
+      // console.log('purchaseUpdatedListener', purchase);
       setShowLoading(true);
       if (purchase) {
         // finish the transaction

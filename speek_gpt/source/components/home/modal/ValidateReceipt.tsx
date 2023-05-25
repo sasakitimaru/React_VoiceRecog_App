@@ -24,13 +24,13 @@ type ValidateReceiptProps = {
 const ValidateReceipt: React.FC<ValidateReceiptProps> = ({ purchase, isRestoring, setIsRestoring, fromPlanBox ,isNotRenewAccount, forSubscriptionUpdate }) => {
     const dispatch = useDispatch();
     const user: User = useSelector((state: any) => state.user);
-    const SharedKey = Config.SHARED_SECRET;
+    // const SharedKey = Config.SHARED_SECRET;
+    const SharedKey = 'bb14da9e1dc84352990a98f3d6b4080c'
     const { modalVisible, setModalVisible } = useContext(ModalVisibleContext);
     const getAndStoreReceipt = async (purchase: any, forSubscriptionUpdate?: boolean) => {
         const receipt = await getReceiptIOS({});
         if (receipt) {
             const isValidate = await validateReceipt(receipt);
-            console.log("chekc isValidate", isValidate)
             if (isValidate) {
                 console.log('isValidate', isValidate)
                 const receiptInfo = await validateAppleReceipt(receipt);
@@ -43,6 +43,7 @@ const ValidateReceipt: React.FC<ValidateReceiptProps> = ({ purchase, isRestoring
                 // Check if the plan is still valid
                 const isValid = currentDate < expireDate;
                 console.log('isValid', isValid);
+                console.log('sharedKey', SharedKey);
                 if (!fromPlanBox) {
                     console.log('forSubscriptionUpdate');
                     updateUserPlan(purchase, isNotRenewAccount, isValid, forSubscriptionUpdate=true);
@@ -131,7 +132,6 @@ const ValidateReceipt: React.FC<ValidateReceiptProps> = ({ purchase, isRestoring
     async function validateAppleReceipt(receipt: string | null) {
         const prodURL = 'https://buy.itunes.apple.com/verifyReceipt'
         const stagingURL = 'https://sandbox.itunes.apple.com/verifyReceipt'
-        // console.log('receipt2', receipt)
         const payload = {
             "receipt-data": receipt,
             "password": SharedKey,
