@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>音声認識のために音声ファイルを作成するためライプラリへのアクセスが発生します。</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -40,7 +42,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>マイクは会話の音声を認識するためにのみ使用されます。</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>マイクは会話の音声をにんしきするためにのみ使用されます。</string>
+	<string>マイクは会話の音声を認識するためにのみ使用されます。</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
