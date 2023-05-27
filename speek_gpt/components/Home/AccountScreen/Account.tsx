@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, FlatList, StyleSheet, ActionSheetIOS } from 'react-native';
+import { View, TouchableOpacity, Text, FlatList, StyleSheet, ActionSheetIOS, Alert } from 'react-native';
 import { Auth } from 'aws-amplify';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { Iconify } from 'react-native-iconify';
@@ -24,19 +24,34 @@ const Setting = () => {
       navigation.dispatch(CommonActions.navigate('SignIn'));
     } catch (error) {
       console.error('Error signing out: ', error);
+      Alert.alert('ログアウトに失敗しました');
     }
   };
-
-  const handleActionSheet = () => {
+  const handleDeleteUser = async () => {
+    try {
+      // const user = await Auth.currentAuthenticatedUser();
+      // await Auth.deleteUser(user);
+      await Auth.deleteUser();
+      Alert.alert('アカウントを削除しました');
+      navigation.navigate('SignUp')
+      console.log('User account deleted');
+      
+    } catch (error) {
+      console.error('Error deleting user account', error);
+      //alart出す
+    }
+  }
+  const handleActionSheet = (description: string) => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['キャンセル', 'ログアウトする'],
+        options: ['キャンセル', description],
         destructiveButtonIndex: 1,
         cancelButtonIndex: 0,
       },
       (buttonIndex) => {
         if (buttonIndex === 1) {
-          handleSignOut();
+          if(description === 'ログアウトする') handleSignOut();
+          else if(description === 'アカウントを削除する') handleDeleteUser();
         }
       },
     );
@@ -73,8 +88,17 @@ const Setting = () => {
       key: 'signOut', component:
         <TouchableOpacity
           style={styles.listItemcontainer}
-          onPress={handleActionSheet}>
+          onPress={() => handleActionSheet('ログアウトする')}>
           <Text>ログアウト</Text>
+          <Iconify icon='ic:sharp-keyboard-arrow-right' size={30} color='#000000' />
+        </TouchableOpacity>
+    },
+    {
+      key: 'deleteAccount', component:
+        <TouchableOpacity
+          style={styles.listItemcontainer}
+          onPress={() => handleActionSheet('アカウントを削除する')}>
+          <Text>アカウント削除</Text>
           <Iconify icon='ic:sharp-keyboard-arrow-right' size={30} color='#000000' />
         </TouchableOpacity>
     },
