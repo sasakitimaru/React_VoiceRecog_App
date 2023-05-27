@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SignUp from './source/SignUp';
-import Verify from './source/Verify';
-import SignIn from './source/SignIn';
-import Home from './source/Home';
-import ChatHistory from './source/components/History/ChatHistory';
-import AI_conversation from './source/components/AI_conversation';
-import History from './source/components/History';
-import InquiryForm from './source/components/account/InquiryForm';
-import ConfirmPlan from './source/components/account/ConfirmPlan';
+import SignUp from './components/Signature/SignUp';
+import Verify from './components/Signature/Verify';
+import SignIn from './components/Signature/SignIn';
+import Home from './components/Home/Home';
+import ChatHistory from './components/Home/LearnHistoryScreen/History/ChatHistory';
+import AI_conversation from './components/Home/AIConversationScreen/AIConversation/AI_conversation';
+import History from './components/Home/LearnHistoryScreen/History/HistoryListPerDay';
+import InquiryForm from './components/Home/AccountScreen/components/InquiryForm';
+import ConfirmPlan from './components/Home/AccountScreen/components/ConfirmPlan/ConfirmPlan';
 
 type NavigationProps = { IsAuthenticated: boolean };
 
