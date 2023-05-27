@@ -38,7 +38,7 @@ const CreateForm = () => {
                         email: email,
                     },
                 });
-                console.log('user created:', user);
+                // console.log('user created:', user);
                 navigation.navigate('Verify', { username: email, password: password });
             } catch (error) {
                 console.log('error signing up:', error);
