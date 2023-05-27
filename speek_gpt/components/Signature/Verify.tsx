@@ -10,7 +10,7 @@ const Verify = (props) => {
     const username = props.route.params.username;
     const password = props.route.params.password;
     const [resendmessage, setResendmessage] = useState(null);
-    console.log('props : ', props.route.params.username)
+    // console.log('props : ', props.route.params.username)
     const MoveToLogin = () => {
         try {
             navigation.navigate('SignUp');
