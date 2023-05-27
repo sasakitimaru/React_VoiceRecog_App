@@ -58,7 +58,7 @@ const History = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            { (filteredArray.length > 0) ?
+            { (filteredArray !== null && filteredArray.length > 0) ?
             <FlatList
                 data={filteredArray}
                 renderItem={({ item }) => (
