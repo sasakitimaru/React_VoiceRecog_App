@@ -2,5 +2,5 @@
   "AppSyncApiName": "speekgpt",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2023-04-23T03:52:11.915Z"
+  "AuthModeLastUpdated": "2023-05-13T14:45:38.718Z"
 }

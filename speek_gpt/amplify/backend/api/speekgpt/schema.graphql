@@ -11,6 +11,7 @@ type Conversation {
 
 type ConversationEntry {
   sectionID: ID
+  topic: String
   timestamp: String
   conversation: [Conversation]
 }
@@ -19,6 +20,11 @@ type User @model{
   id: ID
   name: String
   email: String
+  plan: String
+  planRegisteredDate: String
+  usedElevenTokens: Int
+  usedTokens: Int
+  validDays: Int
   conversations: [ConversationEntry]
   createdAt: String
   updatedAt: String
@@ -26,6 +32,12 @@ type User @model{
 
 type Query {
   generateResponse(messageForAI: [MessageForAIInput]): String
+}
+
+type InquiryForm @model{
+  email: String
+  item: String
+  message: String
 }
 
 input MessageForAIInput {
@@ -42,6 +54,7 @@ input ConversationInput {
 
 input ConversationEntryInput {
   sectionID: ID
+  topic: String
   timestamp: String
   conversation: [ConversationInput]
 }
@@ -50,6 +63,11 @@ input CreateUserInput {
   id: ID
   name: String
   email: String
+  plan: String
+  planRegisteredDate: String
+  validDays: Int
+  usedElevenTokens: Int
+  usedTokens: Int
   conversations: [ConversationEntryInput]
 }
 
@@ -57,6 +75,20 @@ input UpdateUserInput {
   id: ID
   name: String
   email: String
+  plan: String
+  planRegisteredDate: String
+  validDays: Int
+  usedElevenTokens: Int
+  usedTokens: Int
   conversations: [ConversationEntryInput]
 }
 
+input DeleteUserInput {
+  id: ID
+}
+
+input CreateInquiryFormInput {
+  email: String
+  item: String
+  message: String
+}
