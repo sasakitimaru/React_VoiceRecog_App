@@ -4,7 +4,7 @@ import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { Auth } from 'aws-amplify';
 import { ActivityIndicator } from 'react-native';
 import { Provider } from 'react-redux';
-import { store as Store } from './source/redux/store/userStore';
+import { store as Store } from './components/redux/store/userStore';
 
 export type ModalVisibleContextProps = {
   modalVisible: boolean;
