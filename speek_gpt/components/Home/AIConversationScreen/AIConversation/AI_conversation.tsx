@@ -14,13 +14,13 @@ import fetchLastSectionID from './components/VoiceRecog/components/GetLastSectio
 import { Auth } from 'aws-amplify';
 import { Iconify } from 'react-native-iconify';
 
-type Message = {
+export type Message = {
   messageID: string | number[];
   isUser: boolean;
   message: string;
 }
 
-const AI_conversation: React.FC = (topic) => {
+const AI_conversation: React.FC = (topic: any) => {
   const isElevenlabsEffective = topic.route.params.isElevenlabsEffective;
   // console.log("AI_conversation.tsx: isElevenlabsEffective:", topic.route.params.isElevenlabsEffective);
   // const [textInput, setTextInput] = useState('');
