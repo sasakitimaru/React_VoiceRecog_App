@@ -5,26 +5,20 @@ import whisper from './components/Whisper';
 import { startRecording, stopRecording } from './components/audioRecorder';
 import UUID from 'react-native-uuid';
 import Tts from 'react-native-tts'; //Use this when Elevenlabs is uneffective
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { Event } from 'react-native-track-player';
 import Elevenlabs from './components/ElevenLabAPI';
 import { Iconify } from 'react-native-iconify';
 import { CountTokens, CountElevenTokens} from './components/CountTokens';
 import fetchUser from '../../../../../common/FetchUser';
 import { useDispatch, useSelector } from 'react-redux';
-
-
-type Message = {
-  messageID: string | number[];
-  isUser: boolean;
-  message: string;
-};
+import { Message } from '../../AI_conversation';
 
 interface MessageForAI {
   role: 'user' | 'system' | 'assistant';
   content: string;
 }
 
-type SetMessages = (updater: (prevMessages: Message[]) => Message[]) => void;
+type SetMessages = React.Dispatch<React.SetStateAction<Message[]>>;
 
 type VoiceRecogProps = {
   topic: any;
@@ -34,17 +28,23 @@ type VoiceRecogProps = {
 };
 
 const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, isElevenlabsEffective }) => {
+  // 録音の開始時にtrueになり、録音の終了時にfalseになる
   const [voiceRecogToggle, setVoiceRecogToggle] = useState<boolean>(false);
+  // 録音終了し、音声の文字起こし開始時にtrueになり、文字起こし終了時にfalseになる
   const [sendMessageToggle, setSendMessageToggle] = useState<boolean>(false);
+  // 初回レンダリング時にAIから会話を始めるために使うトグル
   const [firstRenderingToggle, setFirstRenderingToggle] = useState<boolean>(true);
-  // const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
+  // 初回レンダリング時にAIから会話のレスポンスが来るまでのローディングを表示、ユーザに待機時間を明示するため
   const [isLoadingToggle, setIsLoadingToggle] = useState<boolean>(false);
-  const [recognigedText, setRecognigedText] = useState<string | void>('');
+  const [recognigedText, setRecognigedText] = useState<string>('');
+  // GPTのAPIに送るメッセージ配列、配列で送らないと過去の会話覚えないので
   const [messageForAI, setMessageForAI] = useState<MessageForAI[]>([]);
+  // GPTに渡す最初のメッセージ、初回だけAIから会話を始めるさいに使う
   const [FirstPrompt, setFirstPrompt] = useState<MessageForAI[]>([]);
   const [userid, setUserid] = useState<string>('');
   const dispatch = useDispatch();
-  const selecter = useSelector((state: any) => state);
+  // const selecter = useSelector((state: any) => state);
+
   //ユーザーIDの取得とクリーンアップ処理
   useEffect(() => {
     fetchUser().then((user) => {
@@ -72,7 +72,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
         const cntcharactorfunc = async () => {
           const cntCharactor = messages[messages.length - 1].message.length;
           if (cntCharactor > 0 && userid !== '') {
-            isElevenlabsEffective ? await dispatch(CountElevenTokens(userid, cntCharactor)) : await dispatch(CountTokens(userid, cntCharactor)); //何でできるのかわからないから後で調べます
+            isElevenlabsEffective ? await dispatch(CountElevenTokens(userid, cntCharactor)) : await dispatch(CountTokens(userid, cntCharactor)); 
           }
         }
         cntcharactorfunc();
@@ -83,7 +83,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
   //イベントリスナーの設定と音声の再生、クリーンアップ処理
   useEffect(() => {
     if (isElevenlabsEffective) {
-      TrackPlayer.addEventListener('remote-seek', (event) => {
+      TrackPlayer.addEventListener(Event.RemoteSeek, (event) => {
         // TrackPlayer.seekTo(1);
       });
     } else {
@@ -114,7 +114,8 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
 
   //初回レンダリング時にAIの最初の発話を設定
   useEffect(() => {
-    const testfunc = async () => {
+    const generateFirstResponse = async () => {
+      // 画面のレンダリングを少し待つ。動作安定のため(いらないかも？
       setTimeout(() => {
       }, 1000);
       let firstprompt_tmp = 
@@ -136,7 +137,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
         { role: 'user', content: firststate_tmp }
       ])
     }
-    testfunc();
+    generateFirstResponse();
   }, []);
 
   //最初にAIから会話を始めるための例外処理
@@ -181,7 +182,7 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
     if (voiceRecogToggle) {
       setIsLoadingToggle(true);
       const audioFile = await stopRecording();
-      const transcription: string | void = await whisper(audioFile);
+      const transcription: string = await whisper(audioFile);
       // console.log('transcription', transcription)
       setRecognigedText(transcription);
       setIsLoadingToggle(false); // !isLoadingToggleだと前のステートが反映されないまま反転処理をしようとしてうまくいかない

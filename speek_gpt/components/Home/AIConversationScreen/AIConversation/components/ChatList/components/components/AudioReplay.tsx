@@ -10,7 +10,6 @@ type AudioReplayProps = {
     isElevenlabsEffective?: boolean;
 };
 const AudioReplay: React.FC<AudioReplayProps> = ({ text, isElevenlabsEffective }) => {
-    console.log('AudioReplay.tsx: isElevenlabsEffective: ', isElevenlabsEffective)
     const outputPath = `${RNFS.DocumentDirectoryPath}/tmp.mp3`
     const [isReplayPushed, setIsReplayPushed] = useState<boolean>(false);
 

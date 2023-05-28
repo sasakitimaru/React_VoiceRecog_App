@@ -1,7 +1,7 @@
 import { API } from 'aws-amplify';
 import RNFS from 'react-native-fs';
 
-type WhisperProps = (filePath: string) => Promise<void>;
+type WhisperProps = (filePath: string) => Promise<string>;
 
 const whisper: WhisperProps = async (filePath) => {
   const path = '/whisper';
