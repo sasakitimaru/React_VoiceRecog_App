@@ -20,8 +20,6 @@ const EnrollForm = () => {
     setIsLoggingIn(true);
     try {
       const user = await Auth.signIn(email, password);
-      console.log('email:', user.email, '\npassword:', user.password);
-      console.log('user:', user);
       navigation.navigate('Home');
     } catch (error) {
       console.log('error signing in', error);

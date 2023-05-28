@@ -66,7 +66,7 @@ const ConversationList: React.FC = () => {
         <FlatList
           style={{ padding: 10 }}
           data={topic}
-          renderItem={({ item }) => (<TopicBox topic={item} />)}
+          renderItem={({ item, index }) => (<TopicBox topic={item} delay={index}/>)}
         />
       </ElevenlabsContext.Provider>
       <View style={styles.elevenfuncContainer}>

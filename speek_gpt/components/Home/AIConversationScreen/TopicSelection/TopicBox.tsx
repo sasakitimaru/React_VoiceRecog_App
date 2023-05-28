@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { StyleSheet, TouchableOpacity, Text ,ActionSheetIOS} from 'react-native';
+import React, { useContext, useEffect, useRef } from 'react';
+import { StyleSheet, TouchableOpacity, Text, ActionSheetIOS } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 import { ElevenlabsContext } from './TopicSelection';
@@ -14,19 +14,23 @@ type ModalVisibleContextProps = {
 
 type TopicBoxProps = {
   topic: string;
+  delay: number;
 };
 
-const TopicBox: React.FC<TopicBoxProps> = ({ topic }) => {
+const TopicBox: React.FC<TopicBoxProps> = ({ topic, delay }) => {
   const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
   const user: User = useSelector((state: any) => state.user);
   const isElevenlabsEffective = useContext(ElevenlabsContext);
   const navigate = useNavigation();
+  // const animation = "slideInRight"
+  // const duration = 800
+  const animeRef = useRef<any>(null);
   const handlePress = () => {
     const user_token = isElevenlabsEffective ? user.eleventoken : user.token
     const limit_token = isElevenlabsEffective ? tokenlimit[user.plan].eleventoken : tokenlimit[user.plan].token
-    if(user_token < limit_token){
+    if (user_token < limit_token) {
       navigate.navigate('AI_conversation', { topic: topic, isElevenlabsEffective })
-    }else{
+    } else {
       ActionSheetIOS.showActionSheetWithOptions(
         {
           options: ['戻る'],
@@ -42,6 +46,19 @@ const TopicBox: React.FC<TopicBoxProps> = ({ topic }) => {
       );
     }
   };
+
+  useEffect(() => {
+    if (animeRef.current) {
+      // animeRef.current.animate(animation, duration)
+      animeRef.current.transition(
+        { translateX: 500 }, // 開始状態（画面の右外側）
+        { translateX: 0 },   // 終了状態（画面の中央）
+        800,                 // アニメーションの時間
+        'ease-in-out',        // イージング
+      )
+    }
+  }, [topic]);
+
   const colors = [
     '#0099FF',
     '#8EB8FF',
@@ -51,8 +68,10 @@ const TopicBox: React.FC<TopicBoxProps> = ({ topic }) => {
 
   return (
     <Animatable.View
-      animation="pulse"
-      duration={400}
+      // animation={animation}
+      // duration={duration}
+      ref={animeRef}
+      delay={delay*100}
       iterationCount={1}
       style={[styles.card, { backgroundColor }]}
       useNativeDriver
