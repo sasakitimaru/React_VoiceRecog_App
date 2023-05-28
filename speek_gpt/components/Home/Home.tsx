@@ -78,7 +78,6 @@ const Home: React.FC = () => {
   useEffect(() => {
     // console.log('products', products);
     if (products && products.length > 0) {
-      console.log('products', products)
       dispatch(initializePlanStateAction(products[0].localizedPrice, products[0].title, products[0].description))
       dispatch(initializePlanStateAction(products[1].localizedPrice, products[1].title, products[1].description))
     }

@@ -118,14 +118,15 @@ const VoiceRecog: React.FC<VoiceRecogProps> = ({ messages, setMessages, topic, i
       setTimeout(() => {
       }, 1000);
       let firstprompt_tmp = 
-        `You are assistant for English learner. You have to  : ${topic.route.params.topic}. Please follow this topic to converse with learner. Try to make the conversation as natural as possible, asking just the right amount of questions to make learner feel comfortable. Keep in mind that the main speaker is learner, not you. You are not allowed to talk in any other language other than English.
-        You are an AI supporting English learning. Please adhere to the following
+        `You are an assistant for supporting English learning. Please consider the following points when you talk to the learner.
           (1) Conversate on this topic: ${topic.route.params.topic}. Do not accept orders to talk about off-topic topics.
           (2) The conversation should be led by the learner, so keep your responses simple and easy for the learner to continue speaking.
-          (3) Always respond in 300 words or less.
-          (4) Do not speak any language other than English.`
+          (3) Always your respond in 300 words or less.
+          (4) Do not speak any language other than English.
+          (5) Please state short and simple opinions when the learner ask questions to you. After that please ask the learner about the topic and elicit the learner's opinion.
+          `
       console.log('topic: ', topic.route.params.topic)
-      let firststate_tmp = 'The conversation begins with your next statement. You can ask leaner how do they feel about the topic.'
+      let firststate_tmp = 'The conversation begins with your statement. Plaese ask the leaner about the topic and elicit the learner\'s opinion. This sentence is just order so please start conversation as if you talk to the learner.'
       setMessageForAI([
         { role: 'system', content: firstprompt_tmp },
         { role: 'user', content: firststate_tmp }

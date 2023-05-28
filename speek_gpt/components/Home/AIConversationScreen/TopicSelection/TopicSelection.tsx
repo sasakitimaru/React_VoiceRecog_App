@@ -60,7 +60,7 @@ const ConversationList: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.titleText}>トピックを決めて会話を始めよう！</Text>
       <TouchableOpacity style={styles.button} onPress={() => setTopicRandom()}>
-        <Text style={styles.buttonText}>NEXT</Text>
+        <Text style={styles.buttonText}>NEXT TOPIC</Text>
       </TouchableOpacity>
       <ElevenlabsContext.Provider value={isElevenlabsEffective}>
         <FlatList

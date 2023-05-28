@@ -34,6 +34,10 @@ const AudioReplay: React.FC<AudioReplayProps> = ({ text, isElevenlabsEffective }
         }
     }
     useEffect(() => {
+        if(!isElevenlabsEffective){
+            Tts.setDefaultLanguage('en-US');
+            console.log('AudioReplay.tsx: Tts.getInitStatus(): ', Tts.getInitStatus());
+        }
         return () => {
             if (isElevenlabsEffective) {
                 const cleanup = async () => {
