@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, Text, ActionSheetIOS } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
-import { ElevenlabsContext } from './TopicSelection';
+import { ElevenlabsContext } from '../TopicSelection';
 import { useSelector } from 'react-redux';
-import { ModalVisibleContext } from '../../../../App';
-import { User, tokenlimit } from '../../../Subscription/Plan.type';
+import { ModalVisibleContext } from '../../../../../App';
+import { User, tokenlimit } from '../../../../Subscription/Plan.type';
 
 type ModalVisibleContextProps = {
   modalVisible: boolean;
@@ -15,15 +15,16 @@ type ModalVisibleContextProps = {
 type TopicBoxProps = {
   topic: string;
   delay: number;
+  isTopicFlushed: boolean;
 };
 
-const TopicBox: React.FC<TopicBoxProps> = ({ topic, delay }) => {
+const TopicBox: React.FC<TopicBoxProps> = ({ topic, delay, isTopicFlushed }) => {
   const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
   const user: User = useSelector((state: any) => state.user);
   const isElevenlabsEffective = useContext(ElevenlabsContext);
   const navigate = useNavigation();
   // const animation = "slideInRight"
-  // const duration = 800
+  const duration = 500
   const animeRef = useRef<any>(null);
   const handlePress = () => {
     const user_token = isElevenlabsEffective ? user.eleventoken : user.token
@@ -48,16 +49,29 @@ const TopicBox: React.FC<TopicBoxProps> = ({ topic, delay }) => {
   };
 
   useEffect(() => {
-    if (animeRef.current) {
-      // animeRef.current.animate(animation, duration)
+    if (!isTopicFlushed) {
+      if (animeRef.current) {
+        // animeRef.current.animate(animation, duration)
+        animeRef.current.transition(
+          { translateX: 500 }, // 開始状態（画面の右外側）
+          { translateX: 0 },   // 終了状態（画面の中央）
+          duration,                 // アニメーションの時間
+          'ease-in-out',        // イージング
+        )
+      }
+    }
+  }, [isTopicFlushed]);
+
+  useEffect(() => {
+    if (isTopicFlushed) {
       animeRef.current.transition(
-        { translateX: 500 }, // 開始状態（画面の右外側）
-        { translateX: 0 },   // 終了状態（画面の中央）
-        800,                 // アニメーションの時間
-        'ease-in-out',        // イージング
+        { translateX: 0 },
+        { translateX: -500 },
+        duration,
+        'ease-in-out',
       )
     }
-  }, [topic]);
+  }, [isTopicFlushed]);
 
   const colors = [
     '#0099FF',
@@ -71,7 +85,7 @@ const TopicBox: React.FC<TopicBoxProps> = ({ topic, delay }) => {
       // animation={animation}
       // duration={duration}
       ref={animeRef}
-      delay={delay*100}
+      delay={delay * 100}
       iterationCount={1}
       style={[styles.card, { backgroundColor }]}
       useNativeDriver
@@ -92,6 +106,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     marginBottom: 12,
     elevation: 4,
+    width: '100%',
   },
   cardContent: {
     flexDirection: 'column',

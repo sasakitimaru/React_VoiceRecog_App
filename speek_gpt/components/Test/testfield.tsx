@@ -1,90 +1,95 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text } from 'react-native';
-import { View } from 'react-native-animatable';
-import Svg, { Circle } from 'react-native-svg';
+import React from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList, } from 'react-native';
+import GenreCard from './GenreCard';
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
-export default function CircleAnimation(token: number, plan: string, isElevenlabs: boolean) {
-    let percentageOfUsedNomalToken: number = 0; // 0 はtokenに置き換え
-    let percentageOfUsedPremiumToken: number = 0; // 0 はtokenに置き換え
-    isElevenlabs = false;
-    let circlecolor = '';
-    isElevenlabs ? circlecolor = '#136FFF' : circlecolor = '#FF367F';
-    token = 800;
-    plan = 'premium';
-    if (plan === 'nomal') {
-        percentageOfUsedNomalToken = token / 200;
-        percentageOfUsedPremiumToken = token / 100;
-    } else if (plan === 'standard') {
-        percentageOfUsedNomalToken = token / 2000;
-        percentageOfUsedPremiumToken = token / 100;
-    } else if (plan === 'premium') {
-        percentageOfUsedNomalToken = token / 2000;
-        percentageOfUsedPremiumToken = token / 1000;
-    }
-    const animatedValue = useRef(new Animated.Value(0)).current;
-    const r = 30;
-    const circumference = 2 * Math.PI * r; // 2πr
-
-    const strokeDashoffset = animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [circumference, circumference * Math.max(1 - (
-            isElevenlabs ? percentageOfUsedPremiumToken :
-                percentageOfUsedNomalToken
-        ), 0)],
-    });
-
-    useEffect(() => {
-        Animated.timing(animatedValue, {
-            toValue: 1,
-            duration: 2000,
-            useNativeDriver: false,
-        }).start();
-    }, []);
-
+const TestField = () => {
+    const genres = [
+        {
+            id: 1,
+            genre: '旅行',
+            description: '空港やホテルでの会話、レストランでの食事の注文、観光地での質問など。',
+            icon: 'mingcute:airplane-fill'
+        },
+        {
+            id: 2,
+            genre: '仕事',
+            description: 'ビジネスミーティング、プレゼンテーション、電子メールの書き方など。',
+            icon: 'ic:outline-menu-book'
+        },
+        {
+            id: 3,
+            genre: '日常生活',
+            description: '家庭での日常的な会話、買い物、友達との会話、天気についての話など。',
+            icon: 'bi:people-fill'
+        },
+        {
+            id: 4,
+            genre: '学校',
+            description: '授業でのディスカッション、先生との会話、友達との会話、学校のイベントについての話など。',
+            icon: 'ic:outline-school'
+        },
+        {
+            id: 5,
+            genre: '健康とフィットネス',
+            description: '医者との会話、ジムでの会話、健康やエクササイズについての話など。',
+            icon: 'healthicons:exercise-running'
+        },
+        {
+            id: 6,
+            genre: 'ニュースと現代の問題',
+            description: '政治、経済、環境問題などについてのディスカッション。',
+            icon: 'icon-park-solid:newspaper-folding'
+        },
+        {
+            id: 7,
+            genre: 'エンターテイメント',
+            description: '映画、音楽、スポーツ、本についての話など。',
+            icon: 'ic:sharp-video-library'
+        },
+        {
+            id: 8,
+            genre: 'テクノロジー',
+            description: '新しいガジェット、ソーシャルメディア、AIや他の新しい技術についての話など。',
+            icon: 'material-symbols:chart-data-rounded'
+        },
+        {
+            id: 9,
+            genre: '文化と芸術',
+            description: '美術館や劇場での会話、伝統的な祭りや文化についての話など。',
+            icon: 'streamline:religion-symbol-yin-yang-religion-tao-yin-yang-taoism-culture'
+        }
+    ];
     return (
         <View style={styles.container}>
-            <Text>CircleAnimation</Text>
-            <View style={styles.circlecontainer}>
-                <Svg viewBox="0 0 100 100">
-                    <Circle
-                        cx="50"
-                        cy="50"
-                        r={r}
-                        fill="none"
-                        stroke="#E6E6E6"
-                        strokeWidth={5}
-                    />
-                    <AnimatedCircle
-                        cx="50"
-                        cy="50"
-                        r={r}
-                        fill="none"
-                        transform={`rotate(-90 50 50)`}
-                        stroke={circlecolor}
-                        strokeWidth={5}
-                        strokeDasharray={circumference}
-                        strokeDashoffset={strokeDashoffset}
-                    />
-                </Svg>
-            </View>
+            <Text style={styles.h1}>ジャンルを決めよう</Text>
+            <FlatList
+                style={styles.list}
+                data={genres}
+                renderItem={({ item }) => <GenreCard genre={item.genre} id={item.id}/>}
+                // keyExtractor={(item) => item.toString()}
+                numColumns={2}
+            />
         </View>
     );
-}
-
+};
+export default TestField;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
     },
-    circlecontainer: {
-        flex: 0.4,
-        width: '80%',
-        height: '80%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // backgroundColor: '#FFEEEE',
+    h1: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 10,
+    },
+    list: {
+        flex: 1,
+        padding: 10,
+        width: '100%',
     },
 });

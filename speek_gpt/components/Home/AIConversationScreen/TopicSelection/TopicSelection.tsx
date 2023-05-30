@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList, Text, Switch, ActionSheetIOS } from 'react-native';
-import TopicBox from './TopicBox';
+import TopicBox from './components/TopicBox';
 import data from './prompt.json';
 import { Iconify } from 'react-native-iconify';
 import PurchaseModalView from '../../../Subscription/PurchaseModalView';
@@ -8,6 +8,7 @@ import { ModalVisibleContext } from '../../../../App';
 import { useSelector } from 'react-redux';
 import { tokenlimit, User } from '../../../Subscription/Plan.type';
 import { ModalVisibleContextProps } from '../../../../App';
+import CircleArrowAnimation from './components/CircleArrowAnimation.tsx';
 // import { Iconify } from 'react-native-iconify';
 // import TextInputArea from './TextInputArea';
 // import  LinearGradient  from 'react-native-linear-gradient';
@@ -19,6 +20,7 @@ const ConversationList: React.FC = () => {
   // const plan = useSelector((state: any) => state.plan);
   const [topic, setTopic] = useState<string[]>([]);
   const [isElevenlabsEffective, setIsElevenlabsEffective] = useState<boolean>(false);
+  const [isTopicFlushed, setIsTopicFlushed] = useState<boolean>(false);
   const [cnt, setCnt] = useState<number>(0);
   const { modalVisible, setModalVisible } = useContext<ModalVisibleContextProps>(ModalVisibleContext);
 
@@ -44,13 +46,17 @@ const ConversationList: React.FC = () => {
     if (isElevenlabsEffective) ElevenlabsDetails();
   }, [isElevenlabsEffective]);
 
-  const setTopicRandom = () => {
+  const setTopicRandom = async () => {
+    setIsTopicFlushed(true);
+    setTimeout(() => {
     setTopic([]);
     for (let i = 0; i < 8; i++) {
       // let tmp = Math.floor(Math.random() * data.length);
       setTopic((prev) => [...prev, data[(cnt + i) % 100].topic_JP]);
     }
     setCnt((prev) => prev + 8);
+    setIsTopicFlushed(false);
+    }, 1000);
   };
   useEffect(() => {
     setTopicRandom();
@@ -64,9 +70,9 @@ const ConversationList: React.FC = () => {
       </TouchableOpacity>
       <ElevenlabsContext.Provider value={isElevenlabsEffective}>
         <FlatList
-          style={{ padding: 10 }}
+          style={{ padding: 10, margin: 10,flex: 1, width: '100%' }}
           data={topic}
-          renderItem={({ item, index }) => (<TopicBox topic={item} delay={index}/>)}
+          renderItem={({ item, index }) => (<TopicBox topic={item} delay={index} isTopicFlushed={isTopicFlushed} />)}
         />
       </ElevenlabsContext.Provider>
       <View style={styles.elevenfuncContainer}>
@@ -79,6 +85,7 @@ const ConversationList: React.FC = () => {
             onValueChange={() => setIsElevenlabsEffective(!isElevenlabsEffective)}
             value={isElevenlabsEffective}
           />
+          {/* <CircleArrowAnimation /> */}
         </View>
         <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
           <Iconify icon={"solar:question-circle-linear"} size={20} color={'#0099FF'} />

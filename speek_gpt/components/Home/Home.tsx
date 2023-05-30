@@ -4,7 +4,7 @@ import UnderMenuBar from './TabBar/TabBar';
 import Setting from './AccountScreen/Account';
 import ConversationList from './AIConversationScreen/TopicSelection/TopicSelection';
 import { useNavigation } from '@react-navigation/native';
-// import Test from './Test/testfield';
+import TestField from '../Test/testfield';
 import fetchUser from '../common/FetchUser';
 import { initializeStateAction } from '../redux/user/useractions';
 import Calendar from './LearnHistoryScreen/Calendar/Calendar';
@@ -94,6 +94,8 @@ const Home: React.FC = () => {
       case 'Setting':
         setCurrentComponent(<Setting />);
         break;
+      case 'Test':
+        setCurrentComponent(<TestField />);
     }
   }, [PageName]);
 
