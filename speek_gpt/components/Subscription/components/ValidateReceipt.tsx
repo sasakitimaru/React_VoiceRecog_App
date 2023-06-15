@@ -23,8 +23,7 @@ type ValidateReceiptProps = {
 const ValidateReceipt: React.FC<ValidateReceiptProps> = ({ purchase, isRestoring, setIsRestoring, fromPlanBox ,isNotRenewAccount, forSubscriptionUpdate }) => {
     const dispatch = useDispatch();
     const user: User = useSelector((state: any) => state.user);
-    // const SharedKey = Config.SHARED_SECRET;
-    const SharedKey = 'bb14da9e1dc84352990a98f3d6b4080c'
+    const SharedKey = Config.SHARED_SECRET;
     const { modalVisible, setModalVisible } = useContext(ModalVisibleContext);
     const getAndStoreReceipt = async (purchase: any, forSubscriptionUpdate?: boolean) => {
         const receipt = await getReceiptIOS({});
